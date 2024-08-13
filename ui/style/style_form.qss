@@ -1,0 +1,132 @@
+QDialog {
+    /* background-color: #37383E; */
+    background-color: #1E1E1E;
+    color: #FFFFFF;
+}
+
+QWidget {
+    /* background-color: #37383E; */
+    background-color: #1E1E1E;
+    color: #FFFFFF;
+}
+
+QLabel#label_network1, #label_network2, #label_networkServer {
+    background-color: #FFFFFF;
+    color: #000000;
+}
+QWidget#widget_1, #widget_2, #widget_3{
+    color: #FFFFFF;
+    border-style: solid;
+    border-color: #37383E;
+    border-width: 1px;
+}
+QFrame#frame_title {
+    background-color: #1E1E1E;
+    color: #FFFFFF;
+    
+}
+QLabel#label_title{
+    font: bold
+}
+
+
+QFrame {
+    /* background-color: #37383E; */
+    background-color: #1E1E1E;
+    color: #FFFFFF;
+}
+
+/* form attribute styles */
+
+
+QPushButton {
+    background-color: #37383E;
+    /* background-color: #1E1E1E; */
+    color: #808080; 
+}
+
+QPushButton:enabled {
+    color: #FFFFFF;
+}
+
+QToolButton {
+    background-color: #37383E;
+    /* background-color: #1E1E1E; */
+    color: #808080; 
+}
+QToolButton:enabled {
+    color: #FFFFFF;
+}
+
+
+QComboBox {
+    /* background-color: #37383E; */
+    background-color: #1E1E1E;
+    color: white
+}
+
+QDateEdit {
+    /* background-color: #37383E; */
+    background-color: #242424;
+    color: white
+}
+
+QLineEdit {
+    background-color: #242424;
+    /* background-color: #1E1E1E; */
+    color: white;
+
+    border-style: solid;
+    border-color: #37383E;
+    border-width: 1px;
+}
+
+QTextEdit {
+    background-color: #242424;
+    /* background-color: #1E1E1E; */
+    color: white;
+
+    border-style: solid;
+    border-color: #37383E;
+    border-width: 1px;
+}
+
+QLineEdit[readOnly="true"] {
+    color: #808080; 
+}
+
+QTextEdit[readOnly="true"] {
+    color: #808080; 
+}
+
+QCheckBox::indicator:unchecked  {
+    background-color: #37383E;
+    /* background-color: #242424; */
+    color: white
+}
+
+QRadioButton::indicator:unchecked  {
+    border-radius: 7px;
+    background-color: #37383E;
+    /* background-color: #242424; */
+    color: white
+}
+
+
+
+/* Table style */
+
+QTableView {
+    background-color: #1E1E1E;
+    color: #FFFFFF;
+    border-style: solid;
+    border-color: #37383E;
+    border-width: 1px;
+}
+
+QHeaderView::section:horizontal {
+    /* background-color: #242424; */
+    background-color: #37383E;
+    /* background-color: #283c48; */
+    color: white;
+}

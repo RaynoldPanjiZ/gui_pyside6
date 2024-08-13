@@ -1,0 +1,28 @@
+[
+    {
+        "id": 0,
+        "zone_name": "Basement 1st Floor Parking Lot",
+        "cam_infos": [
+            {
+                "ip_addr": "192.168.100.101",
+                "cam_name": "Korean Restaurant-1",
+                "status": 0
+            },
+            {
+                "ip_addr": "192.168.100.102",
+                "cam_name": "Korean Restaurant-2",
+                "status": 1
+            }
+        ]
+    },
+    {
+        "id": 1,
+        "zone_name": "Ground Floor Background",
+        "cam_infos": [
+            {
+                "ip_addr": "192.168.12.101",
+                "cam_name": "CCTV-1"
+            }
+        ]
+    }
+]

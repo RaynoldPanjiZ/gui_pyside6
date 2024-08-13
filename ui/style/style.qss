@@ -1,0 +1,106 @@
+
+
+/* #Form {
+    background-color: #1E1E1E;
+    color: white;
+    /* background-color: #37383E; */
+    /* border: 1px solid white; */
+    /* border-style: solid;
+    border-color: #37383E;
+    border-width: 1px; */
+    
+/* } */
+
+
+
+
+
+QFrame#title_bar {
+    background-color: #000000;
+    /* background-color: #1E1E1E; */
+    color: #FFFFFF;
+    font: inter 16px;
+    font-style: normal;
+}
+
+QWidget#centralwidget {
+    background-color: #1E1E1E;
+    color: #FFFFFF;
+}
+
+/* QMainWindow {
+    background-color: #1E1E1E;
+    color: white
+} */
+/* QTabBar::tab{
+    background-color: #1E1E1E;
+    color: #FFFFFF;
+} */
+
+QTabWidget{
+    background-color: #37383E;
+    color: #FFFFFF;
+}
+QTabWidget>QWidget>QWidget{
+    background-color: #1E1E1E;
+    color: #FFFFFF;
+}
+
+QFrame {
+    color: #FFFFFF;
+    /* border: 1px solid white; */
+}
+
+
+QFrame#sidemenu>QPushButton{
+    background-color: #ff171718;
+    color: #FFFFFF;
+}
+
+
+/* form attribute styles */
+
+QPushButton {
+    background-color: #37383E;
+    color: #FFFFFF;
+    
+}
+
+QComboBox {
+    background-color: #37383E;
+    color: white
+}
+
+QDateEdit {
+    background-color: #37383E;
+    color: white
+}
+
+
+QLineEdit {
+    background-color: #242424;
+    color: white;
+
+    border-style: solid;
+    border-color: #37383E;
+    border-width: 1px;
+}
+
+
+
+/* Table style */
+
+QTableView {
+    background-color: #1E1E1E;
+    color: #FFFFFF;
+}
+
+QHeaderView::section:horizontal {
+    /* background-color: #242424; */
+    background-color: #37383E;
+    /* background-color: #283c48; */
+    color: white;
+}
+/* QHeaderView::setSectionResizeMode(QHeaderView::Stretch); */
+
+
