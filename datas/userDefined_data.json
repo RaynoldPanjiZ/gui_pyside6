@@ -21,7 +21,8 @@
         "cam_infos": [
             {
                 "ip_addr": "192.168.12.101",
-                "cam_name": "CCTV-1"
+                "cam_name": "CCTV-1",
+                "status": 1
             }
         ]
     }

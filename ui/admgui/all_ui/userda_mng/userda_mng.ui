@@ -136,12 +136,21 @@
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
          <item row="0" column="0">
-          <widget class="QTableWidget" name="tableWidget">
+          <widget class="QTableWidget" name="tbZone_show">
            <property name="minimumSize">
             <size>
              <width>200</width>
              <height>350</height>
             </size>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::SingleSelection</enum>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
            </property>
            <attribute name="horizontalHeaderVisible">
             <bool>true</bool>
@@ -332,12 +341,18 @@
           </spacer>
          </item>
          <item>
-          <widget class="QTableWidget" name="tableWidget_2">
+          <widget class="QTableWidget" name="tbCam_show">
            <property name="minimumSize">
             <size>
              <width>325</width>
              <height>0</height>
             </size>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::NoSelection</enum>
            </property>
            <attribute name="verticalHeaderVisible">
             <bool>false</bool>
@@ -381,7 +396,7 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QLineEdit" name="lineEdit">
+       <widget class="QLineEdit" name="zoneName_edit">
         <property name="maximumSize">
          <size>
           <width>113</width>
@@ -394,17 +409,20 @@
        <widget class="QLabel" name="label">
         <property name="maximumSize">
          <size>
-          <width>61</width>
-          <height>16</height>
+          <width>90</width>
+          <height>999</height>
          </size>
         </property>
         <property name="text">
          <string>Zone Name</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
        </widget>
       </item>
       <item row="3" column="2">
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QPushButton" name="btn_correction">
         <property name="maximumSize">
          <size>
           <width>16777215</width>
@@ -417,7 +435,7 @@
        </widget>
       </item>
       <item row="3" column="3">
-       <widget class="QPushButton" name="pushButton_3">
+       <widget class="QPushButton" name="btn_delete">
         <property name="maximumSize">
          <size>
           <width>16777215</width>
@@ -439,7 +457,7 @@
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QLabel" name="label_3">
+          <widget class="QLabel" name="label_CamInfo">
            <property name="text">
             <string>Basement 1st Floor Parking Lot</string>
            </property>
@@ -465,7 +483,7 @@
     </spacer>
    </item>
    <item row="2" column="1" colspan="2">
-    <widget class="QPushButton" name="pushButton_4">
+    <widget class="QPushButton" name="btn_addZone">
      <property name="maximumSize">
       <size>
        <width>16777215</width>
@@ -478,7 +496,7 @@
     </widget>
    </item>
    <item row="2" column="3">
-    <widget class="QPushButton" name="pushButton_5">
+    <widget class="QPushButton" name="btn_close">
      <property name="maximumSize">
       <size>
        <width>16777215</width>
