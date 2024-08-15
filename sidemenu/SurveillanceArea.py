@@ -17,6 +17,7 @@ class SurveillanceArea(QtWidgets.QMainWindow):
         self.setCentralWidget(w)
         self.setWindowTitle("Camera Selection")
         self.setStyleSheet(style)
+        self.w.btn_cancel.clicked.connect(self.close)
 
         self.datas = [
             ["192.168.100.101", "Korean Restaurant-1", 0, "vid/test1.mp4"],

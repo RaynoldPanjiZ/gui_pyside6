@@ -1,0 +1,101 @@
+[
+    {
+        "id": 0,
+        "log_division": "Equipment",
+        "equipment_id": "NVR01",
+        "ip_addr": "192.168.100.101",
+        "event_time": "2023-10-10 12:23:45",
+        "event_categ": "NVR",
+        "event_subcateg": "Equipment Connected"
+    },
+    {
+        "id": 1,
+        "log_division": "Camera",
+        "equipment_id": "NVR01-C001",
+        "ip_addr": "192.168.100.102",
+        "event_time": "2023-10-10 12:23:45",
+        "event_categ": "Camera Device",
+        "event_subcateg": "Add Camera"
+    },
+    {
+        "id": 2,
+        "log_division": "AI Box",
+        "equipment_id": "1123KOR12345",
+        "ip_addr": "192.168.100.105",
+        "event_time": "2022-10-10 12:23:45",
+        "event_categ": "Server Commuication",
+        "event_subcateg": "Cloud Server Commuication Succeed"
+    },
+    {
+        "id": 3,
+        "log_division": "User",
+        "equipment_id": "admin",
+        "ip_addr": "192.168.100.103",
+        "event_time": "2022-5-10 12:23:45",
+        "event_categ": "Login/out",
+        "event_subcateg": "Administrator Login"
+    },
+    {
+        "id": 4,
+        "log_division": "AI Box",
+        "equipment_id": "1123KOR12345",
+        "ip_addr": "192.168.100.105",
+        "event_time": "2022-10-10 12:23:45",
+        "event_categ": "Server Commuication",
+        "event_subcateg": "Cloud Server Commuication Succeed"
+    },
+    {
+        "id": 5,
+        "log_division": "Camera",
+        "equipment_id": "guest",
+        "ip_addr": "192.168.100.101",
+        "event_time": "2021-12-10 12:23:45",
+        "event_categ": "System Setup Tasks",
+        "event_subcateg": "Delete Camera"
+    },
+    {
+        "id": 6,
+        "log_division": "AI Box",
+        "equipment_id": "1123KOR12345",
+        "ip_addr": "192.168.100.105",
+        "event_time": "2021-10-10 12:23:45",
+        "event_categ": "Server Commuication",
+        "event_subcateg": "Cloud Server Commuication Succeed"
+    },
+    {
+        "id": 7,
+        "log_division": "Camera",
+        "equipment_id": "NVR01-C001",
+        "ip_addr": "192.168.100.102",
+        "event_time": "2020-10-10 12:23:45",
+        "event_categ": "Camera Device",
+        "event_subcateg": "Add Camera"
+    },
+    {
+        "id": 8,
+        "log_division": "AI Box",
+        "equipment_id": "1123KOR12345",
+        "ip_addr": "192.168.100.105",
+        "event_time": "2020-10-10 12:23:45",
+        "event_categ": "Server Commuication",
+        "event_subcateg": "Cloud Server Commuication Succeed"
+    },
+    {
+        "id": 9,
+        "log_division": "Camera",
+        "equipment_id": "NVR01-C001",
+        "ip_addr": "192.168.100.102",
+        "event_time": "2020-01-10 12:23:45",
+        "event_categ": "Camera Device",
+        "event_subcateg": "Add Camera"
+    },
+    {
+        "id": 10,
+        "log_division": "AI Box",
+        "equipment_id": "1123KOR12345",
+        "ip_addr": "192.168.100.105",
+        "event_time": "2021-01-10 12:23:45",
+        "event_categ": "Server Commuication",
+        "event_subcateg": "Cloud Server Commuication Succeed"
+    }
+]

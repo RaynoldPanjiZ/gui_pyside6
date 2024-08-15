@@ -32,7 +32,8 @@ class NetSetting(QtWidgets.QMainWindow):
 
     def on_ip_setting_changed(self):
         if self.w.ipSetting_cb.currentText() == "Automatic (DHCP)":
-            self.updateDHCPInfo()
+            print(self.get_ip_network())
+            self.dhcp_generate()
             self.set_manual_fields_enabled(False)
         else:
             self.w.ipAddr_edit.setText("")
@@ -51,6 +52,40 @@ class NetSetting(QtWidgets.QMainWindow):
         self.w.dns2_edit.setEnabled(enabled)
         self.w.netSpeed_edit.setEnabled(False)
     
+    def get_ip_network(self):
+        interface = self.w.ifList_cb.currentText()
+        if interface == "lo":
+            self.w.ipAddr_edit.setText("")
+            self.w.netMask_edit.setText("")
+            self.w.gateaway_edit.setText("")
+            self.w.dns1_edit.setText("")
+            self.w.dns2_edit.setText("")
+            return None
+        
+        elif interface in psutil.net_if_addrs():
+            addrs = psutil.net_if_addrs()[interface]    # ip address
+            for addr in addrs:
+                if addr.family == socket.AF_INET:
+                    ip_address = addr.address
+                    netmask = addr.netmask
+                    ip_network = ipaddress.ip_network(f"{ip_address}/{self.get_prefix(netmask)}", strict=False)
+                    return ip_network
+        print(f"Interface {interface} was not found or does not have an IP address.")
+        return None
+
+    def get_prefix(self, netmask):
+        """Mengubah netmask menjadi prefix"""
+        netmask = ipaddress.ip_address(netmask)
+        for prefix in range(32, -1, -1):
+            if ipaddress.ip_network(f'0.0.0.0/{prefix}').netmask == netmask:
+                return prefix
+        return 24  # Default prefix
+
+    def find_available_ip(self, ip_network):
+        for ip in ip_network.hosts():
+            if not self.ping(str(ip)):
+                return str(ip)
+        return None
 
     def ping(self, ip):
         result = subprocess.run(['ping', '-c', '1', ip], stdout=subprocess.DEVNULL)
@@ -66,36 +101,19 @@ class NetSetting(QtWidgets.QMainWindow):
             self.w.netSpeed_edit.setText("N/A")
 
 
-    def updateDHCPInfo(self):       # https://docs.python.org/3/howto/ipaddress.html
-        interface = self.w.ifList_cb.currentText()
-        if interface == "lo":
-            self.w.ipAddr_edit.setText("")
-            self.w.netMask_edit.setText("")
-            self.w.gateaway_edit.setText("")
-            self.w.dns1_edit.setText("")
-            self.w.dns2_edit.setText("")
-        else:
-            command = f"ip a | grep 'inet ' | grep {interface}"
-            process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
-            result = process.communicate()[0].decode().strip()
-
-            if result:
-                ip_info = result.split()[1].split('/')
-                self.w.ipAddr_edit.setText(ip_info[0])
-                
-                print(str(result.split()[1]))
-                net4 = ipaddress.ip_network(str(result.split()[1]), False)
-                self.w.netMask_edit.setText(str(net4.netmask))
-
-                command_gateway = f"ip route | grep default | grep {interface}"
-                process_gateway = subprocess.Popen(command_gateway, shell=True, stdout=subprocess.PIPE)
-                gateway_result = process_gateway.communicate()[0].decode().strip()
-                if gateway_result:
-                    gateway_ip = gateway_result.split()[2]
-                    self.w.gateaway_edit.setText(gateway_ip)
-
+    def dhcp_generate(self):
+        ip_network = self.get_ip_network()
+        if ip_network:
+            available_ip = self.find_available_ip(ip_network)
+            print(available_ip)
+            if available_ip:
+                self.w.ipAddr_edit.setText(available_ip)
+                self.w.netMask_edit.setText(str(ip_network.netmask))  # Set netmask
+                self.w.gateaway_edit.setText(f"{ip_network.network_address + 1}")    # Gateway 192.168.x.1
                 self.w.dns1_edit.setText("8.8.8.8")  # DNS Google
                 self.w.dns2_edit.setText("8.8.4.4")  # DNS Google
-
-    def applyConfig(self):
-        pass
+                self.w.netSpeed_edit.setText(str(0))
+            else:
+                print("There are no IPs available in that range.")
+        else:
+            print("Unable to determine IP range.")

@@ -102,7 +102,7 @@ QTextEdit[readOnly="true"] {
 QCheckBox::indicator:unchecked  {
     background-color: #37383E;
     /* background-color: #242424; */
-    color: white
+    color: white;
 }
 
 QRadioButton::indicator:unchecked  {

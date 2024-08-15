@@ -46,11 +46,14 @@ class UserManagement(QtWidgets.QMainWindow):
                     if i == 5 or i == 6:
                         chbox_frame = QtWidgets.QFrame()
                         chbox_layout = QtWidgets.QHBoxLayout(chbox_frame)
+                        # chbox_frame.setMaximumWidth(19)
+                        # chbox_frame.setStyleSheet("QFrame{border: None; background-color: rgba(0,0,0,0;}")
                         checkbox = QtWidgets.QCheckBox('', self)
                         checkbox.setChecked(value == 1)
                         checkbox.setEnabled(False)
                         chbox_layout.addWidget(checkbox)
                         chbox_layout.setAlignment(checkbox, Qt.AlignCenter)
+                        chbox_layout.setContentsMargins(0,0,0,0)
                         chbox_frame.setLayout(chbox_layout)
                         tb_show.setCellWidget(idx, i+1, chbox_frame)
                     else:

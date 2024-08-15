@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>644</width>
-    <height>225</height>
+    <width>672</width>
+    <height>255</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -111,6 +111,12 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
+      <property name="horizontalSpacing">
+       <number>9</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>12</number>
+      </property>
       <item row="2" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
@@ -157,7 +163,7 @@
           <number>0</number>
          </property>
          <property name="verticalSpacing">
-          <number>0</number>
+          <number>6</number>
          </property>
          <item row="0" column="0">
           <widget class="QCheckBox" name="checkBox_4">

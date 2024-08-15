@@ -17,6 +17,8 @@ class ZoneSetting(QtWidgets.QMainWindow):
         self.setWindowTitle("User Defined Area Management")
         self.setStyleSheet(style)
 
+        self.w.btn_close.clicked.connect(self.close)
+
         self.datas = []
         if os.path.exists('./datas/userDefined_data.json'):
             f = open('./datas/userDefined_data.json')
@@ -46,6 +48,7 @@ class ZoneSetting(QtWidgets.QMainWindow):
 
     def selected_row(self, row_id, col_id):
         self.w.label_CamInfo.setText(self.datas[row_id]["zone_name"])
+        self.w.zoneName_edit.setText(self.datas[row_id]["zone_name"])
         cam_infos = self.datas[row_id]["cam_infos"]
         
         tbCam_show = self.w.tbCam_show
