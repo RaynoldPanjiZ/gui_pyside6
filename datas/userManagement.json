@@ -1,0 +1,32 @@
+[
+    {
+        "id": "guest1",
+        "name": "Admin 1",
+        "password": "test213",
+        "usr_group": "regular user",
+        "contact": "010-1234-5678",
+        "email": "abc@gmail.com",
+        "msg": 0,
+        "img": 1
+    },
+    {
+        "id": "guest3",
+        "name": "user35",
+        "usr_group": "regular user",
+        "password": "user1234",
+        "contact": "013-1234-5678",
+        "email": "abc@gmail.com",
+        "msg": 1,
+        "img": 1
+    },
+    {
+        "id": "user123",
+        "name": "user1",
+        "usr_group": "regular user",
+        "password": "abcde",
+        "contact": "022222",
+        "email": "abc@gmail.com",
+        "msg": 1,
+        "img": 0
+    }
+]

@@ -21,6 +21,7 @@ class AIEngineUpdate(QtWidgets.QMainWindow):
         self.setCentralWidget(w)
         self.setWindowTitle("AI Engine Update")
         self.setStyleSheet(style)
+        self.w.btn_cancel.clicked.connect(self.close)
         self.w.run_upgrade_btn.clicked.connect(self.upgrade)
 
     def upgrade(self):
@@ -34,6 +35,7 @@ class AIEngineUpdate(QtWidgets.QMainWindow):
         ui_file.close()
         self.popup = dialog
         self.popup.setWindowTitle("AERY AI BOX Engine Upgrade")
+        self.popup.btn_cancel.clicked.connect(self.close)
 
         # self.popup.lineEdit.setText("Test")
         self.popup.exec()

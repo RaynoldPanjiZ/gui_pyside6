@@ -178,6 +178,7 @@ class SystemLog(QtWidgets.QMainWindow):
         dialog = loader.load(ui_file, self)
         ui_file.close()
         self.popup = dialog
+        self.popup.cancel_btn.clicked.connect(self.close)
         self.popup.setWindowTitle("Auto-Delete System Logs")
         self.popup.exec()
 

@@ -1,0 +1,24 @@
+{
+    "local_info": {
+        "local_id": "1123KOR123456",
+        "login_id": "admin",
+        "ipaddr": "192.168.100.1",
+        "sw_ver": "AERYBOX-V1.23.44",
+        "port": 10080,
+        "date": "2023-12-25"
+    },
+    "server_info": {
+        "server_id": "AERY-AI-Manager-01",
+        "login_id": "admin",
+        "ipaddr": "211.108.24.201",
+        "sw_ver": "V1.23.45",
+        "port": 20080,
+        "date": "2023-12-25"
+    },
+    "remote_upgrade": {
+        "local_version": "AERYBOX-V1.23.44",
+        "passord": "admin123",
+        "latest_ver": "211.108.24.201",
+        "auto_update": "Used"
+    }
+}

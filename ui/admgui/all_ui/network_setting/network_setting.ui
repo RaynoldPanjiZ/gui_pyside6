@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>629</width>
+    <width>742</width>
     <height>261</height>
    </rect>
   </property>
@@ -74,19 +74,6 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item row="0" column="1">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>534</width>
-          <height>13</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label_title">
         <property name="maximumSize">
@@ -126,6 +113,19 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="1">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>600</width>
+          <height>13</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
      </layout>
     </widget>
    </item>
@@ -164,7 +164,7 @@
        <rect>
         <x>20</x>
         <y>20</y>
-        <width>608</width>
+        <width>691</width>
         <height>104</height>
        </rect>
       </property>
@@ -179,46 +179,6 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="2">
-        <widget class="QLabel" name="label_netMask">
-         <property name="text">
-          <string>NetMask</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="ipAddr_edit"/>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_DNS_1">
-         <property name="text">
-          <string>DNS-1</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="5">
-        <widget class="QLineEdit" name="netSpeed_edit"/>
-       </item>
-       <item row="2" column="3">
-        <widget class="QLineEdit" name="dns2_edit"/>
-       </item>
-       <item row="1" column="3">
-        <widget class="QLineEdit" name="netMask_edit"/>
-       </item>
-       <item row="2" column="2">
-        <widget class="QLabel" name="label_DNS_2">
-         <property name="text">
-          <string>DNS-2</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QLabel" name="label_IP_2">
-         <property name="text">
-          <string>IPv4 Settings</string>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="1">
         <widget class="QComboBox" name="ifList_cb">
          <property name="maximumSize">
@@ -229,24 +189,13 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="4">
-        <widget class="QLabel" name="label_gateway">
-         <property name="text">
-          <string>Gateway</string>
-         </property>
-        </widget>
+       <item row="1" column="5">
+        <widget class="QLineEdit" name="gateway_edit"/>
        </item>
        <item row="0" column="4">
         <widget class="QLabel" name="label_netSpeed">
          <property name="text">
           <string>Network Speed</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_netCard">
-         <property name="text">
-          <string>Network Card</string>
          </property>
         </widget>
        </item>
@@ -260,8 +209,63 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="5">
-        <widget class="QLineEdit" name="gateaway_edit"/>
+       <item row="1" column="2">
+        <widget class="QLabel" name="label_netMask">
+         <property name="text">
+          <string>NetMask</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_DNS_1">
+         <property name="text">
+          <string>DNS-1</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="ipAddr_edit">
+         <property name="placeholderText">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="3">
+        <widget class="QLineEdit" name="dns2_edit"/>
+       </item>
+       <item row="1" column="4">
+        <widget class="QLabel" name="label_gateway">
+         <property name="text">
+          <string>Gateway</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLabel" name="label_IP_2">
+         <property name="text">
+          <string>IPv4 Settings</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="5">
+        <widget class="QLineEdit" name="netSpeed_edit"/>
+       </item>
+       <item row="1" column="3">
+        <widget class="QLineEdit" name="netMask_edit"/>
+       </item>
+       <item row="2" column="2">
+        <widget class="QLabel" name="label_DNS_2">
+         <property name="text">
+          <string>DNS-2</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_netCard">
+         <property name="text">
+          <string>Network Card</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

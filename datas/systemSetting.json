@@ -1,0 +1,17 @@
+{
+    "equip_id": "1123KOR123456",
+    "sw_ver": "AERYBOX-V1.23.44",
+    "lang": "Korea",
+    "screen_res": "1920 * 1080",
+    "screen_keyboard": "Used",
+    "hdd_info": {
+        "capacity": "2,000 GB",
+        "usage": "1,000 GB",
+        "remaining": "1,000 GB"
+    },
+    "auto_restart": "Used",
+    "reboot_cycle": "1 week",
+    "reboot_time": "12:10 AM",
+    "auto_logout": "Used",
+    "elapsed_time": 30
+}

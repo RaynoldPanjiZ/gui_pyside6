@@ -1,0 +1,37 @@
+{
+    "fire_detection": {
+        "detection": 1,
+        "event_action": "Camera Windows Popup",
+        "alarm": 1,
+        "sound": 1
+    },
+    "abnormal_behaviour": {
+        "detection": 1,
+        "event_action": "Camera Windows Popup",
+        "alarm": 1,
+        "sound": 1,
+        "type": ["Assault/Fight", "Boundary Violation", "Littering", "Collapse/Fall", "External Intusion", "Jaywalking", "Theft", "Prowl", "Poisoning"]
+    },
+    "object_tracking": {
+        "detection": 1,
+        "categ": "Person",
+        "person": {
+            "name": "Hong Gil Dong",
+            "img": "img/test.jpg",
+            "gender": "Male",
+            "Hairstyle": "Long",
+            "attribute":[
+                "Hat", "Bag", "Mask", "Glasses"
+            ]
+        },
+        "vehicle": {
+            "vehicle_no": "123A 2345",
+            "img": "img/test.jpg",
+            "type": "Car",
+            "brand": "Hyundai",
+            "Model": "Grandeur",
+            "Color": "Black"
+        },
+        "camera": ["CH-1", "CH-2", "CH-3", "CH-4"]
+    }
+}

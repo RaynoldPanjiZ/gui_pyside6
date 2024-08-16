@@ -1252,7 +1252,7 @@ border-color: #37383E;
 border-width: 1px;</string>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>2</number>
             </property>
             <widget class="QWidget" name="screen1x">
              <layout class="QGridLayout" name="gridLayout_4">
@@ -1297,7 +1297,7 @@ border-width: 1px;</string>
               </item>
              </layout>
             </widget>
-            <widget class="QWidget" name="screen6x">
+            <widget class="QWidget" name="screen9x">
              <layout class="QGridLayout" name="gridLayout_3">
               <item row="0" column="1">
                <widget class="QLabel" name="chscreen_2_01">

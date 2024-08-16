@@ -17,6 +17,7 @@ class EventSetting(QtWidgets.QMainWindow):
         self.setCentralWidget(w)
         self.setWindowTitle("Event Settings")
         self.setStyleSheet(style)
+        self.w.close_btn.clicked.connect(self.close)
         
         self.w.obj_track_btn.clicked.connect(lambda:self.show_popup(ObjTracking))
 
@@ -37,6 +38,8 @@ class EventSetting(QtWidgets.QMainWindow):
 class ObjTracking(QtWidgets.QMainWindow):
     def __init__(self, w):
         super().__init__()
+        self.w = w
         self.setCentralWidget(w)
         self.setWindowTitle("Object Real-Time Tracking")
         self.setStyleSheet(style)
+        self.w.close_btn.clicked.connect(self.close)

@@ -105,7 +105,33 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="comboBox"/>
+       <widget class="QComboBox" name="storagePeriod_comboBox">
+        <item>
+         <property name="text">
+          <string>1 week</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>1 month</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>3 months</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>6 months</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>1 year</string>
+         </property>
+        </item>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -146,14 +172,14 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="cancel_btn">
         <property name="text">
          <string>Cancel</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QPushButton" name="confirm_btn">
         <property name="text">
          <string>Confirm</string>
         </property>
