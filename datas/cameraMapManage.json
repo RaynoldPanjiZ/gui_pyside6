@@ -1,0 +1,20 @@
+[
+    {
+        "map_name": "CU convinience store", 
+        "map_file": "34567.jpg", 
+        "regist_date": "2023-10-10 12:23:45", 
+        "description": "Sigil-dong CU convinience store"
+    },
+    {
+        "map_name": "Buss stop 1", 
+        "map_file": "123456.jpg", 
+        "regist_date": "2023-10-10 12:23:45", 
+        "description": "Sigil-dong CU convinience store"
+    },
+    {
+        "map_name": "Map station 1", 
+        "map_file": "125690.jpg", 
+        "regist_date": "2023-10-10 12:23:45", 
+        "description": "Sigil-dong CU convinience store"
+    }
+]

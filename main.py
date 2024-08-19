@@ -1,13 +1,16 @@
 import sys
 from PySide6 import QtWidgets
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile, QIODevice, Qt, QTimer
+from PySide6.QtCore import QFile, QIODevice, Qt, QTimer, QUrl, QSize
 from PySide6.QtGui import QPixmap, QIcon
+from PySide6.QtWebEngineWidgets import QWebEngineView
 
+import io
 import time
 import os
 import socket
 from datetime import datetime
+import folium
 
 from sidemenu.UserManagement import UserManagement
 from sidemenu.NetworkSetting import NetSetting
@@ -66,6 +69,25 @@ class MainWindow(QtWidgets.QMainWindow):
         self.w.exit_btn.clicked.connect(self.exit_button)
         self.show_popup(0, NetSetting)
 
+        self.w.MultiScreenWg.setCurrentIndex(0)
+        self.w.btn_screen1x.clicked.connect(lambda : self.spliScreen(0))
+        self.w.btn_screen4x.clicked.connect(lambda : self.spliScreen(1))
+        self.w.btn_screen9x.clicked.connect(lambda : self.spliScreen(2))
+        self.w.btn_screen16x.clicked.connect(lambda : self.spliScreen(3))
+        self.w.btn_screen25x.clicked.connect(lambda : self.spliScreen(4))
+        self.w.btn_screen36x.clicked.connect(lambda : self.spliScreen(5))
+        self.w.btn_screen49x.clicked.connect(lambda : self.spliScreen(6))
+        self.w.btn_screen64x.clicked.connect(lambda : self.spliScreen(7))
+
+        self.screen = None
+        self.screen0 = self.w.chscreen_0_00
+        self.screen0.setMinimumSize(QSize(self.screen0.width(), self.screen0.height()))
+        self.screen0_available = True
+        self.screen1_available = False
+        self.screen2_available = False
+        self.screen3_available = False
+        self.screen4_available = False
+
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_gui)
         self.timer.start(1000)
@@ -81,7 +103,6 @@ class MainWindow(QtWidgets.QMainWindow):
         
         datetime_s = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
         self.w.datetime_foot.setText(datetime_s)
-
 
 
     def show_popup(self, event, PopupClass):
@@ -120,12 +141,196 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             print("Yes!")
     
+
+    def spliScreen(self, event):
+        self.w.MultiScreenWg.setCurrentIndex(event)
+        if event == 0:
+            self.screen0_available = True
+            self.screen0 = self.w.chscreen_0_00
+            self.screen1_available = False
+            self.screen2_available = False
+            self.screen3_available = False
+            self.screen4_available = False
+            self.screen5_available = False
+        elif event == 1:
+            self.screen0 = self.w.chscreen_1_00
+            self.screen0.setMinimumSize(QSize(self.screen0.width(), self.screen0.height()))
+            self.screen0.setMaximumSize(QSize(self.screen0.width(), self.screen0.height()))
+            
+            self.screen1_available = True
+            self.screen1 = self.w.chscreen_1_01
+            self.screen1.setMinimumSize(QSize(self.screen1.width(), self.screen1.height()))
+            self.screen1.setMaximumSize(QSize(self.screen1.width(), self.screen1.height()))
+            
+            self.screen2_available = True
+            self.screen2 = self.w.chscreen_1_10
+            self.screen2.setMinimumSize(QSize(self.screen2.width(), self.screen2.height()))
+            self.screen2.setMaximumSize(QSize(self.screen2.width(), self.screen2.height()))
+            
+            self.screen3_available = True
+            self.screen3 = self.w.chscreen_1_11
+            self.screen3.setMinimumSize(QSize(self.screen3.width(), self.screen3.height()))
+            self.screen3.setMaximumSize(QSize(self.screen3.width(), self.screen3.height()))
+
+            self.screen4_available = False
+
+            self.screen5_available = False
+        elif event == 2:
+            self.screen0 = self.w.chscreen_2_00
+            self.screen0.setMinimumSize(QSize(self.screen0.width(), self.screen0.height()))
+            self.screen0.setMaximumSize(QSize(self.screen0.width(), self.screen0.height()))
+            
+            self.screen1_available = True
+            self.screen1 = self.w.chscreen_2_01
+            self.screen1.setMinimumSize(QSize(self.screen1.width(), self.screen1.height()))
+            self.screen1.setMaximumSize(QSize(self.screen1.width(), self.screen1.height()))
+            
+            self.screen2_available = True
+            self.screen2 = self.w.chscreen_2_02
+            self.screen2.setMinimumSize(QSize(self.screen2.width(), self.screen2.height()))
+            self.screen2.setMaximumSize(QSize(self.screen2.width(), self.screen2.height()))
+            
+            self.screen3_available = True
+            self.screen3 = self.w.chscreen_2_10
+            self.screen3.setMinimumSize(QSize(self.screen3.width(), self.screen3.height()))
+            self.screen3.setMaximumSize(QSize(self.screen3.width(), self.screen3.height()))
+            
+            self.screen4_available = True
+            self.screen4 = self.w.chscreen_2_11
+            self.screen4.setMinimumSize(QSize(self.screen4.width(), self.screen4.height()))
+            self.screen4.setMaximumSize(QSize(self.screen4.width(), self.screen4.height()))
+        elif event == 3:
+            self.screen0 = self.w.chscreen_3_00
+            self.screen0.setMinimumSize(QSize(self.screen0.width(), self.screen0.height()))
+            self.screen0.setMaximumSize(QSize(self.screen0.width(), self.screen0.height()))
+            
+            self.screen1_available = True
+            self.screen1 = self.w.chscreen_3_01
+            self.screen1.setMinimumSize(QSize(self.screen1.width(), self.screen1.height()))
+            self.screen1.setMaximumSize(QSize(self.screen1.width(), self.screen1.height()))
+            
+            self.screen2_available = True
+            self.screen2 = self.w.chscreen_3_02
+            self.screen2.setMinimumSize(QSize(self.screen2.width(), self.screen2.height()))
+            self.screen2.setMaximumSize(QSize(self.screen2.width(), self.screen2.height()))
+            
+            self.screen3_available = True
+            self.screen3 = self.w.chscreen_3_03
+            self.screen3.setMinimumSize(QSize(self.screen3.width(), self.screen3.height()))
+            self.screen3.setMaximumSize(QSize(self.screen3.width(), self.screen3.height()))
+            
+            self.screen4_available = True
+            self.screen4 = self.w.chscreen_3_10
+            self.screen4.setMinimumSize(QSize(self.screen4.width(), self.screen4.height()))
+            self.screen4.setMaximumSize(QSize(self.screen4.width(), self.screen4.height()))
+        elif event == 4:
+            self.screen0 = self.w.chscreen_4_00
+            self.screen0.setMinimumSize(QSize(self.screen0.width(), self.screen0.height()))
+            self.screen0.setMaximumSize(QSize(self.screen0.width(), self.screen0.height()))
+            
+            self.screen1_available = True
+            self.screen1 = self.w.chscreen_4_01
+            self.screen1.setMinimumSize(QSize(self.screen1.width(), self.screen1.height()))
+            self.screen1.setMaximumSize(QSize(self.screen1.width(), self.screen1.height()))
+            
+            self.screen2_available = True
+            self.screen2 = self.w.chscreen_4_02
+            self.screen2.setMinimumSize(QSize(self.screen2.width(), self.screen2.height()))
+            self.screen2.setMaximumSize(QSize(self.screen2.width(), self.screen2.height()))
+            
+            self.screen3_available = True
+            self.screen3 = self.w.chscreen_4_03
+            self.screen3.setMinimumSize(QSize(self.screen3.width(), self.screen3.height()))
+            self.screen3.setMaximumSize(QSize(self.screen3.width(), self.screen3.height()))
+            
+            self.screen4_available = True
+            self.screen4 = self.w.chscreen_4_04
+            self.screen4.setMinimumSize(QSize(self.screen4.width(), self.screen4.height()))
+            self.screen4.setMaximumSize(QSize(self.screen4.width(), self.screen4.height()))
+        elif event == 5:
+            self.screen0 = self.w.chscreen_5_00
+            self.screen0.setMinimumSize(QSize(self.screen0.width(), self.screen0.height()))
+            self.screen0.setMaximumSize(QSize(self.screen0.width(), self.screen0.height()))
+            
+            self.screen1_available = True
+            self.screen1 = self.w.chscreen_5_01
+            self.screen1.setMinimumSize(QSize(self.screen1.width(), self.screen1.height()))
+            self.screen1.setMaximumSize(QSize(self.screen1.width(), self.screen1.height()))
+            
+            self.screen2_available = True
+            self.screen2 = self.w.chscreen_5_02
+            self.screen2.setMinimumSize(QSize(self.screen2.width(), self.screen2.height()))
+            self.screen2.setMaximumSize(QSize(self.screen2.width(), self.screen2.height()))
+            
+            self.screen3_available = True
+            self.screen3 = self.w.chscreen_5_03
+            self.screen3.setMinimumSize(QSize(self.screen3.width(), self.screen3.height()))
+            self.screen3.setMaximumSize(QSize(self.screen3.width(), self.screen3.height()))
+            
+            self.screen4_available = True
+            self.screen4 = self.w.chscreen_5_04
+            self.screen4.setMinimumSize(QSize(self.screen4.width(), self.screen4.height()))
+            self.screen4.setMaximumSize(QSize(self.screen4.width(), self.screen4.height()))
+        elif event == 6:
+            self.screen0 = self.w.chscreen_6_00
+            self.screen0.setMinimumSize(QSize(self.screen0.width(), self.screen0.height()))
+            self.screen0.setMaximumSize(QSize(self.screen0.width(), self.screen0.height()))
+            
+            self.screen1_available = True
+            self.screen1 = self.w.chscreen_6_01
+            self.screen1.setMinimumSize(QSize(self.screen1.width(), self.screen1.height()))
+            self.screen1.setMaximumSize(QSize(self.screen1.width(), self.screen1.height()))
+            
+            self.screen2_available = True
+            self.screen2 = self.w.chscreen_6_02
+            self.screen2.setMinimumSize(QSize(self.screen2.width(), self.screen2.height()))
+            self.screen2.setMaximumSize(QSize(self.screen2.width(), self.screen2.height()))
+            
+            self.screen3_available = True
+            self.screen3 = self.w.chscreen_6_03
+            self.screen3.setMinimumSize(QSize(self.screen3.width(), self.screen3.height()))
+            self.screen3.setMaximumSize(QSize(self.screen3.width(), self.screen3.height()))
+            
+            self.screen4_available = True
+            self.screen4 = self.w.chscreen_6_04
+            self.screen4.setMinimumSize(QSize(self.screen4.width(), self.screen4.height()))
+            self.screen4.setMaximumSize(QSize(self.screen4.width(), self.screen4.height()))
+        elif event == 7:
+            self.screen0 = self.w.chscreen_7_00
+            self.screen0.setMinimumSize(QSize(self.screen0.width(), self.screen0.height()))
+            self.screen0.setMaximumSize(QSize(self.screen0.width(), self.screen0.height()))
+            
+            self.screen1_available = True
+            self.screen1 = self.w.chscreen_7_01
+            self.screen1.setMinimumSize(QSize(self.screen1.width(), self.screen1.height()))
+            self.screen1.setMaximumSize(QSize(self.screen1.width(), self.screen1.height()))
+            
+            self.screen2_available = True
+            self.screen2 = self.w.chscreen_7_02
+            self.screen2.setMinimumSize(QSize(self.screen2.width(), self.screen2.height()))
+            self.screen2.setMaximumSize(QSize(self.screen2.width(), self.screen2.height()))
+            
+            self.screen3_available = True
+            self.screen3 = self.w.chscreen_7_03
+            self.screen3.setMinimumSize(QSize(self.screen3.width(), self.screen3.height()))
+            self.screen3.setMaximumSize(QSize(self.screen3.width(), self.screen3.height()))
+            
+            self.screen4_available = True
+            self.screen4 = self.w.chscreen_7_04
+            self.screen4.setMinimumSize(QSize(self.screen4.width(), self.screen4.height()))
+            self.screen4.setMaximumSize(QSize(self.screen4.width(), self.screen4.height()))
+
+
     def minimize_window(self):
         app = QtWidgets.QApplication.instance()
         app.activeWindow().showMinimized()
 
     def exit_button(self):
         QtWidgets.QApplication.instance().quit()
+
+
+
+
 
 if __name__ == "__main__":
     loader = QUiLoader()

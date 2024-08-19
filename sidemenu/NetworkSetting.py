@@ -69,9 +69,18 @@ class NetSetting(QtWidgets.QMainWindow):
         
     
 
-    def ping(self, ip):
-        result = subprocess.run(['ping', '-c', '1', ip], stdout=subprocess.DEVNULL)
-        return result.returncode == 0
+    def check_ipaddr(self, ip):
+        try:
+            # Ping IP address to check if it is in use
+            output = subprocess.run(["ping", "-c", "1", ip], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            if output.returncode == 0:
+                QtWidgets.QMessageBox.warning(self, "IP Conflict", "The IP address is already in use by another device.")
+                return False
+            return True
+        except Exception as e:
+            QtWidgets.QMessageBox.critical(self, "Error", f"An error occurred while checking IP address: {e}")
+            return False
+
 
     def update_network_speed(self):
         interface = self.w.ifList_cb.currentText()
@@ -181,7 +190,9 @@ class NetSetting(QtWidgets.QMainWindow):
                     QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The DNS 2 {dns2} is not valid")
                     return False  
             print(f"The DNS-2 {dns2} is valid") 
-        QtWidgets.QMessageBox.about(self, "Valid Input", f"Network configuration is valid")
+        
+        if self.check_ipaddr(ip_address):
+            QtWidgets.QMessageBox.about(self, "Valid Input", f"Network configuration is valid")
         return True
 
 
@@ -196,5 +207,37 @@ class NetSetting(QtWidgets.QMainWindow):
             dns2 = self.w.dns2_edit.text()  
             if not ipaddr or not netmask or not gateway or not dns1 or not dns2:
                 QtWidgets.QMessageBox.critical(self, "Empty Fields", "All fields must be filled out.")
-            else:
-                print(self.validate_input(ipaddr, netmask, gateway, dns1, dns2))
+            
+            elif self.validate_input(ipaddr, netmask, gateway, dns1, dns2):
+                print("success")
+
+
+    def setDHCP(self):
+        interface = self.w.ifList_cb.currentText()
+        try:
+            subprocess.run(["sudo", "dhclient", "-r"], check=True)
+            subprocess.run(["sudo", "dhclient", interface], check=True)
+            QtWidgets.QMessageBox.information(self, "Success", "Network configured to use DHCP.")
+        except subprocess.CalledProcessError as e:
+            QtWidgets.QMessageBox.critical(self, "Error", f"Failed to set DHCP: {e}")
+    
+    def setManualConfig(self, ip, netmask, gateway, dns, dns2):
+        interface = self.w.ifList_cb.currentText()
+        try:
+            # Convert netmask to prefix length  https://stackoverflow.com/a/38085892
+            prefix = ipaddress.IPv4Network(f'0.0.0.0/{netmask}').prefixlen
+
+            subprocess.run(["sudo", "dhclient", "-r"], check=True) # Disable DHCP client
+            subprocess.run(["sudo", "ip", "addr", "flush", "dev", interface], check=True)
+            subprocess.run(["sudo", "ip", "addr", "add", f"{ip}/{prefix}", "dev", interface], check=True)
+            subprocess.run(["sudo", "ip", "route", "add", "default", "via", gateway], check=True)
+
+            # Set DNS
+            with open('/etc/resolv.conf', 'w') as f:
+                f.write(f"nameserver {dns}\n")
+                f.write(f"nameserver {dns2}\n")
+                
+            QtWidgets.QMessageBox.information(self, "Success", "Network configured manually.")
+        except subprocess.CalledProcessError as e:
+            QtWidgets.QMessageBox.critical(self, "Error", f"Failed to set manual configuration: {e}")
+
