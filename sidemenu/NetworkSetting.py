@@ -137,10 +137,10 @@ class NetSetting(QtWidgets.QMainWindow):
                     QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The IP address {ip_address} is not valid")
                     return False  
                 
-                if i == 3:
-                    if int(ip_byte) < 199 or int(ip_byte) > 254:  
-                        QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The IP address {ip_address} is not valid \n make sure that the Host ID is not under .200")
-                        return False  
+                # if i == 3:
+                #     if int(ip_byte) < 199 or int(ip_byte) > 254:  
+                #         QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The IP address {ip_address} is not valid \n make sure that the Host ID is not under .200")
+                #         return False  
             print(f"The IP address {ip_address} is valid") 
         
         mask_pattern = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
@@ -167,37 +167,41 @@ class NetSetting(QtWidgets.QMainWindow):
                     return False  
             print(f"The Gateway {gateway} is valid")
 
-        dns1_pattern = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
-        if not dns1_pattern.match(dns1):
-            QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The DNS 1 {dns1} is not valid")
-            return False
-        else:
-            bytes = dns1.split(".")  
-            for ip_byte in bytes:  
-                if int(ip_byte) < 1 or int(ip_byte) > 254:   
-                    QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The DNS 1 {dns1} is not valid")
-                    return False  
-            print(f"The DNS-1 {dns1} is valid")
+        # dns1_pattern = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
+        # if not dns1_pattern.match(dns1):
+        #     QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The DNS 1 {dns1} is not valid")
+        #     return False
+        # else:
+        #     bytes = dns1.split(".")  
+        #     for ip_byte in bytes:  
+        #         if int(ip_byte) < 1 or int(ip_byte) > 254:   
+        #             QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The DNS 1 {dns1} is not valid")
+        #             return False  
+        #     print(f"The DNS-1 {dns1} is valid")
 
-        dns2_pattern = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
-        if not dns2_pattern.match(dns2):
-            QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The DNS 2 {dns2} is not valid")
-            return False
-        else:
-            bytes = dns2.split(".")  
-            for ip_byte in bytes:  
-                if int(ip_byte) < 1 or int(ip_byte) > 254: 
-                    QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The DNS 2 {dns2} is not valid")
-                    return False  
-            print(f"The DNS-2 {dns2} is valid") 
+        # dns2_pattern = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
+        # if not dns2_pattern.match(dns2):
+        #     QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The DNS 2 {dns2} is not valid")
+        #     return False
+        # else:
+        #     bytes = dns2.split(".")  
+        #     for ip_byte in bytes:  
+        #         if int(ip_byte) < 1 or int(ip_byte) > 254: 
+        #             QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The DNS 2 {dns2} is not valid")
+        #             return False  
+        #     print(f"The DNS-2 {dns2} is valid") 
         
         if self.check_ipaddr(ip_address):
-            QtWidgets.QMessageBox.about(self, "Valid Input", f"Network configuration is valid")
-        return True
+            # QtWidgets.QMessageBox.about(self, "Valid Input", f"Network configuration is valid")
+            return True
+        
+        QtWidgets.QMessageBox.critical(self, "Error", f"Failed to configure")
+        return False
 
 
     def applyConfig(self):
         if self.w.ipSetting_cb.currentText() == "Automatic (DHCP)":
+            # self.setDHCP()
             pass
         else:
             ipaddr = self.w.ipAddr_edit.text()
@@ -205,10 +209,11 @@ class NetSetting(QtWidgets.QMainWindow):
             gateway = self.w.gateway_edit.text()
             dns1 = self.w.dns1_edit.text()
             dns2 = self.w.dns2_edit.text()  
-            if not ipaddr or not netmask or not gateway or not dns1 or not dns2:
+            if not ipaddr or not netmask or not gateway : # or not dns1 or not dns2:
                 QtWidgets.QMessageBox.critical(self, "Empty Fields", "All fields must be filled out.")
             
             elif self.validate_input(ipaddr, netmask, gateway, dns1, dns2):
+                self.setManualConfig(ipaddr, netmask, gateway, dns1, dns2)
                 print("success")
 
 
@@ -232,10 +237,10 @@ class NetSetting(QtWidgets.QMainWindow):
             subprocess.run(["sudo", "ip", "addr", "add", f"{ip}/{prefix}", "dev", interface], check=True)
             subprocess.run(["sudo", "ip", "route", "add", "default", "via", gateway], check=True)
 
-            # Set DNS
-            with open('/etc/resolv.conf', 'w') as f:
-                f.write(f"nameserver {dns}\n")
-                f.write(f"nameserver {dns2}\n")
+            # # Set DNS
+            # with open('/etc/resolv.conf', 'w') as f:
+            #     f.write(f"nameserver {dns}\n")
+            #     f.write(f"nameserver {dns2}\n")
                 
             QtWidgets.QMessageBox.information(self, "Success", "Network configured manually.")
         except subprocess.CalledProcessError as e:

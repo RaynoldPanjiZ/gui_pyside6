@@ -497,20 +497,7 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="edit_btn">
-           <property name="maximumSize">
-            <size>
-             <width>70</width>
-             <height>35</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Edit</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
+         <item row="0" column="2">
           <widget class="QPushButton" name="chpasswd_btn">
            <property name="minimumSize">
             <size>
@@ -529,7 +516,20 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="4">
+         <item row="0" column="1">
+          <widget class="QPushButton" name="edit_btn">
+           <property name="maximumSize">
+            <size>
+             <width>70</width>
+             <height>35</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Edit</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
           <widget class="QPushButton" name="close_btn">
            <property name="maximumSize">
             <size>
@@ -539,19 +539,6 @@
            </property>
            <property name="text">
             <string>Close</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="add_btn">
-           <property name="maximumSize">
-            <size>
-             <width>70</width>
-             <height>35</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Add</string>
            </property>
           </widget>
          </item>
