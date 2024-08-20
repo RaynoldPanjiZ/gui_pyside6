@@ -10,7 +10,7 @@ with open("ui/style/style_form.qss", "r") as file:
     style = file.read()
 
 
-class SurveillanceArea(QtWidgets.QMainWindow):
+class SurveillanceArea(QtWidgets.QMainWindow): 
     def __init__(self, w):
         super().__init__()
         self.w = w
@@ -19,14 +19,14 @@ class SurveillanceArea(QtWidgets.QMainWindow):
         self.setStyleSheet(style)
         self.w.btn_cancel.clicked.connect(self.close)
 
-        self.datas = [
-            ["192.168.100.101", "Korean Restaurant-1", 0, "vid/test1.mp4"],
-            ["192.168.100.102", "Korean Restaurant-2", 1, "vid/test2.mp4"]
-        ]
         # self.datas = [
-        #     ["192.168.100.101", "Korean Restaurant-1", 0, "rtsp://admin:aery2021!@192.168.45.166:554/cam/realmonitor?channel=1&subtype=0&unaicast=true&proto=Onvif"],
-        #     ["192.168.100.102", "Korean Restaurant-2", 1, "rtsp://admin:aery2021!@192.168.45.167:554/cam/realmonitor?channel=1&subtype=0&unaicast=true&proto=Onvif"]
+        #     ["192.168.100.101", "Korean Restaurant-1", 0, "vid/test1.mp4"],
+        #     ["192.168.100.102", "Korean Restaurant-2", 1, "vid/test2.mp4"]
         # ]
+        self.datas = [
+            ["192.168.100.101", "Korean Restaurant-1", 0, "rtsp://admin:aery2021!@192.168.45.166:554/cam/realmonitor?channel=1&subtype=0&unaicast=true&proto=Onvif"],
+            ["192.168.100.102", "Korean Restaurant-2", 1, "rtsp://admin:aery2021!@192.168.45.167:554/cam/realmonitor?channel=1&subtype=0&unaicast=true&proto=Onvif"]
+        ]
 
         tb_show = self.w.tb_show
         tb_show.setRowCount(len(self.datas))

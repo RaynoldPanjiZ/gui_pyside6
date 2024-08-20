@@ -137,10 +137,10 @@ class NetSetting(QtWidgets.QMainWindow):
                     QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The IP address {ip_address} is not valid")
                     return False  
                 
-                # if i == 3:
-                #     if int(ip_byte) < 199 or int(ip_byte) > 254:  
-                #         QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The IP address {ip_address} is not valid \n make sure that the Host ID is not under .200")
-                #         return False  
+                if i == 3:
+                    if int(ip_byte) < 181 or int(ip_byte) > 189:  
+                        QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The IP address {ip_address} is not valid \n make sure that the Host ID is not under .181")
+                        return False  
             print(f"The IP address {ip_address} is valid") 
         
         mask_pattern = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")

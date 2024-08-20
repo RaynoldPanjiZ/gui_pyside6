@@ -1,0 +1,34 @@
+[
+    {
+        "name": "Hong Gil Dong",
+        "img": "imgs/test.jpg",
+        "gender": "Male",
+        "Hairstyle": "Long",
+        "attribute": [
+            "Hat",
+            "Bag",
+            "Mask",
+            "Glasses"
+        ]
+    },
+    {
+        "name": "test",
+        "img": "imgs/test.jpg",
+        "gender": "Male",
+        "Hairstyle": "Short",
+        "attribute": [
+            "Hat",
+            "Bag",
+            "Mask"
+        ]
+    },
+    {
+        "name": "test",
+        "img": "imgs/test.jpg",
+        "gender": "Female",
+        "Hairstyle": "Long",
+        "attribute": [
+            "Mask"
+        ]
+    }
+]
