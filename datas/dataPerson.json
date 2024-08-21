@@ -3,7 +3,7 @@
         "name": "Hong Gil Dong",
         "img": "imgs/test.jpg",
         "gender": "Male",
-        "Hairstyle": "Long",
+        "hairstyle": "Long",
         "attribute": [
             "Hat",
             "Bag",
@@ -15,19 +15,10 @@
         "name": "test",
         "img": "imgs/test.jpg",
         "gender": "Male",
-        "Hairstyle": "Short",
+        "hairstyle": "Short",
         "attribute": [
             "Hat",
             "Bag",
-            "Mask"
-        ]
-    },
-    {
-        "name": "test",
-        "img": "imgs/test.jpg",
-        "gender": "Female",
-        "Hairstyle": "Long",
-        "attribute": [
             "Mask"
         ]
     }

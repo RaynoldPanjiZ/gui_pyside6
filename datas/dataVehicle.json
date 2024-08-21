@@ -1,0 +1,16 @@
+[
+    {
+        "vehicle_no": "123A 2345",
+        "type": "Car",
+        "brand": "Hyundai",
+        "model": "Grandeur",
+        "color": "Black"
+    },
+    {
+        "vehicle_no": "9122 3221",
+        "type": "Car",
+        "brand": "Mazda",
+        "model": "Grandeur",
+        "color": "White"
+    }
+]
