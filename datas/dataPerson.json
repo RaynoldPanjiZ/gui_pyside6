@@ -12,14 +12,36 @@
         ]
     },
     {
-        "name": "test",
-        "img": "imgs/test.jpg",
-        "gender": "Male",
-        "hairstyle": "Short",
+        "name": "test2",
+        "img": "./imgs/profile/p_0.jpg",
+        "gender": "Female",
+        "hairstyle": "Long",
         "attribute": [
-            "Hat",
             "Bag",
+            "Glasses"
+        ]
+    },
+    {
+        "name": "test5",
+        "img": "./imgs/profile/p_0.jpg",
+        "gender": "Female",
+        "hairstyle": "Long",
+        "attribute": [
             "Mask"
         ]
+    },
+    {
+        "name": "aaa",
+        "img": "./imgs/profile/p_1.jpg",
+        "gender": "Male",
+        "hairstyle": "Long",
+        "attribute": []
+    },
+    {
+        "name": "aeb",
+        "img": "-",
+        "gender": "Male",
+        "hairstyle": "Long",
+        "attribute": []
     }
 ]

@@ -237,6 +237,9 @@ class ObjTracking(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.critical(self, "Alert", f"Please enter the name field")
             return
         
+        if self.sender() != self.w.person_newReg_btn:
+            return
+        
         loader = QUiLoader()
         ui_file = QFile("ui/admgui/all_ui/event_setting/camera_confirm_dialog.ui")
         if not ui_file.open(QIODevice.ReadOnly):
@@ -277,33 +280,83 @@ class ObjTracking(QtWidgets.QMainWindow):
                     attr_string += f", {str(chbx.text())}"
                     
         self.popup.attr_label.setText(attr_string)
-        
+
+        self.cameralist = {
+            "vid1": "vid/test1.mp4", 
+            "vid2": "vid/test2.mp4", 
+            "vid3": "vid/test3.mp4",
+            "rstp1": "rtsp://admin:aery2021!@192.168.45.166:554/cam/realmonitor?channel=1&subtype=0&unaicast=true&proto=Onvif",
+            "rstp2": "rtsp://admin:aery2021!@192.168.45.167:554/cam/realmonitor?channel=1&subtype=0&unaicast=true&proto=Onvif" 
+        }
+
+        self.popup.change_ch.setPlaceholderText("--  choose camera ch  --")
+        self.popup.change_ch.setCurrentIndex(-1)
+        self.popup.change_ch.addItems(list(self.cameralist.keys()))
+        # self.popup.change_ch.currentIndexChanged.connect(self.change_camera)
+        self.popup.capture_btn.setEnabled(False)
+        self.popup.confirm_btn.setEnabled(False)
+
         self.filename = "-"
         self.update_data = {}
         
-        self.camera = cv2.VideoCapture("vid/test1.mp4")
+        self.cam_id_deffault = -1
+        self.camera = None
         self.frame = None
         self.timer = QTimer()
         self.timer.timeout.connect(lambda n=name, g=gender, h=hair, a=attrs:self.display_vid(n,g,h,a))
         self.timer.start(40)
 
         self.popup.exec()
-        
 
+    # def change_camera(self):
+    #     cam_id = self.popup.change_ch.currentIndex()
+    #     if 0 > cam_id >= len(self.cameralist):
+    #         self.popup.capture_btn.setEnabled(False)
+    #     else:
+    #         self.popup.capture_btn.setEnabled(True)
+    #         if self.camera is None:
+    #             self.camera = cv2.VideoCapture(list(self.cameralist.values())[cam_id])
+    #             ret, self.frame = self.camera.read()
+    
     def display_vid(self, name, gender, hair, attrs):
-        if self.popup.capture_btn.isChecked():
-            self.popup.capture_btn.setText("save image")
-            ret, self.frame = self.camera.read()
-            if ret:
-                print(self.frame.shape)
-                self.frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
-                image = QImage(self.frame, self.frame.shape[1], self.frame.shape[0], QImage.Format_RGB888)
-                pixmap = QPixmap.fromImage(image)
-                self.popup.label_cam.setPixmap(pixmap)
-                self.popup.label_cam.setScaledContents(True)
-                self.popup.confirm_btn.setEnabled(False)
+        cam_id = self.popup.change_ch.currentIndex()
+        if cam_id != self.cam_id_deffault:
+            self.popup.img_label.clear()
+            self.popup.capture_btn.setText("start video capture")
+            if self.camera:
+                self.camera.release()
+                self.camera = None
+                # self.popup.confirm_btn.setEnabled(False)
+
+        self.cam_id_deffault = cam_id
+        if cam_id < 0 or cam_id >= len(self.cameralist):
+            self.popup.capture_btn.setEnabled(False)
+        else:
+            self.popup.capture_btn.setEnabled(True)
+        
+        button = self.sender()
+        if button is not self.w.person_newReg_btn:
+            self.close_form()
+
+        elif self.popup.capture_btn.isChecked():
+            if self.camera:
+                self.popup.capture_btn.setText("save image")
+                ret, self.frame = self.camera.read()
+                if ret:
+                    print(self.frame.shape)
+                    self.frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
+                    image = QImage(self.frame, self.frame.shape[1], self.frame.shape[0], QImage.Format_RGB888)
+                    pixmap = QPixmap.fromImage(image)
+                    self.popup.label_cam.setPixmap(pixmap)
+                    self.popup.label_cam.setScaledContents(True)
+                    self.popup.confirm_btn.setEnabled(False)
+            else:
+                self.camera = cv2.VideoCapture(list(self.cameralist.values())[cam_id])
         else:
             self.popup.capture_btn.setText("start video capture")
+            if self.camera:
+                self.camera.release()
+                self.camera = None
             if self.frame is not None:
                 self.filename = f"./imgs/profile/p_{self.imlen}.jpg"
                 self.frame = cv2.cvtColor(self.frame, cv2.COLOR_RGB2BGR)
@@ -312,7 +365,7 @@ class ObjTracking(QtWidgets.QMainWindow):
                 self.frame = None
                 self.popup.img_label.setText(self.filename)
             else:
-                if self.filename != "-":
+                if self.filename != "-" and self.filename != "" and (len(self.filename) >= 3):
                     self.popup.confirm_btn.setEnabled(True)
                     self.update_data = {
                         "name": name,
@@ -326,7 +379,8 @@ class ObjTracking(QtWidgets.QMainWindow):
         self.datas1.append(self.update_data)
         with open("datas/dataPerson.json", "w") as outfile: 
             json.dump(self.datas1, outfile, indent=4) 
-        self.camera.release()
+        if self.camera:
+            self.camera.release()
         cv2.destroyAllWindows()
         self.close_form()
 
