@@ -21,5 +21,35 @@
             "Bag",
             "Mask"
         ]
+    },
+    {
+        "name": "test233",
+        "img": "./imgs/profile/p_1.jpg",
+        "gender": "Male",
+        "hairstyle": "Long",
+        "attribute": []
+    },
+    {
+        "name": "cac",
+        "img": "./imgs/profile/p_2.jpg",
+        "gender": "Male",
+        "hairstyle": "Long",
+        "attribute": []
+    },
+    {
+        "name": "adwr",
+        "img": "./imgs/profile/p_3.jpg",
+        "gender": "Female",
+        "hairstyle": "Long",
+        "attribute": [
+            "Mask"
+        ]
+    },
+    {
+        "name": "adadw",
+        "img": "./imgs/profile/p_5.jpg",
+        "gender": "Male",
+        "hairstyle": "Long",
+        "attribute": []
     }
 ]

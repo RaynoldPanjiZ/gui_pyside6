@@ -54,6 +54,15 @@ class ObjTracking(QtWidgets.QMainWindow):
         self.w.vehicle_select_btn.clicked.connect(self.select_form)
         self.w.vehicle_newReg_btn.clicked.connect(self.new_registVehicle)
         
+        self.cameralist = {
+            "vid1": "vid/test1.mp4", 
+            "vid2": "vid/test2.mp4", 
+            "vid3": "vid/test3.mp4",
+            "rtsp1": "rtsp://admin:aery2021!@192.168.45.166:554/cam/realmonitor?channel=1&subtype=0&unaicast=true&proto=Onvif",
+            "rtsp2": "rtsp://admin:aery2021!@192.168.45.167:554/cam/realmonitor?channel=1&subtype=0&unaicast=true&proto=Onvif" 
+        }
+        self.cam_usage = None
+
         if not os.path.exists("./imgs/profile"):
             os.mkdir("./imgs/profile")
         self.imlen = len(os.listdir("./imgs/profile"))
@@ -67,12 +76,28 @@ class ObjTracking(QtWidgets.QMainWindow):
         if os.path.exists('./datas/dataVehicle.json'):
             f = open('./datas/dataVehicle.json')
             self.datas2 = json.load(f)
+        
+        completer_cam = QtWidgets.QCompleter(list(self.cameralist.keys()))
+        self.w.camera_edit.setCompleter(completer_cam)
+        completer_cam.popup().setStyleSheet("color:#37383E;")
+
+        self.w.selectCam_btn.clicked.connect(self.selct_camera)
 
         self.active_form = 0
         self.w.groupbtnForm.buttonClicked.connect(self.check_button)
     
     def check_button(self):
         pass
+
+    def selct_camera(self):
+        cam_id = self.w.camera_edit.text()
+        if cam_id == "" or cam_id == " ":
+            QtWidgets.QMessageBox.critical(self, "Empty Fields", "All fields must be filled out.")
+        elif cam_id not in list(self.cameralist.keys()):
+            QtWidgets.QMessageBox.critical(self, "Invalid Input", f"{cam_id} not exist")
+        else:
+            self.cam_usage = self.cameralist[cam_id]
+            QtWidgets.QMessageBox.information(self, "Success", f"Camera selected {cam_id}")
 
 
     def select_form(self):
@@ -233,10 +258,16 @@ class ObjTracking(QtWidgets.QMainWindow):
             print("success")
 
     def new_registPerson(self):
+        if self.sender() != self.w.person_newReg_btn:
+            return
+        
         if self.w.personName.text() == "":
             QtWidgets.QMessageBox.critical(self, "Alert", f"Please enter the name field")
             return
-        
+        if self.cam_usage is None and self.cam_usage not in list(self.cameralist.keys()):
+            QtWidgets.QMessageBox.critical(self, "Alert", "Please select the camera channel")
+            return
+
         loader = QUiLoader()
         ui_file = QFile("ui/admgui/all_ui/event_setting/camera_confirm_dialog.ui")
         if not ui_file.open(QIODevice.ReadOnly):
@@ -248,6 +279,10 @@ class ObjTracking(QtWidgets.QMainWindow):
         self.popup.confirm_btn.clicked.connect(self.confirm_newPerson)
         self.popup.cancel_btn.clicked.connect(self.close_form)
         self.popup.setWindowTitle("Confirmation registration")
+
+        self.popup.camname.setText(f"Camera ch : {self.cam_usage}")
+
+        self.popup.activateWindow()     ## https://www.geeksforgeeks.org/pyqt5-qcalendarwidget-checking-if-it-is-active-window-or-not/
 
         name = self.w.personName.text()
         self.popup.name_label.setText(name)
@@ -281,7 +316,7 @@ class ObjTracking(QtWidgets.QMainWindow):
         self.filename = "-"
         self.update_data = {}
         
-        self.camera = cv2.VideoCapture("vid/test1.mp4")
+        self.camera = cv2.VideoCapture(self.cam_usage)
         self.frame = None
         self.timer = QTimer()
         self.timer.timeout.connect(lambda n=name, g=gender, h=hair, a=attrs:self.display_vid(n,g,h,a))
@@ -291,6 +326,7 @@ class ObjTracking(QtWidgets.QMainWindow):
         
 
     def display_vid(self, name, gender, hair, attrs):
+        # print("FORM :", self.popup.isActiveWindow())
         if self.popup.capture_btn.isChecked():
             self.popup.capture_btn.setText("save image")
             ret, self.frame = self.camera.read()
@@ -326,8 +362,10 @@ class ObjTracking(QtWidgets.QMainWindow):
         self.datas1.append(self.update_data)
         with open("datas/dataPerson.json", "w") as outfile: 
             json.dump(self.datas1, outfile, indent=4) 
-        self.camera.release()
+        if self.camera:
+            self.camera.release()
         cv2.destroyAllWindows()
+        self.imlen = len(os.listdir("./imgs/profile"))
         self.close_form()
 
     def close_form(self):

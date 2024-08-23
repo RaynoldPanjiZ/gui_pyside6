@@ -1,0 +1,31 @@
+{
+    "camera": {
+        "vid1": "vid/test1.mp4", 
+        "vid2": "vid/test2.mp4", 
+        "vid3": "vid/test3.mp4",
+        "rtsp1": "rtsp://admin:aery2021!@192.168.45.166:554/cam/realmonitor?channel=1&subtype=0&unaicast=true&proto=Onvif",
+        "rtsp2": "rtsp://admin:aery2021!@192.168.45.167:554/cam/realmonitor?channel=1&subtype=0&unaicast=true&proto=Onvif" 
+    },
+    "person": {
+        "name": "Hong Gil Dong",
+        "img": "img/test.jpg",
+        "gender": "Male",
+        "Hairstyle": "Long",
+        "attribute":[
+            "Hat", "Bag", "Mask", "Glasses"
+        ],
+        "car": {
+            "license_car": true,
+            "vehicle_no": "123A 2345"
+        }
+    },
+    "vehicle": {
+        "vehicle_no": "123A 2345",
+        "img": "img/test.jpg",
+        "type": "Car",
+        "brand": "Hyundai",
+        "Model": "Grandeur",
+        "Color": "Black",
+        "profile_person": true
+    }
+}
