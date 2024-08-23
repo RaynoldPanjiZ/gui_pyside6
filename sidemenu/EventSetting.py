@@ -78,8 +78,21 @@ class ObjTracking(QtWidgets.QMainWindow):
             self.datas2 = json.load(f)
         
         completer_cam = QtWidgets.QCompleter(list(self.cameralist.keys()))
+        completer_cam.setCaseSensitivity(Qt.CaseInsensitive)
         self.w.camera_edit.setCompleter(completer_cam)
         completer_cam.popup().setStyleSheet("color:#37383E;")
+
+        names = [item["name"] for item in self.datas1]
+        completer_name = QtWidgets.QCompleter(names)
+        completer_name.setCaseSensitivity(Qt.CaseInsensitive)
+        self.w.personName.setCompleter(completer_name)
+        completer_name.popup().setStyleSheet("color:#37383E;")
+        
+        vahicles = [item["vehicle_no"] for item in self.datas2]
+        completer_vahicle = QtWidgets.QCompleter(vahicles)
+        completer_vahicle.setCaseSensitivity(Qt.CaseInsensitive)
+        self.w.noVehicle.setCompleter(completer_vahicle)
+        completer_vahicle.popup().setStyleSheet("color:#37383E;")
 
         self.w.selectCam_btn.clicked.connect(self.selct_camera)
 
@@ -326,6 +339,8 @@ class ObjTracking(QtWidgets.QMainWindow):
         
 
     def display_vid(self, name, gender, hair, attrs):
+        if self.popup.isActiveWindow() == False:
+            self.close_form()
         # print("FORM :", self.popup.isActiveWindow())
         if self.popup.capture_btn.isChecked():
             self.popup.capture_btn.setText("save image")
@@ -371,5 +386,8 @@ class ObjTracking(QtWidgets.QMainWindow):
     def close_form(self):
         if self.timer:
             self.timer.stop()
+        if self.camera:
+            self.camera.release()
+            cv2.destroyAllWindows()
         self.popup.close()
         self.popup = None

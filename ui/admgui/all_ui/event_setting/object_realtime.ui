@@ -830,19 +830,6 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item row="0" column="1">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>50</width>
-          <height>13</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
       <item row="0" column="2">
        <widget class="QPushButton" name="pushButton">
         <property name="maximumSize">
@@ -872,6 +859,19 @@
          <string>  Object Realtime Tracking</string>
         </property>
        </widget>
+      </item>
+      <item row="0" column="1">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>50</width>
+          <height>13</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>

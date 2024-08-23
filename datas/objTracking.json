@@ -6,26 +6,39 @@
         "rtsp1": "rtsp://admin:aery2021!@192.168.45.166:554/cam/realmonitor?channel=1&subtype=0&unaicast=true&proto=Onvif",
         "rtsp2": "rtsp://admin:aery2021!@192.168.45.167:554/cam/realmonitor?channel=1&subtype=0&unaicast=true&proto=Onvif" 
     },
-    "person": {
-        "name": "Hong Gil Dong",
-        "img": "img/test.jpg",
-        "gender": "Male",
-        "Hairstyle": "Long",
-        "attribute":[
-            "Hat", "Bag", "Mask", "Glasses"
-        ],
-        "car": {
-            "license_car": true,
-            "vehicle_no": "123A 2345"
+    "person": [
+        {
+            "name": "Hong Gil Dong",
+            "img": "img/test.jpg",
+            "gender": "Male",
+            "Hairstyle": "Long",
+            "attribute":[
+                "Hat", "Bag", "Mask", "Glasses"
+            ],
+            "car": {
+                "license_car": true,
+                "vehicle_no": "123A 2345"
+            }
         }
-    },
-    "vehicle": {
-        "vehicle_no": "123A 2345",
-        "img": "img/test.jpg",
-        "type": "Car",
-        "brand": "Hyundai",
-        "Model": "Grandeur",
-        "Color": "Black",
-        "profile_person": true
-    }
+    ],
+    "vehicle": [
+        {
+            "vehicle_no": "123A 2345",
+            "img": "img/test.jpg",
+            "type": "Car",
+            "brand": "Hyundai",
+            "Model": "Grandeur",
+            "Color": "Black",
+            "profile_person": true
+        },
+        {
+            "vehicle_no": "9122 3221",
+            "img": "img/test.jpg",
+            "type": "Car",
+            "brand": "Hyundai",
+            "Model": "Grandeur",
+            "Color": "Black",
+            "profile_person": true
+        }
+    ]
 }
