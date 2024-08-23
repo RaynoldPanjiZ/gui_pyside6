@@ -38,7 +38,7 @@
             "brand": "Hyundai",
             "Model": "Grandeur",
             "Color": "Black",
-            "profile_person": true
+            "profile_person": false
         }
     ]
 }
