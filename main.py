@@ -3,14 +3,14 @@ from PySide6 import QtWidgets
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile, QIODevice, Qt, QTimer, QUrl, QSize, QThread, QObject, Signal
 from PySide6.QtGui import QPixmap, QIcon
-from PySide6.QtWebEngineWidgets import QWebEngineView
+# from PySide6.QtWebEngineWidgets import QWebEngineView
 
 import io
 import time
 import os
 import socket
 from datetime import datetime
-import folium
+# import folium
 import cv2
 import numpy as np
 

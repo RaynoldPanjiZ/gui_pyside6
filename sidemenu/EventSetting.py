@@ -58,8 +58,8 @@ class ObjTracking(QtWidgets.QMainWindow):
             "vid1": "vid/test1.mp4", 
             "vid2": "vid/test2.mp4", 
             "vid3": "vid/test3.mp4",
-            "rtsp1": "rtsp://admin:aery2021!@192.168.45.166:554/cam/realmonitor?channel=1&subtype=0&unaicast=true&proto=Onvif",
-            "rtsp2": "rtsp://admin:aery2021!@192.168.45.167:554/cam/realmonitor?channel=1&subtype=0&unaicast=true&proto=Onvif" 
+            "Channel 1 (IP: 192.168.45.166)": "rtsp://admin:aery2021!@192.168.45.166:554/cam/realmonitor?channel=1&subtype=0&unaicast=true&proto=Onvif",
+            "Channel 2 (IP: 192.168.45.167)": "rtsp://admin:aery2021!@192.168.45.167:554/cam/realmonitor?channel=1&subtype=0&unaicast=true&proto=Onvif" 
         }
         self.cam_usage = None
 
@@ -342,7 +342,12 @@ class ObjTracking(QtWidgets.QMainWindow):
         if self.popup.isActiveWindow() == False:
             self.close_form()
         # print("FORM :", self.popup.isActiveWindow())
-        if self.popup.capture_btn.isChecked():
+        button = self.sender()
+        if button is not self.w.person_newReg_btn:
+            self.close_form()
+        elif self.popup is None:
+            self.close_form()    
+        elif self.popup.capture_btn.isChecked():
             self.popup.capture_btn.setText("save image")
             ret, self.frame = self.camera.read()
             if ret:
@@ -389,5 +394,6 @@ class ObjTracking(QtWidgets.QMainWindow):
         if self.camera:
             self.camera.release()
             cv2.destroyAllWindows()
-        self.popup.close()
-        self.popup = None
+        if self.popup:
+            self.popup.close()
+            self.popup = None
