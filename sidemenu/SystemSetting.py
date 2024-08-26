@@ -1,7 +1,9 @@
 from PySide6 import QtWidgets
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile, QIODevice, Qt
+from PySide6.QtGui import QGuiApplication
 import sys, os
+import shutil
 
 style = None
 with open("ui/style/style_form.qss", "r") as file:
@@ -18,6 +20,25 @@ class SystemSetting(QtWidgets.QMainWindow):
         self.w.datetime_setting_btn.clicked.connect(self.datetime)
         self.w.server_connect_btn.clicked.connect(self.server_connection)
         self.w.factory_reset_btn.clicked.connect(self.factory_reset)
+
+        total, used, free = shutil.disk_usage("/")
+        total_gb = f"{total // (2**30)} GB"
+        used_gb = f"{used // (2**30)} GB"
+        used_percent = f"{round((used/total)*100, 2)} %"
+        free_gb = f"{free // (2**30)} GB"
+        free_percent = f"{round((free/total)*100, 2)} %"
+
+        self.w.storageCapacity_edit.setText(total_gb)
+        self.w.storageUsage_edit.setText(used_gb)
+        self.w.storageUsage_percent.setText(used_percent)
+        self.w.storageSpace_edit.setText(free_gb)
+        self.w.storageSpace_percent.setText(free_percent)
+
+        screen = self.screen().availableGeometry()
+        screen_n = f"{screen.width()} x {screen.height()}"
+        print(screen_n)
+        self.w.screen_comboBox.addItems([screen_n])
+
 
     def datetime(self):
         loader = QUiLoader()

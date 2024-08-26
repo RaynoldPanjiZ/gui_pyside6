@@ -9,8 +9,8 @@ while True:
     ret, frame = cap.read()
     print(frame.shape)
 
-    cv2.imshow("frame", frame)
-    key = cv2.waitKey(50)
-    if key == 27:
-        break
-cv2.destroyAllWindows()
+    # cv2.imshow("frame", frame)
+    # key = cv2.waitKey(50)
+    # if key == 27:
+    #     break
+    # cv2.destroyAllWindows()

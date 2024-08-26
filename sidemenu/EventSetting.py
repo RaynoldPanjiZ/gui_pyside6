@@ -382,9 +382,6 @@ class ObjTracking(QtWidgets.QMainWindow):
         self.datas1.append(self.update_data)
         with open("datas/dataPerson.json", "w") as outfile: 
             json.dump(self.datas1, outfile, indent=4) 
-        if self.camera:
-            self.camera.release()
-        cv2.destroyAllWindows()
         self.imlen = len(os.listdir("./imgs/profile"))
         self.close_form()
 
@@ -393,7 +390,8 @@ class ObjTracking(QtWidgets.QMainWindow):
             self.timer.stop()
         if self.camera:
             self.camera.release()
-            cv2.destroyAllWindows()
+            self.camera = None
+            # cv2.destroyAllWindows()
         if self.popup:
             self.popup.close()
             self.popup = None

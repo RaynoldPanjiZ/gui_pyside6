@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>864</width>
+    <width>905</width>
     <height>375</height>
    </rect>
   </property>
@@ -77,44 +77,31 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="3">
-       <widget class="QLabel" name="label_4">
+      <item row="3" column="3">
+       <widget class="QLabel" name="label_10">
         <property name="text">
-         <string>S/W Ver.</string>
+         <string>Usage</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="10">
-       <widget class="QLabel" name="label_16">
-        <property name="text">
-         <string>50%</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QComboBox" name="comboBox"/>
-      </item>
-      <item row="7" column="4">
-       <widget class="QSpinBox" name="spinBox"/>
-      </item>
-      <item row="7" column="1">
-       <widget class="QFrame" name="frame_5">
+      <item row="1" column="9" colspan="2">
+       <widget class="QFrame" name="frame_7">
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
          <item>
-          <widget class="QRadioButton" name="radioButton_3">
+          <widget class="QRadioButton" name="radioButton_5">
            <property name="text">
             <string>Used</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton_4">
+          <widget class="QRadioButton" name="radioButton_6">
            <property name="text">
             <string>Unused</string>
            </property>
@@ -123,30 +110,256 @@
         </layout>
        </widget>
       </item>
-      <item row="3" column="11">
-       <widget class="QFrame" name="frame_9">
+      <item row="5" column="5" colspan="7">
+       <widget class="QFrame" name="frame_8">
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QLabel" name="label_18">
+           <property name="text">
+            <string>Time</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="comboBox_4">
+           <item>
+            <property name="text">
+             <string>AM</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>PM</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="comboBox_6">
+           <item>
+            <property name="text">
+             <string>12</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>11</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>10</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>9</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>8</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>7</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>6</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>5</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>4</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>3</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_19">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>h</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="comboBox_5">
+           <item>
+            <property name="text">
+             <string>60</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>45</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>30</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>25</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>10</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>9</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>8</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>7</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>6</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>5</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>4</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>3</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>0</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_20">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>m</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="3" column="9">
+       <widget class="QLineEdit" name="storageSpace_edit"/>
+      </item>
+      <item row="3" column="10">
+       <widget class="QLabel" name="storageSpace_percent">
+        <property name="text">
+         <string>-%</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="id_edit"/>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Equipment ID</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="4">
+       <widget class="QComboBox" name="rebootCycle_comboBox">
+        <item>
+         <property name="text">
+          <string>1 week</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>1 month</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>3 months</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="5" column="0">
        <widget class="QLabel" name="label_7">
         <property name="text">
          <string>Automatic Restart</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="lineEdit"/>
-      </item>
-      <item row="1" column="3">
-       <widget class="QLabel" name="label_9">
-        <property name="text">
-         <string>Screen Resolution</string>
         </property>
        </widget>
       </item>
@@ -157,30 +370,19 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
-       <widget class="QFrame" name="frame_2">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
+      <item row="5" column="3">
+       <widget class="QLabel" name="label_11">
+        <property name="text">
+         <string>Reboot Cycle</string>
         </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <widget class="QLabel" name="label_13">
-           <property name="text">
-            <string>Capacity</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEdit_2"/>
-         </item>
-        </layout>
        </widget>
       </item>
-      <item row="5" column="4">
-       <widget class="QComboBox" name="comboBox_3"/>
+      <item row="1" column="7">
+       <widget class="QLabel" name="label_17">
+        <property name="text">
+         <string>Screen Keyboard</string>
+        </property>
+       </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_3">
@@ -215,39 +417,8 @@
         </layout>
        </widget>
       </item>
-      <item row="3" column="7">
-       <widget class="QLabel" name="label_15">
-        <property name="text">
-         <string>Remaining Space</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="7">
-       <widget class="QLabel" name="label_17">
-        <property name="text">
-         <string>Screen Keyboard</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="4" colspan="2">
-       <widget class="QLineEdit" name="lineEdit_3"/>
-      </item>
-      <item row="1" column="4" colspan="2">
-       <widget class="QComboBox" name="comboBox_2"/>
-      </item>
-      <item row="7" column="3">
-       <widget class="QLabel" name="label_12">
-        <property name="text">
-         <string>Elapsed Time</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="3">
-       <widget class="QLabel" name="label_11">
-        <property name="text">
-         <string>Reboot Cycle</string>
-        </property>
-       </widget>
+       <widget class="QLineEdit" name="version_edit"/>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label_6">
@@ -256,25 +427,22 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="4">
-       <widget class="QLineEdit" name="lineEdit_4"/>
-      </item>
-      <item row="0" column="2" rowspan="2">
-       <widget class="QFrame" name="frame_6">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="3">
-       <widget class="QLabel" name="label_10">
+      <item row="0" column="3">
+       <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Usage</string>
+         <string>S/W Ver.</string>
         </property>
        </widget>
+      </item>
+      <item row="7" column="3">
+       <widget class="QLabel" name="label_12">
+        <property name="text">
+         <string>Elapsed Time</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="4">
+       <widget class="QLineEdit" name="storageUsage_edit"/>
       </item>
       <item row="0" column="6" colspan="2">
        <widget class="QPushButton" name="server_connect_btn">
@@ -283,95 +451,44 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_2">
+      <item row="1" column="4" colspan="2">
+       <widget class="QComboBox" name="screen_comboBox"/>
+      </item>
+      <item row="3" column="7">
+       <widget class="QLabel" name="label_15">
         <property name="text">
-         <string>Equipment ID</string>
+         <string>Remaining Space</string>
         </property>
        </widget>
+      </item>
+      <item row="7" column="4">
+       <widget class="QSpinBox" name="spinBox"/>
       </item>
       <item row="3" column="5">
-       <widget class="QLabel" name="label_14">
+       <widget class="QLabel" name="storageUsage_percent">
         <property name="text">
-         <string>50%</string>
+         <string>-%</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="9">
-       <widget class="QLineEdit" name="lineEdit_5"/>
-      </item>
-      <item row="5" column="5" colspan="7">
-       <widget class="QFrame" name="frame_8">
+      <item row="7" column="1">
+       <widget class="QFrame" name="frame_5">
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="QLabel" name="label_18">
-           <property name="text">
-            <string>Time</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="comboBox_4"/>
-         </item>
-         <item>
-          <widget class="QComboBox" name="comboBox_6"/>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_19">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>h</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="comboBox_5"/>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_20">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>m</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="1" column="9" colspan="2">
-       <widget class="QFrame" name="frame_7">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_6">
-         <item>
-          <widget class="QRadioButton" name="radioButton_5">
+          <widget class="QRadioButton" name="radioButton_3">
            <property name="text">
             <string>Used</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton_6">
+          <widget class="QRadioButton" name="radioButton_4">
            <property name="text">
             <string>Unused</string>
            </property>
@@ -379,6 +496,73 @@
          </item>
         </layout>
        </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QLabel" name="label_9">
+        <property name="text">
+         <string>Screen Resolution</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="lang_comboBox"/>
+      </item>
+      <item row="3" column="1">
+       <widget class="QFrame" name="frame_2">
+        <property name="minimumSize">
+         <size>
+          <width>170</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="label_13">
+           <property name="text">
+            <string>Capacity</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="storageCapacity_edit"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Minimum</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>25</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="11">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>
