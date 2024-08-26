@@ -220,7 +220,7 @@ class NetSetting(QtWidgets.QMainWindow):
     def setDHCP(self):
         interface = self.w.ifList_cb.currentText()
         try:
-            subprocess.run(["sudo", "dhclient", "-r"], check=True)
+            subprocess.run(["sudo", "dhclient", "-r", interface], check=True)
             subprocess.run(["sudo", "dhclient", interface], check=True)
             QtWidgets.QMessageBox.information(self, "Success", "Network configured to use DHCP.")
         except subprocess.CalledProcessError as e:
