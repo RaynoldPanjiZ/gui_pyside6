@@ -30,68 +30,14 @@
         "attribute": []
     },
     {
-        "name": "cac",
-        "img": "./imgs/profile/p_2.jpg",
+        "name": "test",
+        "img": "./imgs/profile/p_17.jpg",
         "gender": "Male",
-        "hairstyle": "Long",
-        "attribute": []
-    },
-    {
-        "name": "adwr",
-        "img": "./imgs/profile/p_3.jpg",
-        "gender": "Female",
-        "hairstyle": "Long",
+        "hairstyle": "Short",
         "attribute": [
+            "Hat",
+            "Bag",
             "Mask"
-        ]
-    },
-    {
-        "name": "adadw",
-        "img": "./imgs/profile/p_5.jpg",
-        "gender": "Male",
-        "hairstyle": "Long",
-        "attribute": []
-    },
-    {
-        "name": "test5",
-        "img": "./imgs/profile/p_8.jpg",
-        "gender": "Male",
-        "hairstyle": "Long",
-        "attribute": [
-            "Mask"
-        ]
-    },
-    {
-        "name": "test6",
-        "img": "./imgs/profile/p_9.jpg",
-        "gender": "Male",
-        "hairstyle": "Long",
-        "attribute": []
-    },
-    {
-        "name": "test5",
-        "img": "./imgs/profile/p_10.jpg",
-        "gender": "Male",
-        "hairstyle": "Long",
-        "attribute": []
-    },
-    {
-        "name": "Hong Gil Dong",
-        "img": "./imgs/profile/p_11.jpg",
-        "gender": "Male",
-        "hairstyle": "Long",
-        "attribute": [
-            "Mask"
-        ]
-    },
-    {
-        "name": "tes5",
-        "img": "./imgs/profile/p_12.jpg",
-        "gender": "Male",
-        "hairstyle": "Long",
-        "attribute": [
-            "Mask",
-            "Glasses"
         ]
     }
 ]

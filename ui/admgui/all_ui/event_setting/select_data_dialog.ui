@@ -15,6 +15,19 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <widget class="QLabel" name="label_head">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Header</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QTableWidget" name="tb_show">
      <property name="editTriggers">
       <set>QAbstractItemView::AnyKeyPressed|QAbstractItemView::EditKeyPressed</set>
