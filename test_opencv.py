@@ -1,8 +1,8 @@
 import cv2
 
 
-url = "vid/test1.mp4"
-# url = "rtsp://admin:aery2021!@192.168.45.166:554/cam/realmonitor?channel=1&subtype=0&unaicast=true&proto=Onvif"
+# url = "vid/test1.mp4"
+url = "rtsp://admin:aery2021!@192.168.45.166:554/cam/realmonitor?channel=1&subtype=0&unaicast=true&proto=Onvif"
 cap = cv2.VideoCapture(url)
 
 i = 0
