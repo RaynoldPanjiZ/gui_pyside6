@@ -132,7 +132,6 @@ class ObjTracking(QtWidgets.QMainWindow):
         self.popup.cancel_btn.clicked.connect(self.popup.close)
         self.popup.setWindowTitle("Select item")
         tb_show = self.popup.tb_show1
-        self.popup.frame_2.setVisible(False)
 
         # print(self.popup.frame_tb.layout())
         
@@ -508,7 +507,6 @@ class ObjTracking(QtWidgets.QMainWindow):
         self.popup.cancel_btn.clicked.connect(self.popup.close)
         self.popup.setWindowTitle("Select item")
         tb_show = self.popup.tb_show1
-        self.popup.frame_2.setVisible(False)
         
         header_items = ["No.", "Name", "Img", "Gender", "Hairstyle", "Attribute", "Vehicle No", "Car Type", "Brand", "Model", "Color"]
         data_to_show = self.filtered_datas

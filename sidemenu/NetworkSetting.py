@@ -201,7 +201,7 @@ class NetSetting(QtWidgets.QMainWindow):
 
     def applyConfig(self):
         if self.w.ipSetting_cb.currentText() == "Automatic (DHCP)":
-            # self.setDHCP()
+            self.setDHCP()
             pass
         else:
             ipaddr = self.w.ipAddr_edit.text()

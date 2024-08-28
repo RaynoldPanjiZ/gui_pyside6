@@ -350,6 +350,7 @@ if __name__ == "__main__":
     # Create and show the main window
     main_window = MainWindow(window)
     main_window.w.showFullScreen()
+    # main_window.w.show()
 
     # Apply the stylesheet
     with open("ui/style/style.qss", "r") as file:
