@@ -1,0 +1,69 @@
+[
+    {
+        "id": 0,
+        "name": "Hong Gil Dong",
+        "img": "imgs/test.jpg",
+        "gender": "Male",
+        "hairstyle": "Long",
+        "attribute": [
+            "Hat",
+            "Bag",
+            "Mask",
+            "Glasses"
+        ],
+        "camera_info":{
+            "name": "Channel 1 (IP: 192.168.45.166)",
+            "url": "rtsp://admin:aery2021!@192.168.45.166:554/cam/realmonitor?channel=1&subtype=0&unaicast=true&proto=Onvif"
+        },
+        "vehicle": [
+                {
+                    "vehicle_no": "123A 2345",
+                    "type": "Car",
+                    "brand": "Hyundai",
+                    "Model": "Grandeur",
+                    "Color": "Black"
+                },
+                {
+                    "vehicle_no": "9122 3221",
+                    "type": "Car",
+                    "brand": "Hyundai",
+                    "Model": "Grandeur",
+                    "Color": "Black"
+                }
+            ]
+    },
+    {
+        "id": 1,
+        "name": "test",
+        "img": "imgs/test.jpg",
+        "gender": "Male",
+        "hairstyle": "Short",
+        "attribute": [
+            "Hat",
+            "Bag",
+            "Mask"
+        ],
+        "camera_info":{
+            "name": "Channel 1 (IP: 192.168.45.166)",
+            "url": "rtsp://admin:aery2021!@192.168.45.166:554/cam/realmonitor?channel=1&subtype=0&unaicast=true&proto=Onvif"
+        },
+        "vehicle": []
+    },
+    {
+        "id": 2,
+        "name": "test",
+        "img": "./imgs/profile/p_17.jpg",
+        "gender": "Male",
+        "hairstyle": "Short",
+        "attribute": [
+            "Hat",
+            "Bag",
+            "Mask"
+        ],
+        "camera_info":{
+            "name": "vid1",
+            "url": "vid/test1.mp4"
+        },
+        "vehicle": []
+    }
+]

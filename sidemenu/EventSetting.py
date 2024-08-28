@@ -67,15 +67,15 @@ class ObjTracking(QtWidgets.QMainWindow):
             os.mkdir("./imgs/profile")
         self.imlen = len(os.listdir("./imgs/profile"))
 
+        self.datas = dict()
         self.datas1 = []
-        if os.path.exists('./datas/dataPerson.json'):
-            f = open('./datas/dataPerson.json')
-            self.datas1 = json.load(f)
-        
         self.datas2 = []
-        if os.path.exists('./datas/dataVehicle.json'):
-            f = open('./datas/dataVehicle.json')
-            self.datas2 = json.load(f)
+        
+        if os.path.exists('./datas/objTracking.json'):
+            f = open('./datas/objTracking.json')
+            self.datas = json.load(f)
+        self.datas1 = self.datas["person"]
+        self.datas2 = self.datas["vehicle"]
 
         self.filtered_datas = []
         
@@ -102,9 +102,9 @@ class ObjTracking(QtWidgets.QMainWindow):
 
         self.last_radiobutton_checked = None
         # self.w.groupbtnForm.buttonClicked.connect(self.check_button)
-    
-    # def check_button(self):
-    #     self.last_radiobutton_checked = "Person" if self.w.person_radiobtn.isChecked() else "Vehicle" if self.w.vehicle_radiobtn.isChecked() else None
+        
+        # def check_button(self):
+        #     self.last_radiobutton_checked = "Person" if self.w.person_radiobtn.isChecked() else "Vehicle" if self.w.vehicle_radiobtn.isChecked() else None
 
 
     def selct_camera(self):
@@ -131,20 +131,23 @@ class ObjTracking(QtWidgets.QMainWindow):
         self.popup = dialog
         self.popup.cancel_btn.clicked.connect(self.popup.close)
         self.popup.setWindowTitle("Select item")
-        tb_show = self.popup.tb_show
+        tb_show = self.popup.tb_show1
+        self.popup.frame_2.setVisible(False)
+
+        # print(self.popup.frame_tb.layout())
         
         data_to_show = {}
         self.form = ""
         if button == self.w.person_select_btn:
-            self.popup.label_head.setText("Data Person")
+            self.popup.label_head1.setText("Data Person")
             tb_show.setRowCount(len(self.datas1))
-            tb_show.setColumnCount(len(self.datas1[0])+1)
+            tb_show.setColumnCount(len(self.datas1[0]))
             
             header = tb_show.horizontalHeader()
             header.setMinimumHeight(34)
             header.setDefaultAlignment(Qt.AlignCenter | Qt.Alignment(Qt.TextWordWrap))
 
-            header_items = ["No.", "Name", "Img", "Gender", "Hairstyle", "attribute"]
+            header_items = ["No.", "Name", "Img", "Gender", "Hairstyle", "attribute", "vehicle"]
             for i in range(tb_show.columnCount()):
                 hItem = QtWidgets.QTableWidgetItem(header_items[i])
                 tb_show.setHorizontalHeaderItem(i, hItem)
@@ -154,8 +157,29 @@ class ObjTracking(QtWidgets.QMainWindow):
                     header.setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
             data_to_show = self.datas1
             self.form = "Person"
+
+            if data_to_show:
+                for idx, data_num in enumerate(range(len(data_to_show))):
+                    for i, (key, value) in enumerate(data_to_show[data_num].items()):
+                        if key == "id":
+                            it = QtWidgets.QTableWidgetItem(str(idx+1))
+                            it.setTextAlignment(Qt.AlignCenter)
+                            tb_show.setItem(int(idx), 0, it)
+                        elif key == "vehicles":
+                            if value is not False:
+                                it = QtWidgets.QTableWidgetItem(str(value))
+                                it.setTextAlignment(Qt.AlignCenter)
+                                tb_show.setItem(int(idx), i, it)
+                                tb_show.cellClicked.connect(self.selected_row)
+                        else:
+                            it = QtWidgets.QTableWidgetItem(str(value))
+                            it.setTextAlignment(Qt.AlignCenter)
+                            tb_show.setItem(int(idx), i, it)
+                            tb_show.cellClicked.connect(self.selected_row)
+                            
+
         elif button == self.w.vehicle_select_btn:
-            self.popup.label_head.setText("Data Vehicle")
+            self.popup.label_head1.setText("Data Vehicle")
             tb_show.setRowCount(len(self.datas2))
             tb_show.setColumnCount(len(self.datas2[0])+1)
             
@@ -163,7 +187,7 @@ class ObjTracking(QtWidgets.QMainWindow):
             header.setMinimumHeight(34)
             header.setDefaultAlignment(Qt.AlignCenter | Qt.Alignment(Qt.TextWordWrap))
 
-            header_items = ["No.", "Vehicle No", "Car Type", "Brand", "Model", "Color"]
+            header_items = ["No.", "Vehicle No", "Car Type", "Brand", "Model", "Color", "Person"]
             for i in range(tb_show.columnCount()):
                 hItem = QtWidgets.QTableWidgetItem(header_items[i])
                 tb_show.setHorizontalHeaderItem(i, hItem)
@@ -175,16 +199,23 @@ class ObjTracking(QtWidgets.QMainWindow):
             self.form = "Vehicle"
 
         
-        if data_to_show:
-            for idx, data_num in enumerate(range(len(data_to_show))):
-                it = QtWidgets.QTableWidgetItem(str(idx+1))
-                it.setTextAlignment(Qt.AlignCenter)
-                tb_show.setItem(int(idx), 0, it)
-                for i, (key, value) in enumerate(data_to_show[data_num].items()):
-                    it = QtWidgets.QTableWidgetItem(str(value))
+            if data_to_show:
+                for idx, data_num in enumerate(range(len(data_to_show))):
+                    it = QtWidgets.QTableWidgetItem(str(idx+1))
                     it.setTextAlignment(Qt.AlignCenter)
-                    tb_show.setItem(int(idx), i+1, it)
-                    tb_show.cellClicked.connect(self.selected_row)
+                    tb_show.setItem(int(idx), 0, it)
+                    for i, (key, value) in enumerate(data_to_show[data_num].items()):
+                        if key == "person_id":
+                            if value is not False:
+                                it = QtWidgets.QTableWidgetItem(str(self.datas1[value]["name"]))
+                                it.setTextAlignment(Qt.AlignCenter)
+                                tb_show.setItem(int(idx), i+1, it)
+                                tb_show.cellClicked.connect(self.selected_row)
+                        else:
+                            it = QtWidgets.QTableWidgetItem(str(value))
+                            it.setTextAlignment(Qt.AlignCenter)
+                            tb_show.setItem(int(idx), i+1, it)
+                            tb_show.cellClicked.connect(self.selected_row)
 
         self.popup.exec()
 
@@ -272,10 +303,12 @@ class ObjTracking(QtWidgets.QMainWindow):
                 "type": cartype,
                 "brand": brand,
                 "model": model,
-                "color": color
+                "color": color,
+                "person_id": False
             })
-            with open("datas/dataVehicle.json", "w") as outfile: 
-                json.dump(self.datas2, outfile, indent=4) 
+            self.datas["vehicle"] = self.datas2
+            with open("./datas/objTracking.json", "w") as outfile: 
+                json.dump(self.datas, outfile, indent=4) 
             print("success")
 
     def new_registPerson(self):
@@ -379,17 +412,24 @@ class ObjTracking(QtWidgets.QMainWindow):
                 if self.filename != "-":
                     self.popup.confirm_btn.setEnabled(True)
                     self.update_data = {
+                        "id": 12,
                         "name": name,
                         "img": self.filename,
                         "gender": gender,
                         "hairstyle": hair,
-                        "attribute": attrs
+                        "attribute": attrs,
+                        "vehicles": False
                     }
 
     def confirm_newPerson(self):
         self.datas1.append(self.update_data)
-        with open("datas/dataPerson.json", "w") as outfile: 
-            json.dump(self.datas1, outfile, indent=4) 
+        self.datas["person"] = self.datas1
+        with open("./datas/objTracking.json", "w") as outfile: 
+            json.dump(self.datas, outfile, indent=4) 
+        pixmap = QPixmap(self.update_data["img"])  
+        scaled_pixmap = pixmap.scaled(self.w.label_foto.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.w.label_foto.setPixmap(scaled_pixmap)
+
         self.imlen = len(os.listdir("./imgs/profile"))
         self.close_form()
 
@@ -407,49 +447,53 @@ class ObjTracking(QtWidgets.QMainWindow):
 
 
     def handle_filter(self):
-        self.last_radiobutton_checked = "Person" if self.w.person_radiobtn.isChecked() else "Vehicle" if self.w.vehicle_radiobtn.isChecked() else None
-        if self.last_radiobutton_checked == "Person":
-        
-            name_filter = self.w.personName.text()
-            gender_fliter = "Male" if self.w.Gmale_radiobtn.isChecked() else "Female" if self.w.Gfemale_radiobtn.isChecked() else None
-            hairstyle_fliter = "Long" if self.w.Hlong_radiobtn.isChecked() else "Short" if self.w.Hshort_radiobtn.isChecked() else None
+        name_filter = self.w.personName.text()
+        gender_fliter = "Male" if self.w.Gmale_radiobtn.isChecked() else "Female" if self.w.Gfemale_radiobtn.isChecked() else None
+        hairstyle_fliter = "Long" if self.w.Hlong_radiobtn.isChecked() else "Short" if self.w.Hshort_radiobtn.isChecked() else None
 
-            print(f"Filter: {name_filter}, {gender_fliter}, {hairstyle_fliter}")
-            self.filtered_datas = []
-            for data in self.datas1:
-                name_match = data["name"] == name_filter
-                gender_match = data["gender"] == gender_fliter
-                hair_match = data["hairstyle"] == hairstyle_fliter
-                
-                if name_match and gender_match and hair_match:
-                    self.filtered_datas.append(data)
-                    
-            print(f"Filter Data: {self.filtered_datas}")
-            QtWidgets.QMessageBox.information(self, "Success", f"filtered data : {len(self.filtered_datas)}")
-        elif self.last_radiobutton_checked == "Vehicle":
-        
-            vehicle_filter = self.w.noVehicle.text()
-            type_fliter = self.w.car_comboBox.currentText()
-            brnad_fliter = self.w.brand_comboBox.currentText()
-            model_fliter = self.w.model_comboBox.currentText()
-            color_fliter = self.w.color_comboBox.currentText()
+        vehicle_filter = self.w.noVehicle.text()
+        type_fliter = self.w.car_comboBox.currentText()
+        brnad_fliter = self.w.brand_comboBox.currentText()
+        model_fliter = self.w.model_comboBox.currentText()
+        color_fliter = self.w.color_comboBox.currentText()
 
-            print(f"Filter: {vehicle_filter}, {type_fliter}, {brnad_fliter}, {model_fliter}, {color_fliter}")
-            self.filtered_datas = []
-            for data in self.datas2:
-                vehicle_match = data["vehicle_no"] == vehicle_filter
-                type_match = data["type"] == type_fliter
-                brand_match = data["brand"] == brnad_fliter
-                model_match = data["model"] == model_fliter
-                color_match = data["color"] == color_fliter
-                
-                if vehicle_match and type_match and brand_match and model_match and color_match:
-                    self.filtered_datas.append(data)
+        print(f"Filter person: {name_filter}, {gender_fliter}, {hairstyle_fliter}")
+        print(f"Filter vehicle: {vehicle_filter}, {type_fliter}, {brnad_fliter}, {model_fliter}, {color_fliter}")
+        
+        self.filtered_datas = []
+        for d1 in self.datas1:
+            name_match = d1["name"] == name_filter
+            gender_match = d1["gender"] == gender_fliter
+            hair_match = d1["hairstyle"] == hairstyle_fliter
+            vehicle_match = False
+            if d1["vehicles"]:
+                for d2 in self.datas2:
+                    vehicle_match = vehicle_filter in d1["vehicles"] and vehicle_filter in d2["vehicle_no"]
+                    if vehicle_match:
+                        type_match = d2["type"] == type_fliter
+                        brand_match = d2["brand"] == brnad_fliter
+                        model_match = d2["model"] == model_fliter
+                        color_match = d2["color"] == color_fliter
                     
-            print(f"Filter Data: {self.filtered_datas}")
-            QtWidgets.QMessageBox.information(self, "Success", f"filtered data : {len(self.filtered_datas)}")
+                        if type_match and brand_match and model_match and color_match:
+                            vehicle_match = True
+                            break
+                    vehicle_match = False
+            
+            if name_match and gender_match and hair_match and vehicle_match:
+                filter_d1 = d1.copy()
+                filter_d1["vehicles"] = vehicle_filter
+                filter_d1["car_type"] = type_fliter
+                filter_d1["car_brand"] = brnad_fliter
+                filter_d1["car_model"] = model_fliter
+                filter_d1["color"] = color_fliter
+                self.filtered_datas.append(filter_d1)            
+        print(f"Filter Data: {self.filtered_datas}")
+        
+        if self.filtered_datas:
+            QtWidgets.QMessageBox.information(self, "Searching info", f"filtered data : {len(self.filtered_datas)}")
         else:
-            QtWidgets.QMessageBox.critical(self, "Invalid input", "please, select both the Person or Vehicle radiobutton")
+            QtWidgets.QMessageBox.critical(self, "Searching info", f"filtered data : {len(self.filtered_datas)}")
 
 
     def show_filter(self):
@@ -463,59 +507,42 @@ class ObjTracking(QtWidgets.QMainWindow):
         self.popup = dialog
         self.popup.cancel_btn.clicked.connect(self.popup.close)
         self.popup.setWindowTitle("Select item")
-        tb_show = self.popup.tb_show
+        tb_show = self.popup.tb_show1
+        self.popup.frame_2.setVisible(False)
         
+        header_items = ["No.", "Name", "Img", "Gender", "Hairstyle", "Attribute", "Vehicle No", "Car Type", "Brand", "Model", "Color"]
         data_to_show = self.filtered_datas
-        if self.last_radiobutton_checked == "Person":
-            self.popup.label_head.setText("Data Person")
-            tb_show.setRowCount(len(data_to_show))
-            tb_show.setColumnCount(len(self.datas1[0])+1)
-            
-            header = tb_show.horizontalHeader()
-            header.setMinimumHeight(34)
-            header.setDefaultAlignment(Qt.AlignCenter | Qt.Alignment(Qt.TextWordWrap))
-
-            header_items = ["No.", "Name", "Img", "Gender", "Hairstyle", "attribute"]
-            for i in range(tb_show.columnCount()):
-                hItem = QtWidgets.QTableWidgetItem(header_items[i])
-                tb_show.setHorizontalHeaderItem(i, hItem)
-                if i==0:
-                    tb_show.setColumnWidth(0, 20)
-                else:
-                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
+        self.popup.label_head1.setText("All Data Filter Results")
+        tb_show.setRowCount(len(data_to_show))
+        tb_show.setColumnCount(len(header_items))
         
-        elif self.last_radiobutton_checked == "Vehicle":
-            self.popup.label_head.setText("Data Vehicle")
-            tb_show.setRowCount(len(data_to_show))
-            tb_show.setColumnCount(len(self.datas2[0])+1)
-            
-            header = tb_show.horizontalHeader()
-            header.setMinimumHeight(34)
-            header.setDefaultAlignment(Qt.AlignCenter | Qt.Alignment(Qt.TextWordWrap))
+        header = tb_show.horizontalHeader()
+        header.setMinimumHeight(34)
+        header.setDefaultAlignment(Qt.AlignCenter | Qt.Alignment(Qt.TextWordWrap))
 
-            header_items = ["No.", "Vehicle No", "Car Type", "Brand", "Model", "Color"]
-            for i in range(tb_show.columnCount()):
-                hItem = QtWidgets.QTableWidgetItem(header_items[i])
-                tb_show.setHorizontalHeaderItem(i, hItem)
-                if i==0:
-                    tb_show.setColumnWidth(0, 20)
-                else:
-                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
-        else:
-            # QtWidgets.QMessageBox.critical(self, "Invalid input", "please, select both the Person or Vehicle radiobutton")
-            QtWidgets.QMessageBox.critical(self, "Searching result failed", "please, start the button 'Start Search' first to find!!")
-            self.popup.close()
-            return
-        
+        for i in range(tb_show.columnCount()):
+            hItem = QtWidgets.QTableWidgetItem(header_items[i])
+            tb_show.setHorizontalHeaderItem(i, hItem)
+            if i==0:
+                tb_show.setColumnWidth(0, 20)
+            else:
+                header.setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
+
         if data_to_show:
             for idx, data_num in enumerate(range(len(data_to_show))):
-                it = QtWidgets.QTableWidgetItem(str(idx+1))
-                it.setTextAlignment(Qt.AlignCenter)
-                tb_show.setItem(int(idx), 0, it)
                 for i, (key, value) in enumerate(data_to_show[data_num].items()):
-                    it = QtWidgets.QTableWidgetItem(str(value))
-                    it.setTextAlignment(Qt.AlignCenter)
-                    tb_show.setItem(int(idx), i+1, it)
-                    tb_show.cellClicked.connect(self.selected_row)
-
+                    if key == "id":
+                        it = QtWidgets.QTableWidgetItem(str(idx+1))
+                        it.setTextAlignment(Qt.AlignCenter)
+                        tb_show.setItem(int(idx), 0, it)
+                    elif key == "vehicles":
+                        if value is not False:
+                            it = QtWidgets.QTableWidgetItem(str(value))
+                            it.setTextAlignment(Qt.AlignCenter)
+                            tb_show.setItem(int(idx), i, it)
+                    else:
+                        it = QtWidgets.QTableWidgetItem(str(value))
+                        it.setTextAlignment(Qt.AlignCenter)
+                        tb_show.setItem(int(idx), i, it)
+        
         self.popup.exec()

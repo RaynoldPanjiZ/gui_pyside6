@@ -1,6 +1,6 @@
 from PySide6 import QtWidgets
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile, QIODevice, Qt
+from PySide6.QtCore import QFile, QIODevice, Qt, QDate, QTime
 from PySide6.QtGui import QGuiApplication
 import sys, os
 import shutil
@@ -41,6 +41,7 @@ class SystemSetting(QtWidgets.QMainWindow):
 
 
     def datetime(self):
+        from datetime import datetime
         loader = QUiLoader()
         ui_file = QFile("ui/admgui/all_ui/system_setting/ServerConnection_datesetting_dialog.ui")
         if not ui_file.open(QIODevice.ReadOnly):
@@ -50,6 +51,16 @@ class SystemSetting(QtWidgets.QMainWindow):
         ui_file.close()
         self.popup = dialog
         self.popup.setWindowTitle("Date/Time Settings")
+        
+        datenow = datetime.today().strftime('%Y-%m-%d')
+        q_date = QDate.fromString(datenow, "yyyy-MM-dd")
+        self.popup.dateEdit.setDate(q_date)
+
+        timenow = datetime.today().strftime('%H:%M:%S')
+        q_time = QTime.fromString(timenow)
+        self.popup.timeEdit.setTime(q_time)
+
+
         self.popup.exec()
 
     def server_connection(self, s):     # https://doc.qt.io/qt-6/qmessagebox.html

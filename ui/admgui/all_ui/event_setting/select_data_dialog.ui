@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>585</width>
-    <height>351</height>
+    <width>858</width>
+    <height>394</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -45,7 +45,7 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
-          <widget class="QLabel" name="label_head">
+          <widget class="QLabel" name="label_head1">
            <property name="font">
             <font>
              <weight>75</weight>
@@ -53,12 +53,12 @@
             </font>
            </property>
            <property name="text">
-            <string>Header</string>
+            <string>Header1</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QTableWidget" name="tb_show">
+          <widget class="QTableWidget" name="tb_show1">
            <property name="editTriggers">
             <set>QAbstractItemView::AnyKeyPressed|QAbstractItemView::EditKeyPressed</set>
            </property>

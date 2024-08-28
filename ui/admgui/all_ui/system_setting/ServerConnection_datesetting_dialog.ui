@@ -88,10 +88,14 @@
        </widget>
       </item>
       <item row="3" column="1" colspan="2">
-       <widget class="QComboBox" name="comboBox_3"/>
+       <widget class="QComboBox" name="timezone_combobox"/>
       </item>
       <item row="0" column="1">
-       <widget class="QDateEdit" name="dateEdit"/>
+       <widget class="QDateEdit" name="dateEdit">
+        <property name="displayFormat">
+         <string>yyyy-MM-dd</string>
+        </property>
+       </widget>
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label">
@@ -111,10 +115,30 @@
        <widget class="QComboBox" name="comboBox_2"/>
       </item>
       <item row="1" column="1">
-       <widget class="QTimeEdit" name="timeEdit"/>
+       <widget class="QTimeEdit" name="timeEdit">
+        <property name="currentSection">
+         <enum>QDateTimeEdit::HourSection</enum>
+        </property>
+        <property name="displayFormat">
+         <string>HH:mm:ss AP</string>
+        </property>
+        <property name="calendarPopup">
+         <bool>false</bool>
+        </property>
+        <property name="timeSpec">
+         <enum>Qt::LocalTime</enum>
+        </property>
+        <property name="time">
+         <time>
+          <hour>7</hour>
+          <minute>7</minute>
+          <second>0</second>
+         </time>
+        </property>
+       </widget>
       </item>
       <item row="4" column="1" colspan="2">
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="sync_ntpserver">
         <property name="text">
          <string>Synchronize The NTP Server</string>
         </property>
@@ -159,14 +183,14 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QPushButton" name="cancel_button">
         <property name="text">
          <string>Cancel</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_3">
+       <widget class="QPushButton" name="apply_button">
         <property name="text">
          <string>Apply</string>
         </property>
