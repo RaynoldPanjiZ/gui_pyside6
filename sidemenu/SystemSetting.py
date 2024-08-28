@@ -1,9 +1,14 @@
 from PySide6 import QtWidgets
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile, QIODevice, Qt, QDate, QTime
+from PySide6.QtCore import QFile, QIODevice, Qt, QDate, QTime, QTimeZone
 from PySide6.QtGui import QGuiApplication
 import sys, os
 import shutil
+import ntplib
+import time
+import platform
+from datetime import datetime
+from pytz import timezone
 
 style = None
 with open("ui/style/style_form.qss", "r") as file:
@@ -41,7 +46,6 @@ class SystemSetting(QtWidgets.QMainWindow):
 
 
     def datetime(self):
-        from datetime import datetime
         loader = QUiLoader()
         ui_file = QFile("ui/admgui/all_ui/system_setting/ServerConnection_datesetting_dialog.ui")
         if not ui_file.open(QIODevice.ReadOnly):
@@ -51,17 +55,59 @@ class SystemSetting(QtWidgets.QMainWindow):
         ui_file.close()
         self.popup = dialog
         self.popup.setWindowTitle("Date/Time Settings")
+
+        self.popup.sync_ntpserver.clicked.connect(self.sync_time)
+        self.popup.cancel_button.clicked.connect(self.popup.close)
+        self.popup.apply_button.clicked.connect(self.apply_datetime)
         
-        datenow = datetime.today().strftime('%Y-%m-%d')
-        q_date = QDate.fromString(datenow, "yyyy-MM-dd")
+        datetimenow = datetime.today()
+        self.date_field = datetimenow.strftime('%Y-%m-%d')
+        q_date = QDate.fromString(self.date_field, "yyyy-MM-dd")
         self.popup.dateEdit.setDate(q_date)
 
-        timenow = datetime.today().strftime('%H:%M:%S')
-        q_time = QTime.fromString(timenow)
+        self.time_field = datetimenow.strftime('%H:%M:%S')
+        q_time = QTime.fromString(self.time_field)
         self.popup.timeEdit.setTime(q_time)
 
+        self.timezone_name = '/'.join(os.path.realpath('/etc/localtime').split('/')[-2:])      ## https://stackoverflow.com/a/25634136
+
+        timezones = QTimeZone.availableTimeZoneIds()
+        for i, timezone in enumerate(timezones):
+            self.popup.timezone_combobox.addItem(timezone.data().decode("utf-8"))   ## https://forum.qt.io/post/426497
+            if timezone == self.timezone_name:
+                self.popup.timezone_combobox.setCurrentIndex(i)
 
         self.popup.exec()
+
+    def sync_time(self):
+        """Synchronize time with NTP server."""
+        self.timezone_name = self.popup.timezone_combobox.currentText()
+
+        try:
+            ## https://www.tutorialspoint.com/how-to-convert-date-and-time-with-different-timezones-in-python#:~:text=Enter%20the%20date%20format%20as,to%20it%20say%20'UTC'.
+            ## https://phoenixnap.com/kb/how-to-set-or-change-timezone-date-time-ubuntu
+            datetime_by_timezone = datetime.now(timezone(self.timezone_name))
+
+            datenow_format = datetime_by_timezone.strftime("%Y-%m-%d")
+            q_date = QDate.fromString(datenow_format, "yyyy-MM-dd")
+            self.popup.dateEdit.setDate(q_date)
+
+            timenow_format = datetime_by_timezone.strftime("%H:%M:%S")
+            q_time = QTime.fromString(timenow_format)
+            self.popup.timeEdit.setTime(q_time)
+
+            QtWidgets.QMessageBox.information(self, "NTP Sync", f"Time synchronized with NTP server.\nNTP Time: {timenow_format}\nTimezone: {self.timezone_name}")
+        except Exception as e:
+            QtWidgets.QMessageBox.critical(self, "NTP Sync Error", f"Failed to synchronize with NTP server.\nError: {str(e)}")
+
+    def apply_datetime(self):
+        if platform.system() == "Linux":
+            os.system("sudo timedatectl set-ntp yes")
+            os.system(f"sudo timedatectl set-timezone {self.timezone_name}")
+            os.system(f"timedatectl set-time {self.date_field}")
+            os.system(f"timedatectl set-time {self.time_field}")
+
+
 
     def server_connection(self, s):     # https://doc.qt.io/qt-6/qmessagebox.html
         print("click", s)
