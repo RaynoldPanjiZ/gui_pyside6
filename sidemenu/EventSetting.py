@@ -499,7 +499,7 @@ class ObjTracking(QtWidgets.QMainWindow):
                     # filter_d1["car_brand"] = ""
                     # filter_d1["car_model"] = ""
                     # filter_d1["color"] = ""
-                    filter_d1["vehicles"] = filter_d1["vehicles"] if filter_d1["vehicles"] is True else "None"
+                    filter_d1["vehicles"] = filter_d1["vehicles"] if filter_d1["vehicles"] is not False else "None"
                     self.filtered_datas.append(filter_d1)
             print(f"Filter Data: {self.filtered_datas}")
         elif not bool(re.search(r'[^\s]', name_filter)) and bool(re.search(r'[^\s]', vehicle_filter)):
