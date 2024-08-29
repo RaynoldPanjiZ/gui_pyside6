@@ -548,6 +548,7 @@ class ObjTracking(QtWidgets.QMainWindow):
         self.popup.setWindowTitle("Select item")
         tb_show = self.popup.tb_show1
         
+        self.popup.label_head1.setText("All Data Filter Results")
         data_to_show = self.filtered_datas
         if data_to_show:
             ## define table header
@@ -556,7 +557,6 @@ class ObjTracking(QtWidgets.QMainWindow):
                 header_items = ["No.", "Name", "Img", "Gender", "Hairstyle", "Attribute", "Vehicle No"]
             else:
                 header_items = ["No.", "Name", "Img", "Gender", "Hairstyle", "Attribute", "Vehicle No", "Car Type", "Brand", "Model", "Color"]
-            self.popup.label_head1.setText("All Data Filter Results")
             tb_show.setRowCount(len(data_to_show))
             tb_show.setColumnCount(len(header_items))
             
