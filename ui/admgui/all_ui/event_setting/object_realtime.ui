@@ -214,7 +214,16 @@
              <property name="text">
               <string>Male</string>
              </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
              <property name="checked">
+              <bool>false</bool>
+             </property>
+             <property name="autoRepeat">
+              <bool>false</bool>
+             </property>
+             <property name="autoExclusive">
               <bool>true</bool>
              </property>
             </widget>
@@ -282,7 +291,13 @@
              <property name="text">
               <string>Long</string>
              </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
              <property name="checked">
+              <bool>false</bool>
+             </property>
+             <property name="autoExclusive">
               <bool>true</bool>
              </property>
             </widget>

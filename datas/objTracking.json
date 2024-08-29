@@ -49,6 +49,18 @@
                 "Mask"
             ],
             "vehicles": false
+        },
+        {
+            "id": 3,
+            "name": "Hong Gil Dong",
+            "img": "imgs/test.jpg",
+            "gender": "Male",
+            "hairstyle": "Long",
+            "attribute": [
+                "Hat",
+                "Bag"
+            ],
+            "vehicles": false
         }
     ],
     "vehicle": [

@@ -5,6 +5,7 @@ from PySide6.QtGui import QPixmap, QImage
 import sys, os
 import cv2
 import json
+import re
 
 # print(os.getcwd())
 style = None
@@ -460,35 +461,74 @@ class ObjTracking(QtWidgets.QMainWindow):
         print(f"Filter vehicle: {vehicle_filter}, {type_fliter}, {brnad_fliter}, {model_fliter}, {color_fliter}")
         
         self.filtered_datas = []
-        for d1 in self.datas1:
-            name_match = d1["name"] == name_filter
-            gender_match = d1["gender"] == gender_fliter
-            hair_match = d1["hairstyle"] == hairstyle_fliter
-            vehicle_match = False
-            if d1["vehicles"]:
-                for d2 in self.datas2:
-                    vehicle_match = vehicle_filter in d1["vehicles"] and vehicle_filter in d2["vehicle_no"]
-                    if vehicle_match:
-                        type_match = d2["type"] == type_fliter
-                        brand_match = d2["brand"] == brnad_fliter
-                        model_match = d2["model"] == model_fliter
-                        color_match = d2["color"] == color_fliter
-                    
-                        if type_match and brand_match and model_match and color_match:
-                            vehicle_match = True
+        if bool(re.search(r'[^\s]', name_filter)) and bool(re.search(r'[^\s]', vehicle_filter)):
+            for d1 in self.datas1:
+                name_match = d1["name"] == name_filter
+                # gender_match = d1["gender"] == gender_fliter
+                # hair_match = d1["hairstyle"] == hairstyle_fliter
+                vehicle_match = False
+                if d1["vehicles"]:
+                    for d2 in self.datas2:
+                        vehicle_match = vehicle_filter in d1["vehicles"] and vehicle_filter in d2["vehicle_no"]
+                        if vehicle_match:
+                            # type_match = d2["type"] == type_fliter
+                            # brand_match = d2["brand"] == brnad_fliter
+                            # model_match = d2["model"] == model_fliter
+                            # color_match = d2["color"] == color_fliter
+                        
+                            # if type_match and brand_match and model_match and color_match:
+                            #     vehicle_match = True
                             break
-                    vehicle_match = False
-            
-            if name_match and gender_match and hair_match and vehicle_match:
-                filter_d1 = d1.copy()
-                filter_d1["vehicles"] = vehicle_filter
-                filter_d1["car_type"] = type_fliter
-                filter_d1["car_brand"] = brnad_fliter
-                filter_d1["car_model"] = model_fliter
-                filter_d1["color"] = color_fliter
-                self.filtered_datas.append(filter_d1)            
-        print(f"Filter Data: {self.filtered_datas}")
-        
+                        vehicle_match = False
+                
+                if name_match and vehicle_match:
+                    filter_d1 = d1.copy()
+                    filter_d1["vehicles"] = vehicle_filter
+                    filter_d1["car_type"] = type_fliter
+                    filter_d1["car_brand"] = brnad_fliter
+                    filter_d1["car_model"] = model_fliter
+                    filter_d1["color"] = color_fliter
+                    self.filtered_datas.append(filter_d1)            
+            print(f"Filter Data: {self.filtered_datas}")
+        elif bool(re.search(r'[^\s]', name_filter)) and not bool(re.search(r'[^\s]', vehicle_filter)):
+            for d1 in self.datas1:
+                name_match = d1["name"] == name_filter
+                if name_match:
+                    filter_d1 = d1.copy()
+                    # filter_d1["car_type"] = ""
+                    # filter_d1["car_brand"] = ""
+                    # filter_d1["car_model"] = ""
+                    # filter_d1["color"] = ""
+                    filter_d1["vehicles"] = filter_d1["vehicles"] if filter_d1["vehicles"] is True else "None"
+                    self.filtered_datas.append(filter_d1)
+            print(f"Filter Data: {self.filtered_datas}")
+        elif not bool(re.search(r'[^\s]', name_filter)) and bool(re.search(r'[^\s]', vehicle_filter)):
+            for d2 in self.datas2:
+                vehicle_match = d2["vehicle_no"] == vehicle_filter
+                if vehicle_match:
+                    filter_d1 = dict()
+                    filter_d2 = d2.copy()
+                    if d2["person_id"] is not False:
+                        for d1 in self.datas1:
+                            if d1["id"] == d2["person_id"]:
+                                filter_d1 = d1.copy()
+                                del filter_d1["vehicles"]
+                                break
+                    else:
+                        filter_d1 = {
+                            "id":"",
+                            "name": "None",
+                            "img": "None",
+                            "gender": "None",
+                            "hairstyle": "None",
+                            "attribute": "None",
+                        }
+
+                    filter_d1.update(filter_d2)
+                    del filter_d1["person_id"]
+                    self.filtered_datas.append(filter_d1)
+            print(f"Filter Data: {self.filtered_datas}")
+
         if self.filtered_datas:
             QtWidgets.QMessageBox.information(self, "Searching info", f"filtered data : {len(self.filtered_datas)}")
         else:
@@ -508,25 +548,37 @@ class ObjTracking(QtWidgets.QMainWindow):
         self.popup.setWindowTitle("Select item")
         tb_show = self.popup.tb_show1
         
-        header_items = ["No.", "Name", "Img", "Gender", "Hairstyle", "Attribute", "Vehicle No", "Car Type", "Brand", "Model", "Color"]
         data_to_show = self.filtered_datas
-        self.popup.label_head1.setText("All Data Filter Results")
-        tb_show.setRowCount(len(data_to_show))
-        tb_show.setColumnCount(len(header_items))
-        
-        header = tb_show.horizontalHeader()
-        header.setMinimumHeight(34)
-        header.setDefaultAlignment(Qt.AlignCenter | Qt.Alignment(Qt.TextWordWrap))
-
-        for i in range(tb_show.columnCount()):
-            hItem = QtWidgets.QTableWidgetItem(header_items[i])
-            tb_show.setHorizontalHeaderItem(i, hItem)
-            if i==0:
-                tb_show.setColumnWidth(0, 20)
-            else:
-                header.setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
-
         if data_to_show:
+            ## define table header
+            header_items = []
+            if len(data_to_show[0]) == 7:
+                header_items = ["No.", "Name", "Img", "Gender", "Hairstyle", "Attribute", "Vehicle No"]
+            else:
+                header_items = ["No.", "Name", "Img", "Gender", "Hairstyle", "Attribute", "Vehicle No", "Car Type", "Brand", "Model", "Color"]
+            self.popup.label_head1.setText("All Data Filter Results")
+            tb_show.setRowCount(len(data_to_show))
+            tb_show.setColumnCount(len(header_items))
+            
+            header = tb_show.horizontalHeader()
+            header.setMinimumHeight(34)
+            header.setDefaultAlignment(Qt.AlignCenter | Qt.Alignment(Qt.TextWordWrap))
+
+            for i in range(tb_show.columnCount()):
+                hItem = QtWidgets.QTableWidgetItem(header_items[i])
+                tb_show.setHorizontalHeaderItem(i, hItem)
+                if i==0:
+                    tb_show.setColumnWidth(i, 20)
+                elif i==1:
+                    tb_show.setColumnWidth(i, 100)
+                elif i==5:
+                    tb_show.setColumnWidth(i, 120)
+                elif i==6:
+                    tb_show.setColumnWidth(i, 120)
+                else:
+                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
+
+            ## show data
             for idx, data_num in enumerate(range(len(data_to_show))):
                 for i, (key, value) in enumerate(data_to_show[data_num].items()):
                     if key == "id":
