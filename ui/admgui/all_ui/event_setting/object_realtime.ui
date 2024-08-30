@@ -203,11 +203,9 @@
          </item>
          <item>
           <widget class="QComboBox" name="model_comboBox">
-           <item>
-            <property name="text">
-             <string>-- Select Item --</string>
-            </property>
-           </item>
+           <property name="currentIndex">
+            <number>-1</number>
+           </property>
            <item>
             <property name="text">
              <string>Grandeur</string>
@@ -248,11 +246,9 @@
          </item>
          <item>
           <widget class="QComboBox" name="color_comboBox">
-           <item>
-            <property name="text">
-             <string>-- Select Item --</string>
-            </property>
-           </item>
+           <property name="currentIndex">
+            <number>-1</number>
+           </property>
            <item>
             <property name="text">
              <string>Black</string>
@@ -321,11 +317,9 @@
          </item>
          <item>
           <widget class="QComboBox" name="brand_comboBox">
-           <item>
-            <property name="text">
-             <string>-- Select Item --</string>
-            </property>
-           </item>
+           <property name="currentIndex">
+            <number>-1</number>
+           </property>
            <item>
             <property name="text">
              <string>Hyundai</string>
@@ -376,11 +370,15 @@
          </item>
          <item>
           <widget class="QComboBox" name="car_comboBox">
-           <item>
-            <property name="text">
-             <string>-- Select Item --</string>
-            </property>
-           </item>
+           <property name="currentText">
+            <string/>
+           </property>
+           <property name="currentIndex">
+            <number>-1</number>
+           </property>
+           <property name="placeholderText">
+            <string/>
+           </property>
            <item>
             <property name="text">
              <string>Car</string>

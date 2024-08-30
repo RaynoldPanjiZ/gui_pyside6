@@ -441,84 +441,114 @@ class ObjTracking(QtWidgets.QMainWindow):
         name_filter = self.w.personName.text()
         gender_fliter = "Male" if self.w.Gmale_radiobtn.isChecked() else "Female" if self.w.Gfemale_radiobtn.isChecked() else None
         hairstyle_fliter = "Long" if self.w.Hlong_radiobtn.isChecked() else "Short" if self.w.Hshort_radiobtn.isChecked() else None
+        attrs_filter = []
+        for chbx in self.w.attr_checkboxGroup.parentWidget().findChildren(QtWidgets.QCheckBox):
+            if chbx.isChecked():
+                attrs_filter.append(chbx.text())
 
         vehicle_filter = self.w.noVehicle.text()
         type_fliter = self.w.car_comboBox.currentText()
-        brnad_fliter = self.w.brand_comboBox.currentText()
+        brand_fliter = self.w.brand_comboBox.currentText()
         model_fliter = self.w.model_comboBox.currentText()
         color_fliter = self.w.color_comboBox.currentText()
+        # print(type_fliter, type_fliter=="")
 
         print(f"Filter person: {name_filter}, {gender_fliter}, {hairstyle_fliter}")
-        print(f"Filter vehicle: {vehicle_filter}, {type_fliter}, {brnad_fliter}, {model_fliter}, {color_fliter}")
+        print(f"Filter vehicle: {vehicle_filter}, {type_fliter}, {brand_fliter}, {model_fliter}, {color_fliter}")
         
-        self.filtered_datas = []
-        if bool(re.search(r'[^\s]', name_filter)) and bool(re.search(r'[^\s]', vehicle_filter)):
-            for d1 in self.datas1:
-                name_match = d1["name"] == name_filter
-                # gender_match = d1["gender"] == gender_fliter
-                # hair_match = d1["hairstyle"] == hairstyle_fliter
-                vehicle_match = False
-                if d1["vehicles"]:
-                    for d2 in self.datas2:
-                        vehicle_match = vehicle_filter in d1["vehicles"] and vehicle_filter in d2["vehicle_no"]
-                        if vehicle_match:
-                            # type_match = d2["type"] == type_fliter
-                            # brand_match = d2["brand"] == brnad_fliter
-                            # model_match = d2["model"] == model_fliter
-                            # color_match = d2["color"] == color_fliter
-                        
-                            # if type_match and brand_match and model_match and color_match:
-                            #     vehicle_match = True
-                            break
-                        vehicle_match = False
-                
-                if name_match and vehicle_match:
-                    filter_d1 = d1.copy()
-                    filter_d1["vehicles"] = vehicle_filter
-                    filter_d1["car_type"] = type_fliter
-                    filter_d1["car_brand"] = brnad_fliter
-                    filter_d1["car_model"] = model_fliter
-                    filter_d1["color"] = color_fliter
-                    self.filtered_datas.append(filter_d1)            
-            print(f"Filter Data: {self.filtered_datas}")
-        elif bool(re.search(r'[^\s]', name_filter)) and not bool(re.search(r'[^\s]', vehicle_filter)):
-            for d1 in self.datas1:
-                name_match = d1["name"] == name_filter
-                if name_match:
-                    filter_d1 = d1.copy()
-                    # filter_d1["car_type"] = ""
-                    # filter_d1["car_brand"] = ""
-                    # filter_d1["car_model"] = ""
-                    # filter_d1["color"] = ""
-                    filter_d1["vehicles"] = filter_d1["vehicles"] if filter_d1["vehicles"] is not False else "None"
-                    self.filtered_datas.append(filter_d1)
-            print(f"Filter Data: {self.filtered_datas}")
-        elif not bool(re.search(r'[^\s]', name_filter)) and bool(re.search(r'[^\s]', vehicle_filter)):
-            for d2 in self.datas2:
-                vehicle_match = d2["vehicle_no"] == vehicle_filter
-                if vehicle_match:
-                    filter_d1 = dict()
-                    filter_d2 = d2.copy()
-                    if d2["person_id"] is not False:
-                        for d1 in self.datas1:
-                            if d1["id"] == d2["person_id"]:
-                                filter_d1 = d1.copy()
-                                del filter_d1["vehicles"]
-                                break
-                    else:
-                        filter_d1 = {
-                            "id":"",
-                            "name": "None",
-                            "img": "None",
-                            "gender": "None",
-                            "hairstyle": "None",
-                            "attribute": "None",
-                        }
+        nameIsset = bool(re.search(r'[^\s]', name_filter))
+        genderIsset = gender_fliter is not None
+        hairIsset = hairstyle_fliter is not None
+        attrIsset = len(attrs_filter) > 0
 
-                    filter_d1.update(filter_d2)
-                    del filter_d1["person_id"]
-                    self.filtered_datas.append(filter_d1)
+        vehicleIsset = bool(re.search(r'[^\s]', vehicle_filter))
+        typeIsset = type_fliter != ''
+        brandIsset = brand_fliter != ''
+        modelIsset = model_fliter != ''
+        colorIsset = color_fliter != ''
+
+        self.filtered_datas = []
+        filtered1 = []
+        isDataFiltered1 = False
+        filtered2 = []
+        isDataFiltered2 = False
+
+        if (nameIsset or genderIsset or hairIsset or attrIsset) :
+            # and not (vehicleIsset and typeIsset and brandIsset):
+            for d1 in self.datas1:
+                name_match = name_filter == '' or d1["name"] == name_filter
+                gender_match = gender_fliter is None or d1["gender"] == gender_fliter
+                hair_match = hairstyle_fliter is None or d1["hairstyle"] == hairstyle_fliter
+                attrs_match = set(attrs_filter).issubset(set(d1["attribute"]))
+                if (name_match and gender_match and hair_match and attrs_match):
+                    filtered1.append(d1)
+            isDataFiltered1 = True
+        # elif not (nameIsset and genderIsset and hairIsset) \
+        if (vehicleIsset or typeIsset or brandIsset or modelIsset or colorIsset):    
+            for d2 in self.datas2:
+                vehicle_match = vehicle_filter == '' or d2["vehicle_no"] == vehicle_filter
+                type_match = type_fliter == '' or d2["type"] == type_fliter
+                brand_match = brand_fliter == '' or d2["brand"] == brand_fliter
+                model_match = model_fliter == '' or d2["model"] == model_fliter
+                color_match = color_fliter == '' or d2["color"] == color_fliter
+                if (vehicle_match and type_match and brand_match and model_match and color_match):
+                    filtered2.append(d2)
+            isDataFiltered2 = True
+
+        print(isDataFiltered1, "  ", isDataFiltered2)
+
+        if isDataFiltered1 and isDataFiltered2:
+            for fil1 in filtered1:
+                filter_d2 = dict()
+                if fil1["vehicles"]:
+                    for fil2 in filtered2:
+                        if fil2["vehicle_no"] in fil1["vehicles"]:
+                            vehicle_match = vehicle_filter == '' or vehicle_filter in fil1["vehicles"] 
+                            type_match = type_fliter == '' or type_fliter == fil2["type"] 
+                            brand_match = brand_fliter == '' or brand_fliter == fil2["brand"] 
+                            model_match = model_fliter == '' or model_fliter == fil2["model"] 
+                            color_match = color_fliter == '' or color_fliter == fil2["color"] 
+                
+                            if vehicle_match and type_match and brand_match and model_match and color_match:
+                                filter_d1 = fil1.copy()
+                                filter_d1["vehicles"] = fil2["vehicle_no"]
+                                filter_d1["car_type"] = fil2["type"]
+                                filter_d1["car_brand"] = fil2["brand"]
+                                filter_d1["car_model"] = fil2["model"]
+                                filter_d1["color"] = fil2["color"]
+                                self.filtered_datas.append(filter_d1)
             print(f"Filter Data: {self.filtered_datas}")
+        elif (isDataFiltered1) and (not isDataFiltered2):
+            for fil1 in filtered1:
+                filter_d1 = fil1.copy()
+                filter_d1["vehicles"] = filter_d1["vehicles"] if filter_d1["vehicles"] is not False else "None"
+                self.filtered_datas.append(filter_d1)
+            print(f"Filter Data: {self.filtered_datas}")
+        elif (not isDataFiltered1) and (isDataFiltered2):
+            for fil2 in filtered2:
+                filter_d1 = dict()
+                filter_d2 = fil2.copy()
+                if fil2["person_id"] is not False:
+                    for d1 in self.datas1:
+                        if d1["id"] == fil2["person_id"]:
+                            filter_d1 = d1.copy()
+                            del filter_d1["vehicles"]
+                            break
+                else:
+                    filter_d1 = {
+                        "id":"",
+                        "name": "None",
+                        "img": "None",
+                        "gender": "None",
+                        "hairstyle": "None",
+                        "attribute": "None",
+                    }
+
+                filter_d1.update(filter_d2)
+                del filter_d1["person_id"]
+                self.filtered_datas.append(filter_d1)
+            print(f"Filter Data: {self.filtered_datas}")
+
 
         if self.filtered_datas:
             QtWidgets.QMessageBox.information(self, "Searching info", f"filtered data : {len(self.filtered_datas)}")
@@ -611,10 +641,10 @@ class ObjTracking(QtWidgets.QMainWindow):
         for chbx in checkboxes:
             chbx.setChecked(False)
         ## reset combobox
-        self.w.car_comboBox.setCurrentIndex(0)
-        self.w.brand_comboBox.setCurrentIndex(0)
-        self.w.model_comboBox.setCurrentIndex(0)
-        self.w.color_comboBox.setCurrentIndex(0)
+        self.w.car_comboBox.setCurrentIndex(-1)
+        self.w.brand_comboBox.setCurrentIndex(-1)
+        self.w.model_comboBox.setCurrentIndex(-1)
+        self.w.color_comboBox.setCurrentIndex(-1)
 
     def close_form(self):
         if self.timer:
