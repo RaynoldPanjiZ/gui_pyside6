@@ -55,6 +55,8 @@ class ObjTracking(QtWidgets.QMainWindow):
         self.w.vehicle_select_btn.clicked.connect(self.select_form)
         self.w.vehicle_newReg_btn.clicked.connect(self.new_registVehicle)
         
+        self.w.reset_btn.clicked.connect(self.reset_input)
+        
         self.cameralist = {
             "vid1": "vid/test1.mp4", 
             "vid2": "vid/test2.mp4", 
@@ -433,17 +435,6 @@ class ObjTracking(QtWidgets.QMainWindow):
         self.imlen = len(os.listdir("./imgs/profile"))
         self.close_form()
 
-    def close_form(self):
-        if self.timer:
-            self.timer.stop()
-        if self.camera:
-            self.camera.release()
-            self.camera = None
-            # cv2.destroyAllWindows()
-        if self.popup:
-            self.popup.close()
-            self.popup = None
-
 
 
     def handle_filter(self):
@@ -596,3 +587,43 @@ class ObjTracking(QtWidgets.QMainWindow):
                         tb_show.setItem(int(idx), i, it)
         
         self.popup.exec()
+
+
+
+
+    def reset_input(self):
+        ## reset person name
+        self.w.personName.setText("")
+        ## reset vehicle no
+        self.w.noVehicle.setText("")
+        ## reset gender radiobutton
+        self.w.genderbtngroup.setExclusive(False)
+        self.w.Gmale_radiobtn.setChecked(False)
+        self.w.Gfemale_radiobtn.setChecked(False)
+        self.w.genderbtngroup.setExclusive(True)
+        ## reset hairstyle radiobutton
+        self.w.hairbtngroup.setExclusive(False)
+        self.w.Hlong_radiobtn.setChecked(False)
+        self.w.Hshort_radiobtn.setChecked(False)
+        self.w.hairbtngroup.setExclusive(True)
+        ## reset attributes
+        checkboxes = self.w.attr_checkboxGroup.parentWidget().findChildren(QtWidgets.QCheckBox)
+        for chbx in checkboxes:
+            chbx.setChecked(False)
+        ## reset combobox
+        self.w.car_comboBox.setCurrentIndex(0)
+        self.w.brand_comboBox.setCurrentIndex(0)
+        self.w.model_comboBox.setCurrentIndex(0)
+        self.w.color_comboBox.setCurrentIndex(0)
+
+    def close_form(self):
+        if self.timer:
+            self.timer.stop()
+        if self.camera:
+            self.camera.release()
+            self.camera = None
+            # cv2.destroyAllWindows()
+        if self.popup:
+            self.popup.close()
+            self.popup = None
+
