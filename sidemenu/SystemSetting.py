@@ -3,8 +3,9 @@ from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile, QIODevice, Qt, QDate, QTime, QTimeZone
 from PySide6.QtGui import QGuiApplication
 import sys, os
+import subprocess
 import shutil
-import ntplib
+# import ntplib
 import time
 import platform
 from datetime import datetime
@@ -39,10 +40,36 @@ class SystemSetting(QtWidgets.QMainWindow):
         self.w.storageSpace_edit.setText(free_gb)
         self.w.storageSpace_percent.setText(free_percent)
 
+        screen_list = [
+            "800x600", 
+            "1024x768", 
+            "1280x720", 
+            "1280x1024", 
+            "1366x768", 
+            "1920x1080", 
+            "1920x1200"
+        ]
+
         screen = self.screen().availableGeometry()
-        screen_n = f"{screen.width()} x {screen.height()}"
+        screen_n = f"{screen.width()}x{screen.height()}"
         print(screen_n)
-        self.w.screen_comboBox.addItems([screen_n])
+        self.w.screen_comboBox.addItems(screen_list)
+        for i, scr in enumerate(screen_list):
+            if scr == screen_n:
+                self.w.screen_comboBox.setCurrentIndex(i)
+                break
+        self.w.screen_comboBox.currentIndexChanged.connect(self.change_resolution)
+    
+    def change_resolution(self):
+        selected_resolution = self.w.screen_comboBox.currentText()
+        xres, yres = selected_resolution.split('x')     # Split resolution to xres dan yres
+        
+        # fbset command https://www.linuxquestions.org/questions/linux-from-scratch-13/so-i-got-fbset-working-can-change-resolution-at-run-time-4175502019/
+        try:
+            subprocess.run(['fbset', '-xres', xres, '-yres', yres, '-match'], check=True)
+            QtWidgets.QMessageBox.information(self, "Display resolution", f"Resolution successfully changed to : {selected_resolution}")
+        except subprocess.CalledProcessError as e:
+            QtWidgets.QMessageBox.critical(self, "Error", f"Failed to changed resolution: {e}")
 
 
     def datetime(self):

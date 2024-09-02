@@ -96,8 +96,7 @@ class MainWindow(QtWidgets.QMainWindow):
         print(self.timer.isActive())
 
     def update_gui(self):
-        # hostname = socket.gethostname()
-        # IPAddr = socket.gethostbyname(hostname)
+        sw_id = "123KOR456"
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(("8.8.8.8", 80))
         IPAddr_s = s.getsockname()[0]
