@@ -150,6 +150,7 @@ class SystemSetting(QtWidgets.QMainWindow):
     def apply_sync(self):
         if platform.system() == "Linux":
             os.system("sudo timedatectl set-ntp yes")
+            os.system(f"sudo timedatectl set-timezone {self.timezone_name}")
         self.ntp_sync_active = False
         self.popup.close()
 
