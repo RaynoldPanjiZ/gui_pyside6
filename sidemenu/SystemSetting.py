@@ -85,7 +85,8 @@ class SystemSetting(QtWidgets.QMainWindow):
 
         self.popup.sync_ntpserver.clicked.connect(self.sync_time)
         self.popup.cancel_button.clicked.connect(self.popup.close)
-        self.popup.apply_button.clicked.connect(self.apply_datetime)
+        self.popup.apply_button.clicked.connect(self.apply_btn)
+        self.ntp_sync_active = False
         
         datetimenow = datetime.today()
         self.date_field = datetimenow.strftime('%Y-%m-%d')
@@ -123,25 +124,34 @@ class SystemSetting(QtWidgets.QMainWindow):
             q_time = QTime.fromString(timenow_format)
             self.popup.timeEdit.setTime(q_time)
 
-            self.popup.apply_button.clicked.connect(self.apply_sync)
+            # self.popup.apply_button.clicked.connect(self.apply_sync)
+            self.ntp_sync_active = True
 
             QtWidgets.QMessageBox.information(self, "NTP Sync", f"Time synchronized with NTP server.\nNTP Time: {timenow_format}\nTimezone: {self.timezone_name}")
         except Exception as e:
             QtWidgets.QMessageBox.critical(self, "NTP Sync Error", f"Failed to synchronize with NTP server.\nError: {str(e)}")
     
-    def apply_datetime(self):
+    def apply_btn(self):
+        if self.ntp_sync_active:
+            self.apply_sync()
+        else:
+            self.apply_datetime_change()
+    
+    
+    def apply_datetime_change(self):
         if platform.system() == "Linux":
             os.system("sudo timedatectl set-ntp no")
             # os.system(f"sudo timedatectl set-timezone {self.timezone_name}")
             os.system(f"sudo timedatectl set-time {self.date_field}")
             os.system(f"sudo timedatectl set-time {self.time_field}")
-            self.popup.close()
+        self.ntp_sync_active = False
+        self.popup.close()
 
     def apply_sync(self):
         if platform.system() == "Linux":
             os.system("sudo timedatectl set-ntp yes")
-            # os.system(f"sudo timedatectl set-time {self.date_field}")
-            # os.system(f"sudo timedatectl set-time {self.time_field}")
+        self.ntp_sync_active = False
+        self.popup.close()
 
 
 
