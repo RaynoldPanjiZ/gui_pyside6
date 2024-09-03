@@ -61,6 +61,17 @@
                 "Bag"
             ],
             "vehicles": false
+        },
+        {
+            "id": 12,
+            "name": "test2",
+            "img": "./imgs/profile/p_22.jpg",
+            "gender": "Female",
+            "hairstyle": "Long",
+            "attribute": [
+                "Bag"
+            ],
+            "vehicles": false
         }
     ],
     "vehicle": [
@@ -86,6 +97,14 @@
             "brand": "Mazda",
             "model": "Grandeur",
             "color": "White",
+            "person_id": false
+        },
+        {
+            "vehicle_no": "9999 8888",
+            "type": "Car",
+            "brand": "Honda",
+            "model": "Grandeur",
+            "color": "Blue",
             "person_id": false
         }
     ]

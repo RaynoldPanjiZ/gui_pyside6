@@ -139,11 +139,18 @@ class SystemSetting(QtWidgets.QMainWindow):
     
     
     def apply_datetime_change(self):
+        dateedit = self.popup.dateEdit.date()
+        self.date_field = dateedit.toString('yyyy-MM-dd')
+
+        timeedit = self.popup.timeEdit.time()
+        self.time_field = timeedit.toString('HH:mm:ss')
+
         if platform.system() == "Linux":
             os.system("sudo timedatectl set-ntp no")
             # os.system(f"sudo timedatectl set-timezone {self.timezone_name}")
             os.system(f"sudo timedatectl set-time {self.date_field}")
             os.system(f"sudo timedatectl set-time {self.time_field}")
+            print(self.date_field, self.time_field)
         self.ntp_sync_active = False
         self.popup.close()
 
