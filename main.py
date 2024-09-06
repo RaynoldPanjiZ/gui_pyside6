@@ -26,6 +26,20 @@ from sidemenu.SystemLog import SystemLog
 
 from sidemenu.SystemLogin import SystemLogin
 
+from utils.ScreenKeyboard import InputHandler, ScreenKeyboard 
+from utils import UtilsVariables
+
+
+class KeyboardThread(QThread):
+    def __init__(self, input_handler):
+        super().__init__()
+        self.input_handler = input_handler
+
+    def run(self):
+        # Connect the key pressed signal to the input handler's function
+        self.input_handler.keyboard.key_pressed.connect(self.input_handler.on_key_pressed)
+        self.exec_()
+
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, w):
@@ -41,6 +55,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.w.map_mng_frame.setVisible(False)
         self.w.delete_cam_btn.clicked.connect(self.delete_camera_dialog)
+        
+        self.key_widget = None
+        self.input_handler = None
         
         self.popup = None  # Keep a reference to the popup
         self.sidebar_forms = [
@@ -105,6 +122,38 @@ class MainWindow(QtWidgets.QMainWindow):
         datetime_s = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
         self.w.datetime_foot.setText(datetime_s)
 
+    
+    def screen_keyboard(self):
+        print("Key Active:", UtilsVariables.keyboard_active)
+        if UtilsVariables.keyboard_active:
+            if self.key_widget is None:
+                loader = QUiLoader()
+                ui_file = QFile("ui/admgui/all_ui/keyboard.ui")
+                if not ui_file.open(QIODevice.ReadOnly):
+                    print(f"Cannot open UI file: {ui_file.errorString()}")
+                    return
+                ui = loader.load(ui_file, self)
+                ui_file.close()
+                self.key_widget = ScreenKeyboard(ui)
+                self.key_widget.show()
+
+                self.input_handler = InputHandler(self.key_widget)
+                self.popup.regist_widgets(self.input_handler)
+                self.key_widget.key_pressed.connect(self.input_handler.on_key_pressed) # Connect the keyboard signal to the handler
+                UtilsVariables.key_widget_func(self.key_widget)
+                # print("main: True")
+            # else:
+            #     print("main: False")
+            #     print(UtilsVariables.key_widget)
+            #     print()
+            #     print(self.popup.input_handler)
+
+        else:
+            if self.key_widget is not None:
+                # if self.key_widget.isActiveWindow() == True
+                self.key_widget.close()
+                self.key_widget = None
+                
 
     def show_popup(self, event, PopupClass):
         print("Success!")
@@ -126,6 +175,19 @@ class MainWindow(QtWidgets.QMainWindow):
             self.w.map_mng_frame.setVisible(False)
         
         self.popup.show()
+        
+
+        if event == 7:
+            print("1",self.popup.w.groupbtnKeyboard)
+            print("2",dialog.groupbtnKeyboard)
+            self.popup.w.groupbtnKeyboard.buttonClicked.connect(self.screen_keyboard)
+            if self.input_handler is not None:
+                self.popup.regist_widgets(self.input_handler)
+        else:
+            if UtilsVariables.keyboard_active:
+                self.screen_keyboard()
+            self.input_handler = None
+            # print(self.input_handler)
     
     def delete_camera_dialog(self):
         dlg = QtWidgets.QMessageBox(self)

@@ -1,68 +1,10 @@
 from PySide6 import QtWidgets
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile, QIODevice, Qt, Signal
+from PySide6.QtCore import QFile, QIODevice, Qt, Signal, QObject
 
-# print(os.getcwd())
 style = None
 with open("ui/style/style_form.qss", "r") as file:
     style = file.read()
-
-
-
-# loader = QUiLoader()
-# ui_file = QFile("ui/admgui/all_ui/keyboard.ui")
-# if not ui_file.open(QIODevice.ReadOnly):
-#     print(f"Cannot open UI file: {ui_file.errorString()}")
-# ui = loader.load(ui_file)
-# ui_file.close()
-
-class ScreenKeyboard2(QtWidgets.QWidget):
-    key_pressed = Signal(str)  # Signal to emit the key pressed
-
-    def __init__(self):
-        super().__init__()
-
-        self.setWindowTitle("Virtual Keyboard")
-
-        # Create layout
-        layout = QtWidgets.QGridLayout()
-
-        # Define buttons for the virtual keyboard
-        buttons = [
-            '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-            'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
-            'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L',
-            'Z', 'X', 'C', 'V', 'B', 'N', 'M',
-            'Space', 'Backspace'
-        ]
-
-        # Add buttons to layout
-        for i, button in enumerate(buttons):
-            if button == "Space":
-                btn = QtWidgets.QPushButton(" ")
-                btn.clicked.connect(lambda _, b=button: self.on_button_click(b))
-                layout.addWidget(btn, 4, 0, 1, 10)
-            elif button == "Backspace":
-                btn = QtWidgets.QPushButton("Backspace")
-                btn.clicked.connect(lambda _, b=button: self.on_button_click(b))
-                layout.addWidget(btn, 5, 8, 1, 2)
-            else:
-                btn = QtWidgets.QPushButton(button)
-                btn.clicked.connect(lambda _, b=button: self.on_button_click(b))
-                row, col = divmod(i, 10)
-                layout.addWidget(btn, row, col)
-
-        self.setLayout(layout)
-
-    def on_button_click(self, button_text):
-        # Emit signal with the button text
-        if button_text == "Backspace":
-            self.key_pressed.emit("\b")  # Send backspace signal
-        elif button_text == "Space":
-            self.key_pressed.emit(" ")  # Send space signal
-        else:
-            self.key_pressed.emit(button_text)
-
 
 class ScreenKeyboard(QtWidgets.QMainWindow):
     key_pressed = Signal(str)
@@ -140,3 +82,59 @@ class ScreenKeyboard(QtWidgets.QMainWindow):
             self.key_pressed.emit(" ")  # Send space signal
         else:
             self.key_pressed.emit(button_text)
+
+
+
+virtual_key = ""
+class InputHandler(QObject):
+    def __init__(self, keyboard, parent=None):
+        super().__init__()
+        self.keyboard = keyboard
+        self.current_input_widget = None
+
+    def eventFilter(self, source, event):       ## https://stackoverflow.com/questions/66235661/qevent-mousebuttonpress-enum-type-missing-in-pyqt6
+        global virtual_key
+        # print(event.type())
+        if event.type() == event.Type.MouseButtonPress:
+            self.current_input_widget = source  # Update focused line edit
+            self.keyboard.activateWindow()  
+            self.keyboard.raise_()  
+            if isinstance(source, QtWidgets.QLineEdit):
+                virtual_key = self.current_input_widget.text()
+            elif isinstance(source, QtWidgets.QSpinBox):
+                virtual_key = str(self.current_input_widget.value())
+            elif isinstance(source, QtWidgets.QTextEdit):
+                virtual_key = self.current_input_widget.textCursor()
+        # return super().eventFilter(source, event)
+        return False
+
+    def on_key_pressed(self, key):
+        global virtual_key
+        if self.current_input_widget is not None:
+            if isinstance(self.current_input_widget, QtWidgets.QLineEdit):
+                if key == '': 
+                    virtual_key += ' '
+                elif key == '←': 
+                    virtual_key = virtual_key[:-1]
+                elif key == 'ENTER':
+                    pass
+                else:
+                    virtual_key += key
+                # print(virtual_key)
+                self.keyboard.w.edit_text.setText(virtual_key)
+                self.current_input_widget.setText(virtual_key)
+            elif isinstance(self.current_input_widget, QtWidgets.QSpinBox):
+                if key.isdigit():
+                    new_key = virtual_key + key if virtual_key != "0" else key
+                    # new_key = str(virtual_key) + str(key)
+                    virtual_key = new_key if int(virtual_key) < int(self.current_input_widget.maximum()) else virtual_key
+                elif key == "←":
+                    print(int(virtual_key), ">", int(self.current_input_widget.minimum()))
+                    virtual_key = virtual_key[:-1] if len(str(virtual_key)) > 1 else "0"
+                elif key == 'ENTER': 
+                    pass
+                elif key == '': 
+                    pass
+                print(virtual_key)
+                self.keyboard.w.edit_text.setText(virtual_key)
+                self.current_input_widget.setValue(int(virtual_key))

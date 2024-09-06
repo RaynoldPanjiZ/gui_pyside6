@@ -3,6 +3,8 @@ from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile, QIODevice, Qt, QTimer
 import sys, os
 import json
+from utils.ScreenKeyboard import InputHandler
+from utils import UtilsVariables
 
 # print(os.getcwd())
 style = None
@@ -21,6 +23,20 @@ class UserManagement(QtWidgets.QMainWindow):
         self.w.edit_btn.clicked.connect(self.edit_data)
         self.w.chpasswd_btn.clicked.connect(self.ch_passwd)
         self.w.close_btn.clicked.connect(self.close)
+
+        print("user:", UtilsVariables.keyboard_active)
+        print("user:", UtilsVariables.key_widget)
+
+        if UtilsVariables.keyboard_active and UtilsVariables.key_widget is not None:
+            self.input_handler = InputHandler(UtilsVariables.key_widget)
+            UtilsVariables.key_widget.key_pressed.connect(self.input_handler.on_key_pressed)
+            self.w.id_edit.installEventFilter(self.input_handler)
+            self.w.name_edit.installEventFilter(self.input_handler)
+            self.w.pass_edit.installEventFilter(self.input_handler)
+            self.w.contact_edit.installEventFilter(self.input_handler)
+            self.w.verifyPass_edit.installEventFilter(self.input_handler)
+            self.w.email_edit.installEventFilter(self.input_handler)
+
         self.grouplist = [
             "system administrator", "manager", "regular user"
         ]

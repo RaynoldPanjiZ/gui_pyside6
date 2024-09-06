@@ -10,8 +10,8 @@ import time
 import platform
 from datetime import datetime
 from pytz import timezone
-from utils.ScreenKeyboard import ScreenKeyboard, ScreenKeyboard2
-# from sidemenu import virtual_key
+# from utils.ScreenKeyboard import ScreenKeyboard, InputHandler
+from utils import UtilsVariables
 
 style = None
 virtual_key = ""
@@ -22,6 +22,7 @@ with open("ui/style/style_form.qss", "r") as file:
 class SystemSetting(QtWidgets.QMainWindow):
     def __init__(self, w):
         super().__init__()
+        self.keyboard_active = UtilsVariables.keyboard_active
         
         self.virtual_key = ''
         self.w = w
@@ -31,6 +32,13 @@ class SystemSetting(QtWidgets.QMainWindow):
         self.w.datetime_setting_btn.clicked.connect(self.datetime)
         self.w.server_connect_btn.clicked.connect(self.server_connection)
         self.w.factory_reset_btn.clicked.connect(self.factory_reset)
+
+        if self.keyboard_active is True:
+            self.w.keyboard_used.setChecked(True)
+            self.w.keyboard_unused.setChecked(False)
+        else:
+            self.w.keyboard_used.setChecked(False)
+            self.w.keyboard_unused.setChecked(True)
 
         total, used, free = shutil.disk_usage("/")
         total_gb = f"{total // (2**30)} GB"
@@ -65,81 +73,23 @@ class SystemSetting(QtWidgets.QMainWindow):
                 break
         self.w.screen_comboBox.currentIndexChanged.connect(self.change_resolution)
 
-        self.keypopup = None
-        self.w.groupbtnKeyboard.buttonClicked.connect(self.screen_keyboard)
+        self.w.groupbtnKeyboard.buttonClicked.connect(self.activate_key)
 
-        self.current_line_edit = None
-        self.w.id_edit.installEventFilter(self)
-        self.w.version_edit.installEventFilter(self)
-        self.w.elapsed_time.installEventFilter(self)
-    
-    def eventFilter(self, source, event):       ## https://stackoverflow.com/questions/66235661/qevent-mousebuttonpress-enum-type-missing-in-pyqt6
-        global virtual_key
-        # print(event.type())
-        if event.type() == event.Type.MouseButtonPress:
-            self.current_line_edit = source  # Update focused line edit
-            self.keypopup.activateWindow()  
-            self.keypopup.raise_()  
-            if isinstance(source, QtWidgets.QLineEdit):
-                virtual_key = self.current_line_edit.text()
-            elif isinstance(source, QtWidgets.QSpinBox):
-                virtual_key = str(self.current_line_edit.value())
-            elif isinstance(source, QtWidgets.QTextEdit):
-                virtual_key = self.current_line_edit.textCursor()
-        return super().eventFilter(source, event)
-    
-    def screen_keyboard(self):
-        if self.w.keyboard_used.isChecked():
-            if self.keypopup is None:
-                loader = QUiLoader()
-                ui_file = QFile("ui/admgui/all_ui/keyboard.ui")
-                if not ui_file.open(QIODevice.ReadOnly):
-                    print(f"Cannot open UI file: {ui_file.errorString()}")
-                    return
-                ui = loader.load(ui_file, self)
-                ui_file.close()
-                self.keypopup = ScreenKeyboard(ui)
-                self.keypopup.key_pressed.connect(self.recv_key)
-                self.keypopup.show()
-        else:
-            if self.keypopup is not None:
-                # if self.keypopup.isActiveWindow() == True
-                self.keypopup.close()
-                self.keypopup = None
-
+    def regist_widgets(self, handler):
+        self.w.id_edit.installEventFilter(handler)
+        self.w.version_edit.installEventFilter(handler)
+        self.w.elapsed_time.installEventFilter(handler)
         
-    
-    def recv_key(self, key):
-        global virtual_key
-
-        if self.current_line_edit is not None:
-            if isinstance(self.current_line_edit, QtWidgets.QLineEdit):
-                if key == '': 
-                    virtual_key += ' '
-                elif key == '←': 
-                    virtual_key = virtual_key[:-1]
-                elif key == 'ENTER':
-                    pass
-                else:
-                    virtual_key += key
-                # print(virtual_key)
-                self.keypopup.w.edit_text.setText(virtual_key)
-                self.current_line_edit.setText(virtual_key)
-            elif isinstance(self.current_line_edit, QtWidgets.QSpinBox):
-                if key.isdigit():
-                    # new_value = virtual_key + key if virtual_key != "0" else key
-                    virtual_key = str(virtual_key) + str(key)
-                    virtual_key = virtual_key if str(self.current_line_edit.maximum()) == virtual_key else ''
-                elif key == "←":
-                    virtual_key = virtual_key[:-1]
-                elif key == 'ENTER': 
-                    pass
-                elif key == '': 
-                    pass
-                print(virtual_key)
-                self.keypopup.w.edit_text.setText(virtual_key)
-                self.current_line_edit.setValue(int(virtual_key))
-
+    def activate_key(self):
+        if self.w.keyboard_used.isChecked():
+            print("Ya", self.keyboard_active)
+            self.keyboard_active = True
+            print("aY", self.keyboard_active)
+        else:
+            self.keyboard_active = False
+        UtilsVariables.keyboard_active_func(self.keyboard_active)
+        print("==========")
+        print(UtilsVariables.keyboard_active)
 
 
     def change_resolution(self):
@@ -155,6 +105,8 @@ class SystemSetting(QtWidgets.QMainWindow):
 
 
     def datetime(self):
+        global keyboard_active
+        print("date:", keyboard_active)
         loader = QUiLoader()
         ui_file = QFile("ui/admgui/all_ui/system_setting/ServerConnection_datesetting_dialog.ui")
         if not ui_file.open(QIODevice.ReadOnly):
