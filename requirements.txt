@@ -3,4 +3,5 @@ numpy == 2.0.1
 PySide6 == 6.7.2
 psutil == 6.0.0
 pytz == 2024.1
+folium == 0.17.0
 ## gdown --folder https://drive.google.com/drive/u/0/folders/1eMA5P3vvvGV-NNcV-OU1a6CzxFL8Ht37
