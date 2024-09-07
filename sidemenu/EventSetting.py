@@ -6,6 +6,8 @@ import sys, os
 import cv2
 import json
 import re
+from utils.ScreenKeyboard import InputHandler
+from utils import UtilsVariables
 
 # print(os.getcwd())
 style = None
@@ -56,6 +58,13 @@ class ObjTracking(QtWidgets.QMainWindow):
         self.w.vehicle_newReg_btn.clicked.connect(self.new_registVehicle)
         
         self.w.reset_btn.clicked.connect(self.reset_input)
+
+        if UtilsVariables.keyboard_active and UtilsVariables.key_widget is not None:
+            self.input_handler1 = InputHandler(UtilsVariables.key_widget)
+            UtilsVariables.key_widget.key_pressed.connect(self.input_handler1.on_key_pressed)
+            self.w.personName.installEventFilter(self.input_handler1)
+            self.w.noVehicle.installEventFilter(self.input_handler1)
+            self.w.camera_edit.installEventFilter(self.input_handler1)
         
         self.cameralist = {
             "vid1": "vid/test1.mp4", 

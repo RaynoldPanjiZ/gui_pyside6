@@ -3,6 +3,8 @@ from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile, QIODevice, Qt
 import sys, os
 import json
+from utils.ScreenKeyboard import InputHandler
+from utils import UtilsVariables
 
 style = None
 with open("ui/style/style_form.qss", "r") as file:
@@ -20,6 +22,13 @@ class CameraMapMng(QtWidgets.QMainWindow):
         self.w.add_map_btn.clicked.connect(self.add_map_dialog)
         self.w.findFile_btn.clicked.connect(self.open_file_dialog)
         self.w.close_btn.clicked.connect(self.close)
+
+        if UtilsVariables.keyboard_active and UtilsVariables.key_widget is not None:
+            self.input_handler1 = InputHandler(UtilsVariables.key_widget)
+            UtilsVariables.key_widget.key_pressed.connect(self.input_handler1.on_key_pressed)
+            self.w.fileName_edit.installEventFilter(self.input_handler1)
+            self.w.mapRegist_edit.installEventFilter(self.input_handler1)
+            self.w.mapDescript_edit.installEventFilter(self.input_handler1)
 
         # self.datas = [
         #     ["CU convinience store", "34567.jpg", "2023-10-10 12:23:45", "Sigil-dong CU convinience store"],

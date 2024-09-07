@@ -105,8 +105,6 @@ class SystemSetting(QtWidgets.QMainWindow):
 
 
     def datetime(self):
-        global keyboard_active
-        print("date:", keyboard_active)
         loader = QUiLoader()
         ui_file = QFile("ui/admgui/all_ui/system_setting/ServerConnection_datesetting_dialog.ui")
         if not ui_file.open(QIODevice.ReadOnly):

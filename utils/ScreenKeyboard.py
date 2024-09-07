@@ -21,62 +21,56 @@ class ScreenKeyboard(QtWidgets.QMainWindow):
         self.setCentralWidget(w)
         self.setWindowTitle("Screen Keyboard")
         self.setStyleSheet(style)
-        # self.btn_grp_num = QtWidgets.QButtonGroup()
-        # self.btn_grp_alpha = QtWidgets.QButtonGroup()
-        # self.btn_grp_char = QtWidgets.QButtonGroup()
+        self.w.btn_upper.clicked.connect(self.btn_upper_clicked)
+        
         self.btn_groups = QtWidgets.QButtonGroup()
         self.num_buttons = []
         self.alpha_buttons = []
         self.key_buttons = []
         self.make_btn_grp()
 
+        self.caps_key = []
         self.upper = False
-        self.w.btn_upper.clicked.connect(self.btn_upper_clicked)
 
-        # self.show()
+
 
     def make_btn_grp(self):
         self.num_buttons = [self.w.num_layout.itemAt(i).widget() for i in range(self.w.num_layout.count())]
-        # for i, btn in enumerate(self.num_buttons):
-        #     self.btn_grp_num.addButton(btn)
-        
         alpha1 = [self.w.alpha_layout_1.itemAt(i).widget() for i in range(self.w.alpha_layout_1.count())]
         alpha2 = [self.w.alpha_layout_2.itemAt(i).widget() for i in range(self.w.alpha_layout_2.count())]
         alpha3 = [self.w.alpha_layout_3.itemAt(i).widget() for i in range(self.w.alpha_layout_3.count())]
         self.alpha_buttons = alpha1
         self.alpha_buttons.extend(alpha2)
         self.alpha_buttons.extend(alpha3)
-        # for i, btn in enumerate(self.alpha_buttons):
-        #     self.btn_grp_alpha.addButton(btn)
         
         self.char_buttons = [self.w.char_layout.itemAt(i).widget() for i in range(self.w.char_layout.count())]
-        # for i, btn in enumerate(self.char_buttons):
-        #     self.btn_grp_char.addButton(btn)
 
         self.key_buttons = self.num_buttons + self.alpha_buttons + self.char_buttons
         for i, btn in enumerate(self.key_buttons):
-            if btn.text() == "CapsLk": continue
-            # self.btn_groups.addButton(btn)
-            btn.clicked.connect(lambda _, b=btn.text(): self.on_button_click(b))
-            # self.key_pressed.emit(btn.text())
+            btn.clicked.connect(lambda _, b=btn: self.on_button_click(b))
 
     def btn_upper_clicked(self):
         self.upper = not self.upper
         if self.upper:
             # self.btn_upper.setStyleSheet(UPPER)
             for btn in self.alpha_buttons:
-                btn.setText(btn.text().upper())
-                # self.key_pressed.emit(btn.text().upper())
+                k = btn.text().upper()
+                btn.setText(k)
+                self.caps_key.append(k)
         else:
             # self.btn_upper.setStyleSheet(LOWER)
             for btn in self.alpha_buttons:
-                btn.setText(btn.text().lower())
-                # self.key_pressed.emit(btn.text().lower())
+                k = btn.text().lower()
+                btn.setText(k)
+                self.caps_key.append(k)
 
 
-    def on_button_click(self, button_text):
+    def on_button_click(self, buttons):
         # Emit signal with the button text
-        if button_text == "←":
+        button_text = buttons.text()
+        if button_text == "CapsLk": 
+            pass
+        elif button_text == "←":
             self.key_pressed.emit("←")  # Send backspace signal
         elif button_text == "":
             self.key_pressed.emit(" ")  # Send space signal
@@ -85,56 +79,66 @@ class ScreenKeyboard(QtWidgets.QMainWindow):
 
 
 
-virtual_key = ""
 class InputHandler(QObject):
+    virtual_key = ""
     def __init__(self, keyboard, parent=None):
         super().__init__()
         self.keyboard = keyboard
         self.current_input_widget = None
 
     def eventFilter(self, source, event):       ## https://stackoverflow.com/questions/66235661/qevent-mousebuttonpress-enum-type-missing-in-pyqt6
-        global virtual_key
-        # print(event.type())
-        if event.type() == event.Type.MouseButtonPress:
+        print(event.type())
+        # if event.type() == event.Type.MouseButtonPress:
+        if event.type() == event.Type.Paint:
             self.current_input_widget = source  # Update focused line edit
             self.keyboard.activateWindow()  
             self.keyboard.raise_()  
             if isinstance(source, QtWidgets.QLineEdit):
-                virtual_key = self.current_input_widget.text()
+                self.virtual_key = self.current_input_widget.text()
             elif isinstance(source, QtWidgets.QSpinBox):
-                virtual_key = str(self.current_input_widget.value())
+                self.virtual_key = str(self.current_input_widget.value())
             elif isinstance(source, QtWidgets.QTextEdit):
-                virtual_key = self.current_input_widget.textCursor()
+                self.virtual_key = self.current_input_widget.toPlainText()
         # return super().eventFilter(source, event)
         return False
 
     def on_key_pressed(self, key):
-        global virtual_key
         if self.current_input_widget is not None:
             if isinstance(self.current_input_widget, QtWidgets.QLineEdit):
                 if key == '': 
-                    virtual_key += ' '
+                    self.virtual_key += ' '
                 elif key == '←': 
-                    virtual_key = virtual_key[:-1]
+                    self.virtual_key = self.virtual_key[:-1]
                 elif key == 'ENTER':
                     pass
                 else:
-                    virtual_key += key
-                # print(virtual_key)
-                self.keyboard.w.edit_text.setText(virtual_key)
-                self.current_input_widget.setText(virtual_key)
+                    self.virtual_key += key
+                # print(self.virtual_key)
+                self.keyboard.w.edit_text.setText(self.virtual_key)
+                self.current_input_widget.setText(self.virtual_key)
             elif isinstance(self.current_input_widget, QtWidgets.QSpinBox):
                 if key.isdigit():
-                    new_key = virtual_key + key if virtual_key != "0" else key
-                    # new_key = str(virtual_key) + str(key)
-                    virtual_key = new_key if int(virtual_key) < int(self.current_input_widget.maximum()) else virtual_key
+                    new_key = self.virtual_key + key if self.virtual_key != "0" else key
+                    # new_key = str(self.virtual_key) + str(key)
+                    self.virtual_key = new_key if int(self.virtual_key) < int(self.current_input_widget.maximum()) else self.virtual_key
                 elif key == "←":
-                    print(int(virtual_key), ">", int(self.current_input_widget.minimum()))
-                    virtual_key = virtual_key[:-1] if len(str(virtual_key)) > 1 else "0"
+                    print(int(self.virtual_key), ">", int(self.current_input_widget.minimum()))
+                    self.virtual_key = self.virtual_key[:-1] if len(str(self.virtual_key)) > 1 else "0"
                 elif key == 'ENTER': 
                     pass
                 elif key == '': 
                     pass
-                print(virtual_key)
-                self.keyboard.w.edit_text.setText(virtual_key)
-                self.current_input_widget.setValue(int(virtual_key))
+                # print(self.virtual_key)
+                self.keyboard.w.edit_text.setText(self.virtual_key)
+                self.current_input_widget.setValue(int(self.virtual_key))
+            elif isinstance(self.current_input_widget, QtWidgets.QTextEdit):
+                if key == '': 
+                    self.virtual_key += ' '
+                elif key == "←": # Backspace
+                    self.virtual_key = self.virtual_key[:-1]
+                elif key == 'ENTER':
+                    self.virtual_key += '\n'
+                else:
+                    self.virtual_key += key
+                self.keyboard.w.edit_text.setText(self.virtual_key)
+                self.current_input_widget.setPlainText(self.virtual_key)
