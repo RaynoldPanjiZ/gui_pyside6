@@ -85,6 +85,7 @@ class InputHandler(QObject):
         super().__init__()
         self.keyboard = keyboard
         self.current_input_widget = None
+        self.cursor_position = ""
 
     def eventFilter(self, source, event):       ## https://stackoverflow.com/questions/66235661/qevent-mousebuttonpress-enum-type-missing-in-pyqt6
         print(event.type())
@@ -99,6 +100,18 @@ class InputHandler(QObject):
                 self.virtual_key = str(self.current_input_widget.value())
             elif isinstance(source, QtWidgets.QTextEdit):
                 self.virtual_key = self.current_input_widget.toPlainText()
+            elif isinstance(source, QtWidgets.QDateEdit):
+                self.cursor_position = self.current_input_widget.lineEdit().cursorPosition()
+                self.virtual_key = self.current_input_widget.text()
+                # print(self.virtual_key)
+                print(self.cursor_position)
+                # self.virtual_key = self.current_input_widget.date().toString("yyyy-MM-dd")
+            elif isinstance(source, QtWidgets.QTimeEdit):
+                self.cursor_position = self.current_input_widget.lineEdit().cursorPosition()
+                self.virtual_key = self.current_input_widget.text()
+                # print(self.virtual_key)
+                print(self.cursor_position)
+                # self.virtual_key = self.current_input_widget.time().toString("HH:mm:ss AP")
         # return super().eventFilter(source, event)
         return False
 
@@ -128,6 +141,8 @@ class InputHandler(QObject):
                     pass
                 elif key == '': 
                     pass
+                else:
+                    self.virtual_key += ''
                 # print(self.virtual_key)
                 self.keyboard.w.edit_text.setText(self.virtual_key)
                 self.current_input_widget.setValue(int(self.virtual_key))
@@ -142,3 +157,107 @@ class InputHandler(QObject):
                     self.virtual_key += key
                 self.keyboard.w.edit_text.setText(self.virtual_key)
                 self.current_input_widget.setPlainText(self.virtual_key)
+            elif isinstance(self.current_input_widget, QtWidgets.QDateEdit):
+                # Handle numeric input for QDateEdit
+                datepart = self.virtual_key.split('-')
+                print(datepart)
+                new_year, new_month, new_day = datepart[0], datepart[1], datepart[2]
+                if key.isdigit():
+                    if self.cursor_position <= 4:
+                        print(self.virtual_key)
+                        if len(str(datepart[0])) > 4:
+                            new_year = datepart[0]
+                        else:
+                            new_year = datepart[0] + key
+                    elif 5 <= self.cursor_position <= 7:
+                        if len(str(datepart[1])) > 2:
+                            new_month = datepart[1]
+                        else:
+                            new_month = datepart[1] + key
+                    elif 8 <= self.cursor_position <= 10:
+                        if len(str(datepart[2])) > 2:
+                            new_day = datepart[2]
+                        else:
+                            new_day = datepart[2] + key
+                    # new_text = self.virtual_key + key
+                    self.virtual_key = f"{new_year}-{new_month}-{new_day}"
+                elif key == "←":                    
+                    if self.cursor_position <= 4:
+                        if len(str(datepart[0])) <= 0:
+                            new_year = '1'
+                        else:
+                            new_year = datepart[0][:-1]
+                    elif 5 <= self.cursor_position <= 7:
+                        if len(str(datepart[1])) <= 0:
+                            new_month = '1'
+                        else:
+                            new_month = datepart[1][:-1]
+                    elif 8 <= self.cursor_position <= 10:
+                        if len(str(datepart[2])) <= 0:
+                            new_day = '1'
+                        else:
+                            new_day = datepart[2][:-1]
+                    self.virtual_key = f"{new_year}-{new_month}-{new_day}"
+                    pass  
+                elif key == 'ENTER': 
+                    pass
+                elif key == '': 
+                    pass
+                self.keyboard.w.edit_text.setText(self.virtual_key)
+                self.current_input_widget.setDate(self.current_input_widget.date().fromString(self.virtual_key, "yyyy-MM-dd"))
+            elif isinstance(self.current_input_widget, QtWidgets.QTimeEdit):
+                # Handle numeric input for QTimeEdit
+                timepart = self.virtual_key.split(':')
+                new_hour, new_minute, new_second = timepart
+                new_second, ap = new_second.split(" ")
+                print(new_hour, new_minute, new_second, ap)
+                if key.isdigit():
+                    if self.cursor_position <= 2:
+                        print(self.virtual_key)
+                        if len(str(new_hour)) > 2:
+                            new_hour = new_hour
+                        else:
+                            new_hour = new_hour + key
+                    elif 3 <= self.cursor_position <= 5:
+                        if len(str(new_minute)) > 2:
+                            new_minute = new_minute
+                        else:
+                            new_minute = new_minute + key
+                    elif 6 <= self.cursor_position <= 8:
+                        if len(str(new_second)) > 2:
+                            new_second = new_second
+                        else:
+                            new_second = new_second + key
+                    # new_text = self.virtual_key + key
+                    self.virtual_key = f"{new_hour}:{new_minute}:{new_second} {ap}"
+                # elif key.isalpha():
+                #     if 9 <= self.cursor_position <= 11:
+                #         if len(str(ap)) > 2:
+                #             ap = ap
+                #         else:
+                #             ap = ap + key
+                elif key == "←":
+                    if self.cursor_position <= 4:
+                        if len(str(new_hour)) <= 0:
+                            new_hour = '1'
+                        else:
+                            new_hour = new_hour[:-1]
+                    elif 3 <= self.cursor_position <= 5:
+                        if len(str(new_hour)) <= 0:
+                            new_minute = '1'
+                        else:
+                            new_minute = new_hour[:-1]
+                    elif 6 <= self.cursor_position <= 8:
+                        if len(str(new_second)) <= 0:
+                            new_second = '1'
+                        else:
+                            new_second = new_second[:-1]
+                    self.virtual_key = f"{new_hour}:{new_minute}:{new_second} {ap}"
+                    pass  
+                elif key == 'ENTER': 
+                    pass
+                elif key == '': 
+                    pass
+                self.keyboard.w.edit_text.setText(self.virtual_key)
+                self.current_input_widget.setTime(self.current_input_widget.time().fromString(self.virtual_key, "HH:mm:ss AP"))
+                

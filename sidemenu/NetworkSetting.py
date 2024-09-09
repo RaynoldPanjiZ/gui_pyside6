@@ -9,6 +9,8 @@ import socket
 import psutil
 import subprocess
 import ipaddress
+from utils.ScreenKeyboard import InputHandler
+from utils import UtilsVariables
 
 # print(os.getcwd())
 style = None
@@ -27,6 +29,13 @@ class NetSetting(QtWidgets.QMainWindow):
         self.setStyleSheet(style)
         self.w.btn_cancel.clicked.connect(self.close)
         self.w.btn_save.clicked.connect(self.applyConfig)
+
+        if UtilsVariables.keyboard_active and UtilsVariables.key_widget is not None:
+            self.input_handler1 = InputHandler(UtilsVariables.key_widget)
+            UtilsVariables.key_widget.key_pressed.connect(self.input_handler1.on_key_pressed)
+            input_widgets = self.findChildren(QtWidgets.QLineEdit) + self.findChildren(QtWidgets.QTextEdit)
+            for widget in input_widgets:
+                widget.installEventFilter(self.input_handler1)
 
         self.w.ifList_cb.addItems(psutil.net_if_addrs().keys())
         self.w.ipSetting_cb.addItems(["Manual (Static IP)", "Automatic (DHCP)"])

@@ -30,15 +30,15 @@ from utils.ScreenKeyboard import InputHandler, ScreenKeyboard
 from utils import UtilsVariables
 
 
-class KeyboardThread(QThread):
-    def __init__(self, input_handler):
-        super().__init__()
-        self.input_handler = input_handler
+# class KeyboardThread(QThread):
+#     def __init__(self, input_handler):
+#         super().__init__()
+#         self.input_handler = input_handler
 
-    def run(self):
-        # Connect the key pressed signal to the input handler's function
-        self.input_handler.keyboard.key_pressed.connect(self.input_handler.on_key_pressed)
-        self.exec_()
+#     def run(self):
+#         # Connect the key pressed signal to the input handler's function
+#         self.input_handler.keyboard.key_pressed.connect(self.input_handler.on_key_pressed)
+#         self.exec_()
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -143,7 +143,6 @@ class MainWindow(QtWidgets.QMainWindow):
                 UtilsVariables.key_widget_func(self.key_widget)
                 # print("main: True")
             # else:
-            #     print("main: False")
             #     print(UtilsVariables.key_widget)
             #     print()
             #     print(self.popup.input_handler)
@@ -153,6 +152,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 # if self.key_widget.isActiveWindow() == True
                 self.key_widget.close()
                 self.key_widget = None
+                self.input_handler = None
                 
 
     def show_popup(self, event, PopupClass):
@@ -173,7 +173,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.w.map_mng_frame.setVisible(True)
         else:
             self.w.map_mng_frame.setVisible(False)
-        
+        self.popup.activateWindow()
         self.popup.show()
         
 
@@ -181,8 +181,15 @@ class MainWindow(QtWidgets.QMainWindow):
             print("1",self.popup.w.groupbtnKeyboard)
             print("2",dialog.groupbtnKeyboard)
             self.popup.w.groupbtnKeyboard.buttonClicked.connect(self.screen_keyboard)
-            if self.input_handler is not None:
+            if self.popup.isActiveWindow() == False:
+                print("window exited")
+                self.input_handler = None
+            if self.key_widget is not None and self.input_handler is None:
+                self.input_handler = InputHandler(self.key_widget)
                 self.popup.regist_widgets(self.input_handler)
+                self.key_widget.key_pressed.connect(self.input_handler.on_key_pressed)
+                # print("input hanlder: inactive")
+            # print(self.key_widget)
         else:
             if UtilsVariables.keyboard_active:
                 self.screen_keyboard()

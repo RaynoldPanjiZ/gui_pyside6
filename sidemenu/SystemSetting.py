@@ -10,7 +10,7 @@ import time
 import platform
 from datetime import datetime
 from pytz import timezone
-# from utils.ScreenKeyboard import ScreenKeyboard, InputHandler
+from utils.ScreenKeyboard import InputHandler
 from utils import UtilsVariables
 
 style = None
@@ -32,6 +32,13 @@ class SystemSetting(QtWidgets.QMainWindow):
         self.w.datetime_setting_btn.clicked.connect(self.datetime)
         self.w.server_connect_btn.clicked.connect(self.server_connection)
         self.w.factory_reset_btn.clicked.connect(self.factory_reset)
+
+        # if UtilsVariables.keyboard_active and UtilsVariables.key_widget is not None:
+        #     self.input_handler1 = InputHandler(UtilsVariables.key_widget)
+        #     UtilsVariables.key_widget.key_pressed.connect(self.input_handler1.on_key_pressed)
+        #     input_widgets = self.findChildren(QtWidgets.QLineEdit)
+        #     for widget in input_widgets:
+        #         widget.installEventFilter(self.input_handler1)
 
         if self.keyboard_active is True:
             self.w.keyboard_used.setChecked(True)
@@ -79,6 +86,9 @@ class SystemSetting(QtWidgets.QMainWindow):
         self.w.id_edit.installEventFilter(handler)
         self.w.version_edit.installEventFilter(handler)
         self.w.elapsed_time.installEventFilter(handler)
+        # input_widgets = self.findChildren(QtWidgets.QLineEdit) + self.findChildren(QtWidgets.QTextEdit) + self.findChildren(QtWidgets.QSpinBox)
+        # for widget in input_widgets:
+        #     widget.installEventFilter(handler)
         
     def activate_key(self):
         if self.w.keyboard_used.isChecked():
@@ -115,6 +125,14 @@ class SystemSetting(QtWidgets.QMainWindow):
         self.popup = dialog
         self.popup.setWindowTitle("Date/Time Settings")
 
+        if UtilsVariables.keyboard_active and UtilsVariables.key_widget is not None:
+            UtilsVariables.key_widget.setWindowFlags(self.windowFlags() | Qt.WindowType.WindowStaysOnTopHint)
+            self.input_handler2 = InputHandler(UtilsVariables.key_widget)
+            UtilsVariables.key_widget.key_pressed.connect(self.input_handler2.on_key_pressed)
+            input_widgets = self.popup.findChildren(QtWidgets.QDateEdit) + self.popup.findChildren(QtWidgets.QTimeEdit)
+            for widget in input_widgets:
+                widget.installEventFilter(self.input_handler2)
+
         self.popup.sync_ntpserver.clicked.connect(self.sync_time)
         self.popup.cancel_button.clicked.connect(self.popup.close)
         self.popup.apply_button.clicked.connect(self.apply_btn)
@@ -137,7 +155,8 @@ class SystemSetting(QtWidgets.QMainWindow):
             if timezone == self.timezone_name:
                 self.popup.timezone_combobox.setCurrentIndex(i)
 
-        self.popup.exec()
+        # self.popup.exec()
+        self.popup.show()
 
     def sync_time(self):
         """Synchronize time with NTP server."""

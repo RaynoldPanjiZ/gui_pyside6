@@ -48,7 +48,7 @@
        <widget class="QLabel" name="label_title">
         <property name="maximumSize">
          <size>
-          <width>83</width>
+          <width>125</width>
           <height>16</height>
          </size>
         </property>
@@ -62,9 +62,12 @@
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Maximum</enum>
+        </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>534</width>
+          <width>530</width>
           <height>13</height>
          </size>
         </property>
@@ -100,7 +103,7 @@
     <widget class="QLabel" name="label_network1">
      <property name="maximumSize">
       <size>
-       <width>100</width>
+       <width>130</width>
        <height>16</height>
       </size>
      </property>
@@ -113,64 +116,64 @@
     <widget class="QWidget" name="widget_1" native="true">
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
-       <widget class="QLabel" name="label_IP_1">
+       <widget class="QLabel" name="label_13">
         <property name="text">
          <string>Local ID</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="lineEdit_2"/>
+       <widget class="QLineEdit" name="local_id"/>
       </item>
       <item row="0" column="2">
-       <widget class="QLabel" name="label_netMask">
+       <widget class="QLabel" name="label_11">
         <property name="text">
          <string>Local IP</string>
         </property>
        </widget>
       </item>
       <item row="0" column="3">
-       <widget class="QLineEdit" name="lineEdit_5"/>
+       <widget class="QLineEdit" name="local_ip"/>
       </item>
       <item row="0" column="4">
-       <widget class="QLabel" name="label_netSpeed">
+       <widget class="QLabel" name="label_10">
         <property name="text">
          <string>Local Port</string>
         </property>
        </widget>
       </item>
       <item row="0" column="5">
-       <widget class="QLineEdit" name="lineEdit_7"/>
+       <widget class="QLineEdit" name="local_port"/>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="label_DNS_1">
+       <widget class="QLabel" name="label_15">
         <property name="text">
          <string>Login ID</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLineEdit" name="lineEdit_3"/>
+       <widget class="QLineEdit" name="local_loginId"/>
       </item>
       <item row="1" column="2">
-       <widget class="QLabel" name="label_DNS_2">
+       <widget class="QLabel" name="label_14">
         <property name="text">
          <string>S/W Ver.</string>
         </property>
        </widget>
       </item>
       <item row="1" column="3">
-       <widget class="QLineEdit" name="lineEdit_6"/>
+       <widget class="QLineEdit" name="local_swVer"/>
       </item>
       <item row="1" column="4">
-       <widget class="QLabel" name="label_gateway">
+       <widget class="QLabel" name="label_12">
         <property name="text">
          <string>Ver. Date</string>
         </property>
        </widget>
       </item>
       <item row="1" column="5">
-       <widget class="QLineEdit" name="lineEdit_8"/>
+       <widget class="QLineEdit" name="local_verDate"/>
       </item>
      </layout>
     </widget>
@@ -179,7 +182,7 @@
     <widget class="QLabel" name="label_network2">
      <property name="maximumSize">
       <size>
-       <width>100</width>
+       <width>130</width>
        <height>16</height>
       </size>
      </property>
@@ -192,64 +195,64 @@
     <widget class="QWidget" name="widget_2" native="true">
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
-       <widget class="QLabel" name="label_IP_2">
+       <widget class="QLabel" name="label_7">
         <property name="text">
          <string>Server ID</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="lineEdit_13"/>
+       <widget class="QLineEdit" name="server_id"/>
       </item>
       <item row="0" column="2">
-       <widget class="QLabel" name="label_netMask_2">
+       <widget class="QLabel" name="label_9">
         <property name="text">
          <string>Server IP</string>
         </property>
        </widget>
       </item>
       <item row="0" column="3">
-       <widget class="QLineEdit" name="lineEdit_14"/>
+       <widget class="QLineEdit" name="server_ip"/>
       </item>
       <item row="0" column="4">
-       <widget class="QLabel" name="label_netSpeed_2">
+       <widget class="QLabel" name="label_4">
         <property name="text">
          <string>Server Port</string>
         </property>
        </widget>
       </item>
       <item row="0" column="5">
-       <widget class="QLineEdit" name="lineEdit_12"/>
+       <widget class="QLineEdit" name="server_port"/>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="label_DNS_3">
+       <widget class="QLabel" name="label_5">
         <property name="text">
          <string>Login ID</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLineEdit" name="lineEdit_9"/>
+       <widget class="QLineEdit" name="server_loginId"/>
       </item>
       <item row="1" column="2">
-       <widget class="QLabel" name="label_DNS_4">
+       <widget class="QLabel" name="label_6">
         <property name="text">
          <string>S/W Ver.</string>
         </property>
        </widget>
       </item>
       <item row="1" column="3">
-       <widget class="QLineEdit" name="lineEdit_10"/>
+       <widget class="QLineEdit" name="server_swVer"/>
       </item>
       <item row="1" column="4">
-       <widget class="QLabel" name="label_gateway_2">
+       <widget class="QLabel" name="label_8">
         <property name="text">
          <string>Ver. Date</string>
         </property>
        </widget>
       </item>
       <item row="1" column="5">
-       <widget class="QLineEdit" name="lineEdit_15"/>
+       <widget class="QLineEdit" name="server_verDate"/>
       </item>
      </layout>
     </widget>
@@ -258,7 +261,7 @@
     <widget class="QLabel" name="label_networkServer">
      <property name="maximumSize">
       <size>
-       <width>161</width>
+       <width>130</width>
        <height>16</height>
       </size>
      </property>
@@ -271,24 +274,24 @@
     <widget class="QWidget" name="widget_3" native="true">
      <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="0">
-       <widget class="QLabel" name="label_http">
+       <widget class="QLabel" name="label">
         <property name="text">
          <string>Local Version</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="lineEdit"/>
+       <widget class="QLineEdit" name="localVer_edit"/>
       </item>
       <item row="0" column="2">
-       <widget class="QLabel" name="label_https">
+       <widget class="QLabel" name="label_2">
         <property name="text">
          <string>Latest Ver.</string>
         </property>
        </widget>
       </item>
       <item row="0" column="3">
-       <widget class="QLineEdit" name="lineEdit_11"/>
+       <widget class="QLineEdit" name="latestVer_edit"/>
       </item>
       <item row="0" column="4">
        <widget class="QPushButton" name="upgradable_btn">
@@ -298,14 +301,14 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="label_rtsp">
+       <widget class="QLabel" name="label_3">
         <property name="text">
          <string>Password</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLineEdit" name="lineEdit_4"/>
+       <widget class="QLineEdit" name="pass_edit"/>
       </item>
       <item row="1" column="2" colspan="2">
        <layout class="QHBoxLayout" name="horizontalLayout">
@@ -317,14 +320,14 @@
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton">
+         <widget class="QRadioButton" name="usedAuto_radiobtn">
           <property name="text">
            <string>Used</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton_2">
+         <widget class="QRadioButton" name="unusedAuto_radiobtn">
           <property name="text">
            <string>Unused</string>
           </property>

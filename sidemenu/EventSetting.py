@@ -62,9 +62,9 @@ class ObjTracking(QtWidgets.QMainWindow):
         if UtilsVariables.keyboard_active and UtilsVariables.key_widget is not None:
             self.input_handler1 = InputHandler(UtilsVariables.key_widget)
             UtilsVariables.key_widget.key_pressed.connect(self.input_handler1.on_key_pressed)
-            self.w.personName.installEventFilter(self.input_handler1)
-            self.w.noVehicle.installEventFilter(self.input_handler1)
-            self.w.camera_edit.installEventFilter(self.input_handler1)
+            input_widgets = self.findChildren(QtWidgets.QLineEdit) + self.findChildren(QtWidgets.QTextEdit)
+            for widget in input_widgets:
+                widget.installEventFilter(self.input_handler1)
         
         self.cameralist = {
             "vid1": "vid/test1.mp4", 

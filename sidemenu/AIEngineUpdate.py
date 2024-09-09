@@ -6,6 +6,8 @@ import socket
 import psutil
 import subprocess
 import ipaddress
+from utils.ScreenKeyboard import InputHandler
+from utils import UtilsVariables
 
 # print(os.getcwd())
 style = None
@@ -23,6 +25,14 @@ class AIEngineUpdate(QtWidgets.QMainWindow):
         self.setStyleSheet(style)
         self.w.btn_cancel.clicked.connect(self.close)
         self.w.run_upgrade_btn.clicked.connect(self.upgrade)
+
+        if UtilsVariables.keyboard_active and UtilsVariables.key_widget is not None:
+            self.input_handler1 = InputHandler(UtilsVariables.key_widget)
+            UtilsVariables.key_widget.key_pressed.connect(self.input_handler1.on_key_pressed)
+            input_widgets = self.findChildren(QtWidgets.QLineEdit)
+            for widget in input_widgets:
+                widget.installEventFilter(self.input_handler1)
+
 
     def upgrade(self):
         print("Success!")

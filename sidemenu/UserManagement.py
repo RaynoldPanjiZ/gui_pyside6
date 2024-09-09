@@ -30,12 +30,9 @@ class UserManagement(QtWidgets.QMainWindow):
         if UtilsVariables.keyboard_active and UtilsVariables.key_widget is not None:
             self.input_handler1 = InputHandler(UtilsVariables.key_widget)
             UtilsVariables.key_widget.key_pressed.connect(self.input_handler1.on_key_pressed)
-            self.w.id_edit.installEventFilter(self.input_handler1)
-            self.w.name_edit.installEventFilter(self.input_handler1)
-            self.w.pass_edit.installEventFilter(self.input_handler1)
-            self.w.contact_edit.installEventFilter(self.input_handler1)
-            self.w.verifyPass_edit.installEventFilter(self.input_handler1)
-            self.w.email_edit.installEventFilter(self.input_handler1)
+            input_widgets = self.findChildren(QtWidgets.QLineEdit) + self.findChildren(QtWidgets.QTextEdit)
+            for widget in input_widgets:
+                widget.installEventFilter(self.input_handler1)
 
         self.grouplist = [
             "system administrator", "manager", "regular user"
@@ -182,9 +179,9 @@ class UserManagement(QtWidgets.QMainWindow):
             UtilsVariables.key_widget.setWindowFlags(self.windowFlags() | Qt.WindowType.WindowStaysOnTopHint)
             self.input_handler2 = InputHandler(UtilsVariables.key_widget)
             UtilsVariables.key_widget.key_pressed.connect(self.input_handler2.on_key_pressed)
-            self.popup.existPass_edit.installEventFilter(self.input_handler2)
-            self.popup.newPass_edit.installEventFilter(self.input_handler2)
-            self.popup.verifyPass_edit.installEventFilter(self.input_handler2)
+            input_widgets = self.popup.findChildren(QtWidgets.QLineEdit) + self.popup.findChildren(QtWidgets.QTextEdit)
+            for widget in input_widgets:
+                widget.installEventFilter(self.input_handler2)
 
         def confirm():
             print("confirm")
