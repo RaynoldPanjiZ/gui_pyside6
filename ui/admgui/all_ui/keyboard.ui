@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>790</width>
-    <height>247</height>
+    <width>649</width>
+    <height>246</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -132,7 +132,7 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>70</width>
+            <width>30</width>
             <height>30</height>
            </size>
           </property>
@@ -464,7 +464,7 @@ QPushButton:pressed
        </property>
        <property name="minimumSize">
         <size>
-         <width>70</width>
+         <width>30</width>
          <height>30</height>
         </size>
        </property>
@@ -817,7 +817,7 @@ QPushButton:pressed
           </property>
           <property name="minimumSize">
            <size>
-            <width>70</width>
+            <width>30</width>
             <height>30</height>
            </size>
           </property>
@@ -943,7 +943,7 @@ QPushButton:pressed
           </property>
           <property name="minimumSize">
            <size>
-            <width>70</width>
+            <width>30</width>
             <height>30</height>
            </size>
           </property>
@@ -1144,7 +1144,7 @@ QPushButton:pressed
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>97</width>
+          <width>70</width>
           <height>20</height>
          </size>
         </property>
@@ -1165,7 +1165,7 @@ QPushButton:pressed
           </property>
           <property name="minimumSize">
            <size>
-            <width>70</width>
+            <width>30</width>
             <height>30</height>
            </size>
           </property>
@@ -1344,10 +1344,16 @@ QPushButton:pressed
         <item>
          <widget class="QPushButton" name="btn_m">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -1383,7 +1389,7 @@ QPushButton:pressed
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>97</width>
+          <width>70</width>
           <height>20</height>
          </size>
         </property>
@@ -1407,13 +1413,13 @@ QPushButton:pressed
        </property>
        <property name="minimumSize">
         <size>
-         <width>90</width>
+         <width>50</width>
          <height>30</height>
         </size>
        </property>
        <property name="font">
         <font>
-         <pointsize>12</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="styleSheet">
@@ -1443,7 +1449,7 @@ QPushButton:pressed
        </property>
        <property name="minimumSize">
         <size>
-         <width>70</width>
+         <width>30</width>
          <height>30</height>
         </size>
        </property>
@@ -1479,7 +1485,7 @@ QPushButton:pressed
        </property>
        <property name="minimumSize">
         <size>
-         <width>70</width>
+         <width>30</width>
          <height>30</height>
         </size>
        </property>
@@ -1515,7 +1521,7 @@ QPushButton:pressed
        </property>
        <property name="minimumSize">
         <size>
-         <width>250</width>
+         <width>120</width>
          <height>30</height>
         </size>
        </property>
@@ -1551,7 +1557,7 @@ QPushButton:pressed
        </property>
        <property name="minimumSize">
         <size>
-         <width>70</width>
+         <width>30</width>
          <height>30</height>
         </size>
        </property>
@@ -1587,7 +1593,7 @@ QPushButton:pressed
        </property>
        <property name="minimumSize">
         <size>
-         <width>70</width>
+         <width>30</width>
          <height>30</height>
         </size>
        </property>
@@ -1626,13 +1632,13 @@ QPushButton:pressed
        </property>
        <property name="minimumSize">
         <size>
-         <width>90</width>
+         <width>50</width>
          <height>30</height>
         </size>
        </property>
        <property name="font">
         <font>
-         <pointsize>12</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="styleSheet">

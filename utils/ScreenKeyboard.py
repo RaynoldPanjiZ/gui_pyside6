@@ -1,6 +1,7 @@
 from PySide6 import QtWidgets
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile, QIODevice, Qt, Signal, QObject
+from utils import UtilsVariables
 
 style = None
 with open("ui/style/style_form.qss", "r") as file:
@@ -86,9 +87,12 @@ class InputHandler(QObject):
         self.keyboard = keyboard
         self.current_input_widget = None
         self.cursor_position = ""
+        # self.showed = False
+        self.cursor_inwg = False
 
     def eventFilter(self, source, event):       ## https://stackoverflow.com/questions/66235661/qevent-mousebuttonpress-enum-type-missing-in-pyqt6
         print(event.type())
+        
         # if event.type() == event.Type.MouseButtonPress:
         if event.type() == event.Type.Paint:
             self.current_input_widget = source  # Update focused line edit
@@ -112,7 +116,11 @@ class InputHandler(QObject):
                 # print(self.virtual_key)
                 print(self.cursor_position)
                 # self.virtual_key = self.current_input_widget.time().toString("HH:mm:ss AP")
-        # return super().eventFilter(source, event)
+        print(self.keyboard.isActiveWindow())
+        if self.current_input_widget is not None and event.type() == event.Type.MouseButtonPress:
+        # event.Type.FocusIn and self.current_input_widget is not None and self.cursor_inwg is False :
+            if self.cursor_inwg is False: 
+                self.keyboard.show()
         return False
 
     def on_key_pressed(self, key):

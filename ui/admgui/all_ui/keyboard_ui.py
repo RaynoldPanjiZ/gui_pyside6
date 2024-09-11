@@ -23,7 +23,7 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(790, 247)
+        Form.resize(649, 246)
         self.verticalLayout = QVBoxLayout(Form)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.field_layout = QHBoxLayout()
@@ -80,7 +80,7 @@ class Ui_Form(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.btn_1.sizePolicy().hasHeightForWidth())
         self.btn_1.setSizePolicy(sizePolicy1)
-        self.btn_1.setMinimumSize(QSize(70, 30))
+        self.btn_1.setMinimumSize(QSize(30, 30))
         font1 = QFont()
         font1.setPointSize(12)
         self.btn_1.setFont(font1)
@@ -279,7 +279,7 @@ class Ui_Form(object):
         self.btn_q.setObjectName(u"btn_q")
         sizePolicy1.setHeightForWidth(self.btn_q.sizePolicy().hasHeightForWidth())
         self.btn_q.setSizePolicy(sizePolicy1)
-        self.btn_q.setMinimumSize(QSize(70, 30))
+        self.btn_q.setMinimumSize(QSize(30, 30))
         self.btn_q.setFont(font1)
         self.btn_q.setStyleSheet(u"QPushButton\n"
 "{\n"
@@ -488,7 +488,7 @@ class Ui_Form(object):
         self.btn_a.setObjectName(u"btn_a")
         sizePolicy1.setHeightForWidth(self.btn_a.sizePolicy().hasHeightForWidth())
         self.btn_a.setSizePolicy(sizePolicy1)
-        self.btn_a.setMinimumSize(QSize(70, 30))
+        self.btn_a.setMinimumSize(QSize(30, 30))
         self.btn_a.setFont(font1)
         self.btn_a.setStyleSheet(u"QPushButton\n"
 "{\n"
@@ -561,7 +561,7 @@ class Ui_Form(object):
         self.btn_g.setObjectName(u"btn_g")
         sizePolicy1.setHeightForWidth(self.btn_g.sizePolicy().hasHeightForWidth())
         self.btn_g.setSizePolicy(sizePolicy1)
-        self.btn_g.setMinimumSize(QSize(70, 30))
+        self.btn_g.setMinimumSize(QSize(30, 30))
         self.btn_g.setFont(font1)
         self.btn_g.setStyleSheet(u"QPushButton\n"
 "{\n"
@@ -666,7 +666,7 @@ class Ui_Form(object):
         self.horizontalLayout_3.setSpacing(10)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.horizontalSpacer_4 = QSpacerItem(97, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
+        self.horizontalSpacer_4 = QSpacerItem(70, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_3.addItem(self.horizontalSpacer_4)
 
@@ -677,7 +677,7 @@ class Ui_Form(object):
         self.btn_z.setObjectName(u"btn_z")
         sizePolicy1.setHeightForWidth(self.btn_z.sizePolicy().hasHeightForWidth())
         self.btn_z.setSizePolicy(sizePolicy1)
-        self.btn_z.setMinimumSize(QSize(70, 30))
+        self.btn_z.setMinimumSize(QSize(30, 30))
         self.btn_z.setFont(font1)
         self.btn_z.setStyleSheet(u"QPushButton\n"
 "{\n"
@@ -784,8 +784,9 @@ class Ui_Form(object):
 
         self.btn_m = QPushButton(self.frame_2)
         self.btn_m.setObjectName(u"btn_m")
-        sizePolicy2.setHeightForWidth(self.btn_m.sizePolicy().hasHeightForWidth())
-        self.btn_m.setSizePolicy(sizePolicy2)
+        sizePolicy1.setHeightForWidth(self.btn_m.sizePolicy().hasHeightForWidth())
+        self.btn_m.setSizePolicy(sizePolicy1)
+        self.btn_m.setMinimumSize(QSize(30, 30))
         self.btn_m.setFont(font1)
         self.btn_m.setStyleSheet(u"QPushButton\n"
 "{\n"
@@ -810,7 +811,7 @@ class Ui_Form(object):
 
         self.horizontalLayout_3.addLayout(self.alpha_layout_3)
 
-        self.horizontalSpacer_3 = QSpacerItem(97, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
+        self.horizontalSpacer_3 = QSpacerItem(70, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_3.addItem(self.horizontalSpacer_3)
 
@@ -824,8 +825,10 @@ class Ui_Form(object):
         self.btn_upper.setObjectName(u"btn_upper")
         sizePolicy1.setHeightForWidth(self.btn_upper.sizePolicy().hasHeightForWidth())
         self.btn_upper.setSizePolicy(sizePolicy1)
-        self.btn_upper.setMinimumSize(QSize(90, 30))
-        self.btn_upper.setFont(font1)
+        self.btn_upper.setMinimumSize(QSize(50, 30))
+        font2 = QFont()
+        font2.setPointSize(9)
+        self.btn_upper.setFont(font2)
         self.btn_upper.setStyleSheet(u"QPushButton\n"
 "{\n"
 "	border: 1px solid gray;\n"
@@ -843,7 +846,7 @@ class Ui_Form(object):
         self.btn_underscore.setObjectName(u"btn_underscore")
         sizePolicy1.setHeightForWidth(self.btn_underscore.sizePolicy().hasHeightForWidth())
         self.btn_underscore.setSizePolicy(sizePolicy1)
-        self.btn_underscore.setMinimumSize(QSize(70, 30))
+        self.btn_underscore.setMinimumSize(QSize(30, 30))
         self.btn_underscore.setFont(font1)
         self.btn_underscore.setStyleSheet(u"QPushButton\n"
 "{\n"
@@ -862,7 +865,7 @@ class Ui_Form(object):
         self.btn_at.setObjectName(u"btn_at")
         sizePolicy1.setHeightForWidth(self.btn_at.sizePolicy().hasHeightForWidth())
         self.btn_at.setSizePolicy(sizePolicy1)
-        self.btn_at.setMinimumSize(QSize(70, 30))
+        self.btn_at.setMinimumSize(QSize(30, 30))
         self.btn_at.setFont(font1)
         self.btn_at.setStyleSheet(u"QPushButton\n"
 "{\n"
@@ -881,7 +884,7 @@ class Ui_Form(object):
         self.btn_space.setObjectName(u"btn_space")
         sizePolicy1.setHeightForWidth(self.btn_space.sizePolicy().hasHeightForWidth())
         self.btn_space.setSizePolicy(sizePolicy1)
-        self.btn_space.setMinimumSize(QSize(250, 30))
+        self.btn_space.setMinimumSize(QSize(120, 30))
         self.btn_space.setFont(font1)
         self.btn_space.setStyleSheet(u"QPushButton\n"
 "{\n"
@@ -900,7 +903,7 @@ class Ui_Form(object):
         self.btn_period.setObjectName(u"btn_period")
         sizePolicy1.setHeightForWidth(self.btn_period.sizePolicy().hasHeightForWidth())
         self.btn_period.setSizePolicy(sizePolicy1)
-        self.btn_period.setMinimumSize(QSize(70, 30))
+        self.btn_period.setMinimumSize(QSize(30, 30))
         self.btn_period.setFont(font1)
         self.btn_period.setStyleSheet(u"QPushButton\n"
 "{\n"
@@ -919,7 +922,7 @@ class Ui_Form(object):
         self.btn_backspace.setObjectName(u"btn_backspace")
         sizePolicy2.setHeightForWidth(self.btn_backspace.sizePolicy().hasHeightForWidth())
         self.btn_backspace.setSizePolicy(sizePolicy2)
-        self.btn_backspace.setMinimumSize(QSize(70, 30))
+        self.btn_backspace.setMinimumSize(QSize(30, 30))
         self.btn_backspace.setFont(font1)
         self.btn_backspace.setFocusPolicy(Qt.StrongFocus)
         self.btn_backspace.setStyleSheet(u"QPushButton\n"
@@ -939,8 +942,8 @@ class Ui_Form(object):
         self.btn_ok.setObjectName(u"btn_ok")
         sizePolicy2.setHeightForWidth(self.btn_ok.sizePolicy().hasHeightForWidth())
         self.btn_ok.setSizePolicy(sizePolicy2)
-        self.btn_ok.setMinimumSize(QSize(90, 30))
-        self.btn_ok.setFont(font1)
+        self.btn_ok.setMinimumSize(QSize(50, 30))
+        self.btn_ok.setFont(font2)
         self.btn_ok.setStyleSheet(u"QPushButton\n"
 "{\n"
 "	border: 1px solid gray;\n"

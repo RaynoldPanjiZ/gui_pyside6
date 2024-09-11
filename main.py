@@ -135,7 +135,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 ui = loader.load(ui_file, self)
                 ui_file.close()
                 self.key_widget = ScreenKeyboard(ui)
-                self.key_widget.show()
+                # self.key_widget.show()
 
                 self.input_handler = InputHandler(self.key_widget)
                 self.popup.regist_widgets(self.input_handler)
