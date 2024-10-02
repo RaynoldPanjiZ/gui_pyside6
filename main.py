@@ -2,7 +2,7 @@ import sys
 from PySide6 import QtWidgets
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile, QIODevice, Qt, QTimer, QUrl, QSize, QThread, QObject, Signal
-from PySide6.QtGui import QPixmap, QIcon
+from PySide6.QtGui import QPixmap, QIcon, QScreen
 # from PySide6.QtWebEngineWidgets import QWebEngineView
 
 import io
@@ -134,18 +134,12 @@ class MainWindow(QtWidgets.QMainWindow):
                     return
                 ui = loader.load(ui_file, self)
                 ui_file.close()
-                self.key_widget = ScreenKeyboard(ui)
-                # self.key_widget.show()
-
+                self.key_widget = ScreenKeyboard(ui, self)
+                
                 self.input_handler = InputHandler(self.key_widget)
                 self.popup.regist_widgets(self.input_handler)
                 self.key_widget.key_pressed.connect(self.input_handler.on_key_pressed) # Connect the keyboard signal to the handler
                 UtilsVariables.key_widget_func(self.key_widget)
-                # print("main: True")
-            # else:
-            #     print(UtilsVariables.key_widget)
-            #     print()
-            #     print(self.popup.input_handler)
 
         else:
             if self.key_widget is not None:
@@ -168,12 +162,17 @@ class MainWindow(QtWidgets.QMainWindow):
         
         # Store the popup instance to prevent it from being garbage collected
         self.popup = PopupClass(dialog)
+        # self.popup.setWindowFlags(Qt.WindowType.Tool)
 
         if event == 2:
             self.w.map_mng_frame.setVisible(True)
         else:
             self.w.map_mng_frame.setVisible(False)
         self.popup.activateWindow()
+        # self.popup.setWindowFlags(self.windowFlags() | Qt.WindowType.WindowTitleHint \
+        #                     | Qt.WindowType.WindowMaximizeButtonHint | \
+        #                         Qt.WindowType.WindowMinimizeButtonHint | \
+        #                             Qt.WindowType.WindowCloseButtonHint | Qt.WindowType.Window )
         self.popup.show()
         
 

@@ -1,7 +1,8 @@
 from PySide6 import QtWidgets
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile, QIODevice, Qt, Signal, QObject
+from PySide6.QtCore import QFile, QIODevice, Qt, Signal, QObject, QPoint
 from utils import UtilsVariables
+from PySide6.QtGui import QScreen
 
 style = None
 with open("ui/style/style_form.qss", "r") as file:
@@ -9,20 +10,24 @@ with open("ui/style/style_form.qss", "r") as file:
 
 class ScreenKeyboard(QtWidgets.QMainWindow):
     key_pressed = Signal(str)
-    def __init__(self, w):
+    def __init__(self, w, mainwindow):
         super().__init__()
-        # QtWidgets.QWidget.__init__(self, parent, Qt.WindowType.WindowStaysOnTopHint)
-        self.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint)
-        self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
-        # self.setWindowFlags(self.windowFlags() | Qt.WindowType.WindowTitleHint \
-        #                     | Qt.WindowType.WindowMaximizeButtonHint | \
-        #                         Qt.WindowType.WindowMinimizeButtonHint | \
-        #                             Qt.WindowType.WindowCloseButtonHint | Qt.WindowType.Window)
+        # self.setParent(mainwindow.w)
+
+        # # QtWidgets.QWidget.__init__(self, parent, Qt.WindowType.WindowStaysOnTopHint)
+        # self.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint)
+        # self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
+        # # self.setWindowFlags(self.windowFlags() | Qt.WindowType.WindowTitleHint \
+        # #                     | Qt.WindowType.WindowMaximizeButtonHint | \
+        # #                         Qt.WindowType.WindowMinimizeButtonHint | \
+        # #                             Qt.WindowType.WindowCloseButtonHint | Qt.WindowType.Window)
         self.w = w
         self.setCentralWidget(w)
+        # self.setGeometry(100, 60, 60, 60) 
         self.setWindowTitle("Screen Keyboard")
         self.setStyleSheet(style)
         self.w.btn_upper.clicked.connect(self.btn_upper_clicked)
+        # self.move_to_center()
         
         self.btn_groups = QtWidgets.QButtonGroup()
         self.num_buttons = []
@@ -77,6 +82,21 @@ class ScreenKeyboard(QtWidgets.QMainWindow):
             self.key_pressed.emit(" ")  # Send space signal
         else:
             self.key_pressed.emit(button_text)
+    
+    def move_to_center(self):
+        # screen_geometry = QtWidgets.QApplication.primaryScreen().geometry()
+        screen_geometry = self.screen().availableGeometry()
+        screen_width = screen_geometry.width()
+        screen_height = screen_geometry.height()
+
+        keyboard_size = self.sizeHint()
+        keyboard_width = keyboard_size.width()
+        keyboard_height = keyboard_size.height()
+
+        x = (screen_width - keyboard_width) // 2
+        y = (screen_height - keyboard_height) // 2
+
+        self.move(0, 0)
 
 
 
@@ -91,7 +111,7 @@ class InputHandler(QObject):
         self.cursor_inwg = False
 
     def eventFilter(self, source, event):       ## https://stackoverflow.com/questions/66235661/qevent-mousebuttonpress-enum-type-missing-in-pyqt6
-        print(event.type())
+        # print(event.type())
         
         # if event.type() == event.Type.MouseButtonPress:
         if event.type() == event.Type.Paint:
@@ -116,10 +136,20 @@ class InputHandler(QObject):
                 # print(self.virtual_key)
                 print(self.cursor_position)
                 # self.virtual_key = self.current_input_widget.time().toString("HH:mm:ss AP")
-        print(self.keyboard.isActiveWindow())
+        # print(self.keyboard.isActiveWindow())
         if self.current_input_widget is not None and event.type() == event.Type.MouseButtonPress:
         # event.Type.FocusIn and self.current_input_widget is not None and self.cursor_inwg is False :
             if self.cursor_inwg is False: 
+                self.keyboard.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Tool)
+                
+                print("keyboard on top")
+
+                keyboard_width = 560
+                keyboard_height = 220
+                keyboard_posx = (QScreen.availableGeometry(QtWidgets.QApplication.primaryScreen()).width()  // 2 ) - (keyboard_width // 2)
+                keyboard_posy = (QScreen.availableGeometry(QtWidgets.QApplication.primaryScreen()).height()) - (keyboard_height + 15)
+                self.keyboard.setGeometry(keyboard_posx, keyboard_posy, keyboard_width, keyboard_height) 
+                self.keyboard.move(keyboard_posx, keyboard_posy)
                 self.keyboard.show()
         return False
 
