@@ -5,12 +5,12 @@
 # from PySide6.QtGui import QScreen
 
 import PySide6
-import PySide6.QtWidgets
+# import PySide6.QtWidgets
 
 style = None
 with open("ui/style/style_form.qss", "r") as file:
     style = file.read()
-
+# qmainwindow = PySide6.QtWidgets.QMainWindow
 class ScreenKeyboard(PySide6.QtWidgets.QMainWindow):
     key_pressed = PySide6.QtCore.Signal(str)
     def __init__(self, w, mainwindow):

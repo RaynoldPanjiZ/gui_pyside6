@@ -28,8 +28,7 @@ from sidemenu.SystemLog import SystemLog
 
 from sidemenu.SystemLogin import SystemLogin
 
-from utils.ScreenKeyboard import InputHandler, ScreenKeyboard 
-from utils import UtilsVariables
+
 
 
 # class KeyboardThread(PySide6.QtCore.QThread):
@@ -126,6 +125,8 @@ class MainWindow(PySide6.QtWidgets.QMainWindow):
 
     
     def screen_keyboard(self):
+        from utils.ScreenKeyboard import InputHandler, ScreenKeyboard 
+        from utils import UtilsVariables
         print("Key Active:", UtilsVariables.keyboard_active)
         if UtilsVariables.keyboard_active:
             if self.key_widget is None:
@@ -152,6 +153,8 @@ class MainWindow(PySide6.QtWidgets.QMainWindow):
                 
 
     def show_popup(self, event, PopupClass):
+        from utils.ScreenKeyboard import InputHandler, ScreenKeyboard 
+        from utils import UtilsVariables
         print("Success!")
         loader = PySide6.QtUiTools.QUiLoader()
         ui_file = PySide6.QtCore.QFile(self.sidebar_forms[event])
