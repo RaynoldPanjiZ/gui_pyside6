@@ -1,7 +1,9 @@
-from PySide6 import QtWidgets
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile, QIODevice, Qt, QDate, QTime, QTimeZone
-from PySide6.QtGui import QGuiApplication
+# from PySide6 import QtWidgets
+# from PySide6.QtUiTools import QUiLoader
+# from PySide6.QtCore import QFile, QIODevice, Qt, QDate, QTime, QTimeZone
+# from PySide6.QtGui import QGuiApplication
+
+import PySide6
 import sys, os
 import subprocess
 import shutil
@@ -19,7 +21,7 @@ with open("ui/style/style_form.qss", "r") as file:
     style = file.read()
 
 
-class SystemSetting(QtWidgets.QMainWindow):
+class SystemSetting(PySide6.QtWidgets.QMainWindow):
     def __init__(self, w):
         super().__init__()
         self.keyboard_active = UtilsVariables.keyboard_active
@@ -36,7 +38,7 @@ class SystemSetting(QtWidgets.QMainWindow):
         # if UtilsVariables.keyboard_active and UtilsVariables.key_widget is not None:
         #     self.input_handler1 = InputHandler(UtilsVariables.key_widget)
         #     UtilsVariables.key_widget.key_pressed.connect(self.input_handler1.on_key_pressed)
-        #     input_widgets = self.findChildren(QtWidgets.QLineEdit)
+        #     input_widgets = self.findChildren(PySide6.QtWidgets.QLineEdit)
         #     for widget in input_widgets:
         #         widget.installEventFilter(self.input_handler1)
 
@@ -86,7 +88,7 @@ class SystemSetting(QtWidgets.QMainWindow):
         self.w.id_edit.installEventFilter(handler)
         self.w.version_edit.installEventFilter(handler)
         self.w.elapsed_time.installEventFilter(handler)
-        # input_widgets = self.findChildren(QtWidgets.QLineEdit) + self.findChildren(QtWidgets.QTextEdit) + self.findChildren(QtWidgets.QSpinBox)
+        # input_widgets = self.findChildren(PySide6.QtWidgets.QLineEdit) + self.findChildren(PySide6.QtWidgets.QTextEdit) + self.findChildren(PySide6.QtWidgets.QSpinBox)
         # for widget in input_widgets:
         #     widget.installEventFilter(handler)
         
@@ -109,15 +111,15 @@ class SystemSetting(QtWidgets.QMainWindow):
         # fbset command https://www.linuxquestions.org/questions/linux-from-scratch-13/so-i-got-fbset-working-can-change-resolution-at-run-time-4175502019/
         try:
             subprocess.run(['fbset', '-xres', xres, '-yres', yres, '-match'], check=True)
-            QtWidgets.QMessageBox.information(self, "Display resolution", f"Resolution successfully changed to : {selected_resolution}")
+            PySide6.QtWidgets.QMessageBox.information(self, "Display resolution", f"Resolution successfully changed to : {selected_resolution}")
         except subprocess.CalledProcessError as e:
-            QtWidgets.QMessageBox.critical(self, "Error", f"Failed to changed resolution: {e}")
+            PySide6.QtWidgets.QMessageBox.critical(self, "Error", f"Failed to changed resolution: {e}")
 
 
     def datetime(self):
-        loader = QUiLoader()
-        ui_file = QFile("ui/admgui/all_ui/system_setting/ServerConnection_datesetting_dialog.ui")
-        if not ui_file.open(QIODevice.ReadOnly):
+        loader = PySide6.QUiLoader()
+        ui_file = PySide6.QtCore.QFile("ui/admgui/all_ui/system_setting/ServerConnection_datesetting_dialog.ui")
+        if not ui_file.open(PySide6.QtCore.QIODevice.ReadOnly):
             print(f"Cannot open UI file: {ui_file.errorString()}")
             return
         dialog = loader.load(ui_file, self)
@@ -126,10 +128,10 @@ class SystemSetting(QtWidgets.QMainWindow):
         self.popup.setWindowTitle("Date/Time Settings")
 
         if UtilsVariables.keyboard_active and UtilsVariables.key_widget is not None:
-            UtilsVariables.key_widget.setWindowFlags(self.windowFlags() | Qt.WindowType.WindowStaysOnTopHint)
+            UtilsVariables.key_widget.setWindowFlags(self.windowFlags() | PySide6.QtCore.Qt.WindowType.WindowStaysOnTopHint)
             self.input_handler2 = InputHandler(UtilsVariables.key_widget)
             UtilsVariables.key_widget.key_pressed.connect(self.input_handler2.on_key_pressed)
-            input_widgets = self.popup.findChildren(QtWidgets.QDateEdit) + self.popup.findChildren(QtWidgets.QTimeEdit)
+            input_widgets = self.popup.findChildren(PySide6.QtWidgets.QDateEdit) + self.popup.findChildren(PySide6.QtWidgets.QTimeEdit)
             for widget in input_widgets:
                 widget.installEventFilter(self.input_handler2)
 
@@ -140,16 +142,16 @@ class SystemSetting(QtWidgets.QMainWindow):
         
         datetimenow = datetime.today()
         self.date_field = datetimenow.strftime('%Y-%m-%d')
-        q_date = QDate.fromString(self.date_field, "yyyy-MM-dd")
+        q_date = PySide6.QtCore.QDate.fromString(self.date_field, "yyyy-MM-dd")
         self.popup.dateEdit.setDate(q_date)
 
         self.time_field = datetimenow.strftime('%H:%M:%S')
-        q_time = QTime.fromString(self.time_field)
+        q_time = PySide6.QtCore.QTime.fromString(self.time_field)
         self.popup.timeEdit.setTime(q_time)
 
         self.timezone_name = '/'.join(os.path.realpath('/etc/localtime').split('/')[-2:])      ## https://stackoverflow.com/a/25634136
 
-        timezones = QTimeZone.availableTimeZoneIds()
+        timezones = PySide6.QtCore.QTimeZone.availableTimeZoneIds()
         for i, timezone in enumerate(timezones):
             self.popup.timezone_combobox.addItem(timezone.data().decode("utf-8"))   ## https://forum.qt.io/post/426497
             if timezone == self.timezone_name:
@@ -168,19 +170,19 @@ class SystemSetting(QtWidgets.QMainWindow):
             datetime_by_timezone = datetime.now(timezone(self.timezone_name))
 
             datenow_format = datetime_by_timezone.strftime("%Y-%m-%d")
-            q_date = QDate.fromString(datenow_format, "yyyy-MM-dd")
+            q_date = PySide6.QtCore.QDate.fromString(datenow_format, "yyyy-MM-dd")
             self.popup.dateEdit.setDate(q_date)
 
             timenow_format = datetime_by_timezone.strftime("%H:%M:%S")
-            q_time = QTime.fromString(timenow_format)
+            q_time = PySide6.QtCore.QTime.fromString(timenow_format)
             self.popup.timeEdit.setTime(q_time)
 
             # self.popup.apply_button.clicked.connect(self.apply_sync)
             self.ntp_sync_active = True
 
-            QtWidgets.QMessageBox.information(self, "NTP Sync", f"Time synchronized with NTP server.\nNTP Time: {timenow_format}\nTimezone: {self.timezone_name}")
+            PySide6.QtWidgets.QMessageBox.information(self, "NTP Sync", f"Time synchronized with NTP server.\nNTP Time: {timenow_format}\nTimezone: {self.timezone_name}")
         except Exception as e:
-            QtWidgets.QMessageBox.critical(self, "NTP Sync Error", f"Failed to synchronize with NTP server.\nError: {str(e)}")
+            PySide6.QtWidgets.QMessageBox.critical(self, "NTP Sync Error", f"Failed to synchronize with NTP server.\nError: {str(e)}")
     
     def apply_btn(self):
         if self.ntp_sync_active:
@@ -216,31 +218,31 @@ class SystemSetting(QtWidgets.QMainWindow):
 
     def server_connection(self, s):     # https://doc.qt.io/qt-6/qmessagebox.html
         print("click", s)
-        dlg = QtWidgets.QMessageBox(self)
+        dlg = PySide6.QtWidgets.QMessageBox(self)
         dlg.setWindowTitle("Server Connection")
         dlg.setText("The server connection was successfull")
-        dlg.addButton(QtWidgets.QMessageBox.Close)
+        dlg.addButton(PySide6.QtWidgets.QMessageBox.Close)
         with open("ui/style/style_form.qss", "r") as file:
             dlg.setStyleSheet(file.read())
         button = dlg.exec()
 
-        if button == QtWidgets.QMessageBox.Close:
+        if button == PySide6.QtWidgets.QMessageBox.Close:
             print("Success!")   
 
     def factory_reset(self, s):
-        dlg = QtWidgets.QMessageBox(self)
+        dlg = PySide6.QtWidgets.QMessageBox(self)
         dlg.setWindowTitle("Factory Initiation")
         dlg.setText("Would you like to proceed with factory reset?")
-        dlg.setStandardButtons(QtWidgets.QMessageBox.Cancel | QtWidgets.QMessageBox.Yes)
+        dlg.setStandardButtons(PySide6.QtWidgets.QMessageBox.Cancel | PySide6.QtWidgets.QMessageBox.Yes)
         with open("ui/style/style_form.qss", "r") as file:
             dlg.setStyleSheet(file.read())
         button = dlg.exec()
 
-        if button == QtWidgets.QMessageBox.Yes:
+        if button == PySide6.QtWidgets.QMessageBox.Yes:
             print("Success!")
-            loader = QUiLoader()
-            ui_file = QFile("ui/admgui/all_ui/system_setting/ServerConnection_factory_initial_progress_bar_dialog.ui")
-            if not ui_file.open(QIODevice.ReadOnly):
+            loader = PySide6.QUiLoader()
+            ui_file = PySide6.QtCore.QFile("ui/admgui/all_ui/system_setting/ServerConnection_factory_initial_progress_bar_dialog.ui")
+            if not ui_file.open(PySide6.QtCore.QIODevice.ReadOnly):
                 print(f"Cannot open UI file: {ui_file.errorString()}")
                 return
             dialog = loader.load(ui_file, self)

@@ -1,7 +1,10 @@
-from PySide6 import QtWidgets
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile, QIODevice, Qt, QTimer
-from PySide6.QtGui import QPixmap, QImage
+# from PySide6 import QtWidgets
+# from PySide6.QtUiTools import QUiLoader
+# from PySide6.QtCore import QFile, QIODevice, Qt, QTimer
+# from PySide6.QtGui import QPixmap, QImage
+
+import PySide6
+
 import sys, os
 import cv2
 import json
@@ -16,7 +19,7 @@ with open("ui/style/style_form.qss", "r") as file:
 
 
 
-class EventSetting(QtWidgets.QMainWindow):
+class EventSetting(PySide6.QtWidgets.QMainWindow):
     def __init__(self, w):
         super().__init__()
         self.w = w
@@ -29,9 +32,9 @@ class EventSetting(QtWidgets.QMainWindow):
 
     def show_popup(self, PopupClass):
         print("Success!")
-        loader = QUiLoader()
-        ui_file = QFile("ui/admgui/all_ui/event_setting/object_realtime.ui")
-        if not ui_file.open(QIODevice.ReadOnly):
+        loader = PySide6.QtUiTools.QUiLoader()
+        ui_file = PySide6.QtCore.QFile("ui/admgui/all_ui/event_setting/object_realtime.ui")
+        if not ui_file.open(PySide6.QtCore.QIODevice.ReadOnly):
             print(f"Cannot open UI file: {ui_file.errorString()}")
             return
         
@@ -43,7 +46,7 @@ class EventSetting(QtWidgets.QMainWindow):
         
 
 
-class ObjTracking(QtWidgets.QMainWindow):
+class ObjTracking(PySide6.QtWidgets.QMainWindow):
     def __init__(self, w):
         super().__init__()
         self.w = w
@@ -62,7 +65,7 @@ class ObjTracking(QtWidgets.QMainWindow):
         if UtilsVariables.keyboard_active and UtilsVariables.key_widget is not None:
             self.input_handler1 = InputHandler(UtilsVariables.key_widget)
             UtilsVariables.key_widget.key_pressed.connect(self.input_handler1.on_key_pressed)
-            input_widgets = self.findChildren(QtWidgets.QLineEdit) + self.findChildren(QtWidgets.QTextEdit)
+            input_widgets = self.findChildren(PySide6.QtWidgets.QLineEdit) + self.findChildren(PySide6.QtWidgets.QTextEdit)
             for widget in input_widgets:
                 widget.installEventFilter(self.input_handler1)
         
@@ -91,20 +94,20 @@ class ObjTracking(QtWidgets.QMainWindow):
 
         self.filtered_datas = []
         
-        completer_cam = QtWidgets.QCompleter(list(self.cameralist.keys()))
-        completer_cam.setCaseSensitivity(Qt.CaseInsensitive)
+        completer_cam = PySide6.QtWidgets.QCompleter(list(self.cameralist.keys()))
+        completer_cam.setCaseSensitivity(PySide6.QtCore.Qt.CaseInsensitive)
         self.w.camera_edit.setCompleter(completer_cam)
         completer_cam.popup().setStyleSheet("color:#37383E;")
 
         names = [item["name"] for item in self.datas1]
-        completer_name = QtWidgets.QCompleter(names)
-        completer_name.setCaseSensitivity(Qt.CaseInsensitive)
+        completer_name = PySide6.QtWidgets.QCompleter(names)
+        completer_name.setCaseSensitivity(PySide6.QtCore.Qt.CaseInsensitive)
         self.w.personName.setCompleter(completer_name)
         completer_name.popup().setStyleSheet("color:#37383E;")
         
         vahicles = [item["vehicle_no"] for item in self.datas2]
-        completer_vahicle = QtWidgets.QCompleter(vahicles)
-        completer_vahicle.setCaseSensitivity(Qt.CaseInsensitive)
+        completer_vahicle = PySide6.QtWidgets.QCompleter(vahicles)
+        completer_vahicle.setCaseSensitivity(PySide6.QtCore.Qt.CaseInsensitive)
         self.w.noVehicle.setCompleter(completer_vahicle)
         completer_vahicle.popup().setStyleSheet("color:#37383E;")
 
@@ -122,20 +125,20 @@ class ObjTracking(QtWidgets.QMainWindow):
     def selct_camera(self):
         cam_id = self.w.camera_edit.text()
         if cam_id == "" or cam_id == " ":
-            QtWidgets.QMessageBox.critical(self, "Empty Fields", "All fields must be filled out.")
+            PySide6.QtWidgets.QMessageBox.critical(self, "Empty Fields", "All fields must be filled out.")
         elif cam_id not in list(self.cameralist.keys()):
-            QtWidgets.QMessageBox.critical(self, "Invalid Input", f"{cam_id} not exist")
+            PySide6.QtWidgets.QMessageBox.critical(self, "Invalid Input", f"{cam_id} not exist")
         else:
             self.cam_usage = self.cameralist[cam_id]
-            QtWidgets.QMessageBox.information(self, "Success", f"Camera selected {cam_id}")
+            PySide6.QtWidgets.QMessageBox.information(self, "Success", f"Camera selected {cam_id}")
 
 
     def select_form(self):
         button = self.sender()
 
-        loader = QUiLoader()
-        ui_file = QFile("ui/admgui/all_ui/event_setting/select_data_dialog.ui")
-        if not ui_file.open(QIODevice.ReadOnly):
+        loader = PySide6.QtUiTools.QUiLoader()
+        ui_file = PySide6.QtCore.QFile("ui/admgui/all_ui/event_setting/select_data_dialog.ui")
+        if not ui_file.open(PySide6.QtCore.QIODevice.ReadOnly):
             print(f"Cannot open UI file: {ui_file.errorString()}")
             return
         dialog = loader.load(ui_file, self)
@@ -156,16 +159,16 @@ class ObjTracking(QtWidgets.QMainWindow):
             
             header = tb_show.horizontalHeader()
             header.setMinimumHeight(34)
-            header.setDefaultAlignment(Qt.AlignCenter | Qt.Alignment(Qt.TextWordWrap))
+            header.setDefaultAlignment(PySide6.QtCore.Qt.AlignCenter | PySide6.QtCore.Qt.Alignment(PySide6.QtCore.Qt.TextWordWrap))
 
             header_items = ["No.", "Name", "Img", "Gender", "Hairstyle", "attribute", "vehicle"]
             for i in range(tb_show.columnCount()):
-                hItem = QtWidgets.QTableWidgetItem(header_items[i])
+                hItem = PySide6.QtWidgets.QTableWidgetItem(header_items[i])
                 tb_show.setHorizontalHeaderItem(i, hItem)
                 if i==0:
                     tb_show.setColumnWidth(0, 20)
                 else:
-                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
+                    header.setSectionResizeMode(i, PySide6.QtWidgets.QHeaderView.Stretch)
             data_to_show = self.datas1
             self.form = "Person"
 
@@ -173,18 +176,18 @@ class ObjTracking(QtWidgets.QMainWindow):
                 for idx, data_num in enumerate(range(len(data_to_show))):
                     for i, (key, value) in enumerate(data_to_show[data_num].items()):
                         if key == "id":
-                            it = QtWidgets.QTableWidgetItem(str(idx+1))
-                            it.setTextAlignment(Qt.AlignCenter)
+                            it = PySide6.QtWidgets.QTableWidgetItem(str(idx+1))
+                            it.setTextAlignment(PySide6.QtCore.Qt.AlignCenter)
                             tb_show.setItem(int(idx), 0, it)
                         elif key == "vehicles":
                             if value is not False:
-                                it = QtWidgets.QTableWidgetItem(str(value))
-                                it.setTextAlignment(Qt.AlignCenter)
+                                it = PySide6.QtWidgets.QTableWidgetItem(str(value))
+                                it.setTextAlignment(PySide6.QtCore.Qt.AlignCenter)
                                 tb_show.setItem(int(idx), i, it)
                                 tb_show.cellClicked.connect(self.selected_row)
                         else:
-                            it = QtWidgets.QTableWidgetItem(str(value))
-                            it.setTextAlignment(Qt.AlignCenter)
+                            it = PySide6.QtWidgets.QTableWidgetItem(str(value))
+                            it.setTextAlignment(PySide6.QtCore.Qt.AlignCenter)
                             tb_show.setItem(int(idx), i, it)
                             tb_show.cellClicked.connect(self.selected_row)
                             
@@ -196,35 +199,35 @@ class ObjTracking(QtWidgets.QMainWindow):
             
             header = tb_show.horizontalHeader()
             header.setMinimumHeight(34)
-            header.setDefaultAlignment(Qt.AlignCenter | Qt.Alignment(Qt.TextWordWrap))
+            header.setDefaultAlignment(PySide6.QtCore.Qt.AlignCenter | PySide6.QtCore.Qt.Alignment(PySide6.QtCore.Qt.TextWordWrap))
 
             header_items = ["No.", "Vehicle No", "Car Type", "Brand", "Model", "Color", "Person"]
             for i in range(tb_show.columnCount()):
-                hItem = QtWidgets.QTableWidgetItem(header_items[i])
+                hItem = PySide6.QtWidgets.QTableWidgetItem(header_items[i])
                 tb_show.setHorizontalHeaderItem(i, hItem)
                 if i==0:
                     tb_show.setColumnWidth(0, 20)
                 else:
-                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
+                    header.setSectionResizeMode(i, PySide6.QtWidgets.QHeaderView.Stretch)
             data_to_show = self.datas2
             self.form = "Vehicle"
 
         
             if data_to_show:
                 for idx, data_num in enumerate(range(len(data_to_show))):
-                    it = QtWidgets.QTableWidgetItem(str(idx+1))
-                    it.setTextAlignment(Qt.AlignCenter)
+                    it = PySide6.QtWidgets.QTableWidgetItem(str(idx+1))
+                    it.setTextAlignment(PySide6.QtCore.Qt.AlignCenter)
                     tb_show.setItem(int(idx), 0, it)
                     for i, (key, value) in enumerate(data_to_show[data_num].items()):
                         if key == "person_id":
                             if value is not False:
-                                it = QtWidgets.QTableWidgetItem(str(self.datas1[value]["name"]))
-                                it.setTextAlignment(Qt.AlignCenter)
+                                it = PySide6.QtWidgets.QTableWidgetItem(str(self.datas1[value]["name"]))
+                                it.setTextAlignment(PySide6.QtCore.Qt.AlignCenter)
                                 tb_show.setItem(int(idx), i+1, it)
                                 tb_show.cellClicked.connect(self.selected_row)
                         else:
-                            it = QtWidgets.QTableWidgetItem(str(value))
-                            it.setTextAlignment(Qt.AlignCenter)
+                            it = PySide6.QtWidgets.QTableWidgetItem(str(value))
+                            it.setTextAlignment(PySide6.QtCore.Qt.AlignCenter)
                             tb_show.setItem(int(idx), i+1, it)
                             tb_show.cellClicked.connect(self.selected_row)
 
@@ -239,8 +242,8 @@ class ObjTracking(QtWidgets.QMainWindow):
             self.w.personName.setText(name)
 
             profile_file = datatoform["img"]
-            pixmap = QPixmap(profile_file)  
-            scaled_pixmap = pixmap.scaled(self.w.label_foto.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            pixmap = PySide6.QtGui.QPixmap(profile_file)  
+            scaled_pixmap = pixmap.scaled(self.w.label_foto.size(), PySide6.QtCore.Qt.KeepAspectRatio, PySide6.QtCore.Qt.SmoothTransformation)
             self.w.label_foto.setPixmap(scaled_pixmap)
 
             gender = datatoform["gender"]
@@ -256,7 +259,7 @@ class ObjTracking(QtWidgets.QMainWindow):
                 self.w.Hshort_radiobtn.setChecked(True)
 
             attrs = datatoform["attribute"]
-            checkboxes = self.w.attr_checkboxGroup.parentWidget().findChildren(QtWidgets.QCheckBox)
+            checkboxes = self.w.attr_checkboxGroup.parentWidget().findChildren(PySide6.QtWidgets.QCheckBox)
             for chbx in checkboxes:
                 if chbx.text() in attrs:
                     chbx.setChecked(True)
@@ -298,7 +301,7 @@ class ObjTracking(QtWidgets.QMainWindow):
 
     def new_registVehicle(self):
         if self.w.noVehicle.text() == "":
-            QtWidgets.QMessageBox.critical(self, "Alert", f"Please enter the Vehicle No field")
+            PySide6.QtWidgets.QMessageBox.critical(self, "Alert", f"Please enter the Vehicle No field")
             return
         
         noVehicle = self.w.noVehicle.text()
@@ -306,7 +309,7 @@ class ObjTracking(QtWidgets.QMainWindow):
         brand = self.w.brand_comboBox.currentText()
         model = self.w.model_comboBox.currentText()
         color = self.w.color_comboBox.currentText()
-        qm = QtWidgets.QMessageBox
+        qm = PySide6.QtWidgets.QMessageBox
         ret = qm.question(self,'Data Confirmation', "Save data registration?", qm.Yes | qm.No)
         if ret == qm.Yes:
             self.datas2.append({
@@ -327,15 +330,15 @@ class ObjTracking(QtWidgets.QMainWindow):
             return
         
         if self.w.personName.text() == "":
-            QtWidgets.QMessageBox.critical(self, "Alert", f"Please enter the name field")
+            PySide6.QtWidgets.QMessageBox.critical(self, "Alert", f"Please enter the name field")
             return
         if self.cam_usage is None and self.cam_usage not in list(self.cameralist.keys()):
-            QtWidgets.QMessageBox.critical(self, "Alert", "Please select the camera channel")
+            PySide6.QtWidgets.QMessageBox.critical(self, "Alert", "Please select the camera channel")
             return
 
-        loader = QUiLoader()
-        ui_file = QFile("ui/admgui/all_ui/event_setting/camera_confirm_dialog.ui")
-        if not ui_file.open(QIODevice.ReadOnly):
+        loader = PySide6.QtUiTools.QUiLoader()
+        ui_file = PySide6.QtCore.QFile("ui/admgui/all_ui/event_setting/camera_confirm_dialog.ui")
+        if not ui_file.open(PySide6.QtCore.QIODevice.ReadOnly):
             print(f"Cannot open UI file: {ui_file.errorString()}")
             return
         dialog = loader.load(ui_file, self)
@@ -368,7 +371,7 @@ class ObjTracking(QtWidgets.QMainWindow):
         
         attrs = []
         attr_string = "-"
-        for chbx in self.w.attr_checkboxGroup.parentWidget().findChildren(QtWidgets.QCheckBox):
+        for chbx in self.w.attr_checkboxGroup.parentWidget().findChildren(PySide6.QtWidgets.QCheckBox):
             if chbx.isChecked():
                 attrs.append(chbx.text())
                 if attr_string == "-":
@@ -383,7 +386,7 @@ class ObjTracking(QtWidgets.QMainWindow):
         
         self.camera = cv2.VideoCapture(self.cam_usage)
         self.frame = None
-        self.timer = QTimer()
+        self.timer = PySide6.QtCore.QTimer()
         self.timer.timeout.connect(lambda n=name, g=gender, h=hair, a=attrs:self.display_vid(n,g,h,a))
         self.timer.start(40)
 
@@ -405,8 +408,8 @@ class ObjTracking(QtWidgets.QMainWindow):
             if ret:
                 print(self.frame.shape)
                 self.frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
-                image = QImage(self.frame, self.frame.shape[1], self.frame.shape[0], QImage.Format_RGB888)
-                pixmap = QPixmap.fromImage(image)
+                image = PySide6.QtGui.QImage(self.frame, self.frame.shape[1], self.frame.shape[0], PySide6.QtGui.QImage.Format_RGB888)
+                pixmap = PySide6.QtGui.QPixmap.fromImage(image)
                 self.popup.label_cam.setPixmap(pixmap)
                 self.popup.label_cam.setScaledContents(True)
                 self.popup.confirm_btn.setEnabled(False)
@@ -437,8 +440,8 @@ class ObjTracking(QtWidgets.QMainWindow):
         self.datas["person"] = self.datas1
         with open("./datas/objTracking.json", "w") as outfile: 
             json.dump(self.datas, outfile, indent=4) 
-        pixmap = QPixmap(self.update_data["img"])  
-        scaled_pixmap = pixmap.scaled(self.w.label_foto.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        pixmap = PySide6.QtGui.QPixmap(self.update_data["img"])  
+        scaled_pixmap = pixmap.scaled(self.w.label_foto.size(), PySide6.QtCore.Qt.KeepAspectRatio, PySide6.QtCore.Qt.SmoothTransformation)
         self.w.label_foto.setPixmap(scaled_pixmap)
 
         self.imlen = len(os.listdir("./imgs/profile"))
@@ -451,7 +454,7 @@ class ObjTracking(QtWidgets.QMainWindow):
         gender_fliter = "Male" if self.w.Gmale_radiobtn.isChecked() else "Female" if self.w.Gfemale_radiobtn.isChecked() else None
         hairstyle_fliter = "Long" if self.w.Hlong_radiobtn.isChecked() else "Short" if self.w.Hshort_radiobtn.isChecked() else None
         attrs_filter = []
-        for chbx in self.w.attr_checkboxGroup.parentWidget().findChildren(QtWidgets.QCheckBox):
+        for chbx in self.w.attr_checkboxGroup.parentWidget().findChildren(PySide6.QtWidgets.QCheckBox):
             if chbx.isChecked():
                 attrs_filter.append(chbx.text())
 
@@ -560,15 +563,15 @@ class ObjTracking(QtWidgets.QMainWindow):
 
 
         if self.filtered_datas:
-            QtWidgets.QMessageBox.information(self, "Searching info", f"filtered data : {len(self.filtered_datas)}")
+            PySide6.QtWidgets.QMessageBox.information(self, "Searching info", f"filtered data : {len(self.filtered_datas)}")
         else:
-            QtWidgets.QMessageBox.critical(self, "Searching info", f"filtered data : {len(self.filtered_datas)}")
+            PySide6.QtWidgets.QMessageBox.critical(self, "Searching info", f"filtered data : {len(self.filtered_datas)}")
 
 
     def show_filter(self):
-        loader = QUiLoader()
-        ui_file = QFile("ui/admgui/all_ui/event_setting/select_data_dialog.ui")
-        if not ui_file.open(QIODevice.ReadOnly):
+        loader = PySide6.QtUiTools.QUiLoader()
+        ui_file = PySide6.QtCore.QFile("ui/admgui/all_ui/event_setting/select_data_dialog.ui")
+        if not ui_file.open(PySide6.QtCore.QIODevice.ReadOnly):
             print(f"Cannot open UI file: {ui_file.errorString()}")
             return
         dialog = loader.load(ui_file, self)
@@ -592,10 +595,10 @@ class ObjTracking(QtWidgets.QMainWindow):
             
             header = tb_show.horizontalHeader()
             header.setMinimumHeight(34)
-            header.setDefaultAlignment(Qt.AlignCenter | Qt.Alignment(Qt.TextWordWrap))
+            header.setDefaultAlignment(PySide6.QtCore.Qt.AlignCenter | PySide6.QtCore.Qt.Alignment(PySide6.QtCore.Qt.TextWordWrap))
 
             for i in range(tb_show.columnCount()):
-                hItem = QtWidgets.QTableWidgetItem(header_items[i])
+                hItem = PySide6.QtWidgets.QTableWidgetItem(header_items[i])
                 tb_show.setHorizontalHeaderItem(i, hItem)
                 if i==0:
                     tb_show.setColumnWidth(i, 20)
@@ -606,23 +609,23 @@ class ObjTracking(QtWidgets.QMainWindow):
                 elif i==6:
                     tb_show.setColumnWidth(i, 120)
                 else:
-                    header.setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
+                    header.setSectionResizeMode(i, PySide6.QtWidgets.QHeaderView.Stretch)
 
             ## show data
             for idx, data_num in enumerate(range(len(data_to_show))):
                 for i, (key, value) in enumerate(data_to_show[data_num].items()):
                     if key == "id":
-                        it = QtWidgets.QTableWidgetItem(str(idx+1))
-                        it.setTextAlignment(Qt.AlignCenter)
+                        it = PySide6.QtWidgets.QTableWidgetItem(str(idx+1))
+                        it.setTextAlignment(PySide6.QtCore.Qt.AlignCenter)
                         tb_show.setItem(int(idx), 0, it)
                     elif key == "vehicles":
                         if value is not False:
-                            it = QtWidgets.QTableWidgetItem(str(value))
-                            it.setTextAlignment(Qt.AlignCenter)
+                            it = PySide6.QtWidgets.QTableWidgetItem(str(value))
+                            it.setTextAlignment(PySide6.QtCore.Qt.AlignCenter)
                             tb_show.setItem(int(idx), i, it)
                     else:
-                        it = QtWidgets.QTableWidgetItem(str(value))
-                        it.setTextAlignment(Qt.AlignCenter)
+                        it = PySide6.QtWidgets.QTableWidgetItem(str(value))
+                        it.setTextAlignment(PySide6.QtCore.Qt.AlignCenter)
                         tb_show.setItem(int(idx), i, it)
         
         self.popup.exec()
@@ -646,7 +649,7 @@ class ObjTracking(QtWidgets.QMainWindow):
         self.w.Hshort_radiobtn.setChecked(False)
         self.w.hairbtngroup.setExclusive(True)
         ## reset attributes
-        checkboxes = self.w.attr_checkboxGroup.parentWidget().findChildren(QtWidgets.QCheckBox)
+        checkboxes = self.w.attr_checkboxGroup.parentWidget().findChildren(PySide6.QtWidgets.QCheckBox)
         for chbx in checkboxes:
             chbx.setChecked(False)
         ## reset combobox

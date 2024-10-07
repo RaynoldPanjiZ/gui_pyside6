@@ -1,6 +1,8 @@
-from PySide6 import QtWidgets
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile, QIODevice, Qt, QTimer, QDate, QDateTime
+# from PySide6 import QtWidgets
+# from PySide6.QtUiTools import QUiLoader
+# from PySide6.QtCore import QFile, QIODevice, Qt, QTimer, QDate, QDateTime
+
+import PySide6
 import sys, os
 import json
 from datetime import datetime
@@ -11,7 +13,7 @@ with open("ui/style/style_form.qss", "r") as file:
     style = file.read()
 
 
-class SystemLog(QtWidgets.QMainWindow):
+class SystemLog(PySide6.QtWidgets.QMainWindow):
     def __init__(self, w):
         super().__init__()
         self.w = w
@@ -24,7 +26,7 @@ class SystemLog(QtWidgets.QMainWindow):
         self.w.btn_search.clicked.connect(self.handle_filter)
         
         date_str = datetime.today().strftime('%Y-%m-%d')
-        qdate = QDate.fromString(date_str, "yyyy-MM-dd")
+        qdate = PySide6.QtCore.QDate.fromString(date_str, "yyyy-MM-dd")
         self.w.periodEnd_filter.setDate(qdate)
 
         self.curr_page = 1
@@ -41,7 +43,7 @@ class SystemLog(QtWidgets.QMainWindow):
             f = open('./datas/systemLog.json')
             self.datas = json.load(f)
     
-        self.timer_fetch = QTimer()
+        self.timer_fetch = PySide6.QtCore.QTimer()
         self.timer_fetch.timeout.connect(self.update_table)
         self.timer_fetch.start(700)
     
@@ -56,25 +58,25 @@ class SystemLog(QtWidgets.QMainWindow):
         
         header = tb_show.horizontalHeader()
         header.setMinimumHeight(34)
-        header.setDefaultAlignment(Qt.AlignCenter | Qt.Alignment(Qt.TextWordWrap))
+        header.setDefaultAlignment(PySide6.QtCore.Qt.AlignCenter | PySide6.QtCore.Qt.Alignment(PySide6.QtCore.Qt.TextWordWrap))
         for i in range(tb_show.columnCount()):
             if i == 0:
                 tb_show.setColumnWidth(i, 20)
             else:
-                header.setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
+                header.setSectionResizeMode(i, PySide6.QtWidgets.QHeaderView.Stretch)
         
         data_to_show = self.filtered_datas if self.filter_log else self.datas
         position_start, position_end, num_perpage = self.numpage_filter(data_to_show)
         tb_show.setRowCount(num_perpage)
         if data_to_show:
             for idx, data_num in enumerate(range(position_start, position_end)):
-                it = QtWidgets.QTableWidgetItem(str(data_num+1))
-                it.setTextAlignment(Qt.AlignCenter)
+                it = PySide6.QtWidgets.QTableWidgetItem(str(data_num+1))
+                it.setTextAlignment(PySide6.QtCore.Qt.AlignCenter)
                 tb_show.setItem(int(idx), 0, it)
                 for i, (key, value) in enumerate(data_to_show[data_num].items()):
                     if key == "id": continue
-                    it = QtWidgets.QTableWidgetItem(str(value))
-                    it.setTextAlignment(Qt.AlignCenter)
+                    it = PySide6.QtWidgets.QTableWidgetItem(str(value))
+                    it.setTextAlignment(PySide6.QtCore.Qt.AlignCenter)
                     tb_show.setItem(int(idx), i, it)
                     # tb_show.cellClicked.connect(self.selected_row)
     
@@ -97,11 +99,11 @@ class SystemLog(QtWidgets.QMainWindow):
             if widget is not None:
                 widget.deleteLater()
 
-        btnpage = [QtWidgets.QPushButton(str(i + 1)) for i in range(total_page)]
+        btnpage = [PySide6.QtWidgets.QPushButton(str(i + 1)) for i in range(total_page)]
 
-        spacer1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacer1 = PySide6.QtWidgets.QSpacerItem(40, 20, PySide6.QtWidgets.QSizePolicy.Expanding, PySide6.QtWidgets.QSizePolicy.Minimum)
         pg_layout.addItem(spacer1)
-        prev_btn = QtWidgets.QPushButton("<<")
+        prev_btn = PySide6.QtWidgets.QPushButton("<<")
         prev_btn.clicked.connect(lambda :self.data_operation_pages(1))
         prev_btn.setFixedSize(30, 30)
         pg_layout.addWidget(prev_btn)
@@ -110,11 +112,11 @@ class SystemLog(QtWidgets.QMainWindow):
             btn.setObjectName("pg_"+str(i))
             btn.clicked.connect(lambda _, x=i:self.data_operation_pages(x+1))
             pg_layout.addWidget(btn)
-        next_btn = QtWidgets.QPushButton(">>")
+        next_btn = PySide6.QtWidgets.QPushButton(">>")
         next_btn.setFixedSize(30, 30)
         next_btn.clicked.connect(lambda :self.data_operation_pages(total_page))
         pg_layout.addWidget(next_btn)
-        spacer1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacer1 = PySide6.QtWidgets.QSpacerItem(40, 20, PySide6.QtWidgets.QSizePolicy.Expanding, PySide6.QtWidgets.QSizePolicy.Minimum)
         pg_layout.addItem(spacer1)
         self.w.pages_frame.setLayout(pg_layout)
 
@@ -158,7 +160,7 @@ class SystemLog(QtWidgets.QMainWindow):
             for data in self.datas:
                 log_match = log_filter == 'Entire' or data["log_division"] == log_filter
                 
-                periodfilter = QDate.fromString(data["event_time"].split(' ')[0], 'yyyy-MM-dd')
+                periodfilter = PySide6.QtCore.QDate.fromString(data["event_time"].split(' ')[0], 'yyyy-MM-dd')
                 period_match = dateStart_filter <= periodfilter <= dateEnd_filter
 
                 if log_match and period_match:
@@ -170,9 +172,9 @@ class SystemLog(QtWidgets.QMainWindow):
             self.filtered_datas = []
 
     def auto_delete(self):
-        loader = QUiLoader()
-        ui_file = QFile("ui/admgui/all_ui/system_log/auto_delete_dialog.ui")
-        if not ui_file.open(QIODevice.ReadOnly):
+        loader = PySide6.QtUiTools.QUiLoader()
+        ui_file = PySide6.QtCore.QFile("ui/admgui/all_ui/system_log/auto_delete_dialog.ui")
+        if not ui_file.open(PySide6.QtCore.QIODevice.ReadOnly):
             print(f"Cannot open UI file: {ui_file.errorString()}")
             return
         dialog = loader.load(ui_file, self)
@@ -184,9 +186,9 @@ class SystemLog(QtWidgets.QMainWindow):
 
     def manual_delete(self):
         print("Success!")
-        loader = QUiLoader()
-        ui_file = QFile("ui/admgui/all_ui/system_log/manually_delete.ui")
-        if not ui_file.open(QIODevice.ReadOnly):
+        loader = PySide6.QtUiTools.QUiLoader()
+        ui_file = PySide6.QtCore.QFile("ui/admgui/all_ui/system_log/manually_delete.ui")
+        if not ui_file.open(PySide6.QtCore.QIODevice.ReadOnly):
             print(f"Cannot open UI file: {ui_file.errorString()}")
             return
         
@@ -198,7 +200,7 @@ class SystemLog(QtWidgets.QMainWindow):
         
 
 
-class ManualDeleteLogs(QtWidgets.QMainWindow):
+class ManualDeleteLogs(PySide6.QtWidgets.QMainWindow):
     def __init__(self, w):
         super().__init__()
         self.w = w
@@ -209,7 +211,7 @@ class ManualDeleteLogs(QtWidgets.QMainWindow):
         self.w.btn_search.clicked.connect(self.handle_filter)
         
         date_str = datetime.today().strftime('%Y-%m-%d')
-        qdate = QDate.fromString(date_str, "yyyy-MM-dd")
+        qdate = PySide6.QtCore.QDate.fromString(date_str, "yyyy-MM-dd")
         self.w.periodEnd_filter.setDate(qdate)
 
         self.datas = []
@@ -220,7 +222,7 @@ class ManualDeleteLogs(QtWidgets.QMainWindow):
             f = open('./datas/systemLog.json')
             self.datas = json.load(f)
         
-        self.timer_fetch = QTimer()
+        self.timer_fetch = PySide6.QtCore.QTimer()
         self.timer_fetch.timeout.connect(self.update_table)
         self.timer_fetch.start(300)
     
@@ -233,24 +235,24 @@ class ManualDeleteLogs(QtWidgets.QMainWindow):
         
         header = tb_show.horizontalHeader()
         header.setMinimumHeight(34)
-        header.setDefaultAlignment(Qt.AlignCenter | Qt.Alignment(Qt.TextWordWrap))
+        header.setDefaultAlignment(PySide6.QtCore.Qt.AlignCenter | PySide6.QtCore.Qt.Alignment(PySide6.QtCore.Qt.TextWordWrap))
         for i in range(tb_show.columnCount()):
             if i == 0:
                 tb_show.setColumnWidth(i, 20)
             else:
-                header.setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
+                header.setSectionResizeMode(i, PySide6.QtWidgets.QHeaderView.Stretch)
         
         data_to_show = self.filtered_datas if self.filter_log else self.datas
         tb_show.setRowCount(len(data_to_show))
         if data_to_show:
             for idx, data_num in enumerate(range(len(data_to_show))):
-                it = QtWidgets.QTableWidgetItem(str(idx+1))
-                it.setTextAlignment(Qt.AlignCenter)
+                it = PySide6.QtWidgets.QTableWidgetItem(str(idx+1))
+                it.setTextAlignment(PySide6.QtCore.Qt.AlignCenter)
                 tb_show.setItem(int(idx), 0, it)
                 for i, (key, value) in enumerate(data_to_show[data_num].items()):
                     if key == "id": continue
-                    it = QtWidgets.QTableWidgetItem(str(value))
-                    it.setTextAlignment(Qt.AlignCenter)
+                    it = PySide6.QtWidgets.QTableWidgetItem(str(value))
+                    it.setTextAlignment(PySide6.QtCore.Qt.AlignCenter)
                     tb_show.setItem(int(idx), i, it)
                     # tb_show.cellClicked.connect(self.selected_row)
     
@@ -265,7 +267,7 @@ class ManualDeleteLogs(QtWidgets.QMainWindow):
             print(f"Filter: {dateStart_filter}, {dateStart_filter}")
             self.filtered_datas = []
             for data in self.datas:                
-                periodfilter = QDate.fromString(data["event_time"].split(' ')[0], 'yyyy-MM-dd')
+                periodfilter = PySide6.QtCore.QDate.fromString(data["event_time"].split(' ')[0], 'yyyy-MM-dd')
                 period_match = dateStart_filter <= periodfilter <= dateEnd_filter
 
                 if period_match:

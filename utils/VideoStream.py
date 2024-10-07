@@ -1,5 +1,4 @@
-from PySide6.QtCore import QThread, QObject, Signal
-from PySide6.QtGui import QPixmap, QIcon
+import PySide6
 
 import cv2
 import numpy as np
@@ -8,10 +7,10 @@ import os
 
 
 ## https://github.com/cundi/Python-PySide-PyQt-Tutorial/blob/master/Pyside_PyQt_%E7%BA%BF%E7%A8%8B/PySide%20Signals%20and%20Slots%20with%20QThread%20example.md
-class MySignal(QObject):
-    sig = Signal(np.ndarray, int)
+class MySignal(PySide6.QtCore.QObject):
+    sig = PySide6.QtCore.Signal(np.ndarray, int)
 
-class VideoStream(QThread):
+class VideoStream(PySide6.QtCore.QThread):
     frame_update = MySignal()  
     
     def __init__(self, url, camera_id):

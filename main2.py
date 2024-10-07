@@ -1,11 +1,9 @@
 import sys
-# from PySide6 import QtWidgets
-# from PySide6.QtCore import QFile, QIODevice, Qt, QTimer, QUrl, QSize, QThread, QObject, Signal
-# from PySide6.QtGui import QPixmap, QIcon, QScreen
-# from PySide6.QtWebEngineWidgets import QWebEngineView
+import PySide6 
 
-from PySide6.QtUiTools import QUiLoader
-import PySide6
+#from PySide6.QtCore import QFile, QIODevice, Qt, QTimer, QUrl, QSize, QThread, QObject, Signal
+#from PySide6.QtGui import QPixmap, QIcon
+# from PySide6.QtWebEngineWidgets import QWebEngineView
 
 import io
 import time
@@ -32,13 +30,13 @@ from utils.ScreenKeyboard import InputHandler, ScreenKeyboard
 from utils import UtilsVariables
 
 
-# class KeyboardThread(PySide6.QtCore.QThread):
+# class KeyboardThread(QThread):
 #     def __init__(self, input_handler):
 #         super().__init__()
 #         self.input_handler = input_handler
 
 #     def run(self):
-#         # Connect the key pressed PySide6.QtCore.signal to the input handler's function
+#         # Connect the key pressed signal to the input handler's function
 #         self.input_handler.keyboard.key_pressed.connect(self.input_handler.on_key_pressed)
 #         self.exec_()
 
@@ -136,12 +134,18 @@ class MainWindow(PySide6.QtWidgets.QMainWindow):
                     return
                 ui = loader.load(ui_file, self)
                 ui_file.close()
-                self.key_widget = ScreenKeyboard(ui, self)
-                
+                self.key_widget = ScreenKeyboard(ui)
+                # self.key_widget.show()
+
                 self.input_handler = InputHandler(self.key_widget)
                 self.popup.regist_widgets(self.input_handler)
-                self.key_widget.key_pressed.connect(self.input_handler.on_key_pressed) # Connect the keyboard PySide6.QtCore.signal to the handler
+                self.key_widget.key_pressed.connect(self.input_handler.on_key_pressed) # Connect the keyboard signal to the handler
                 UtilsVariables.key_widget_func(self.key_widget)
+                # print("main: True")
+            # else:
+            #     print(UtilsVariables.key_widget)
+            #     print()
+            #     print(self.popup.input_handler)
 
         else:
             if self.key_widget is not None:
@@ -164,17 +168,12 @@ class MainWindow(PySide6.QtWidgets.QMainWindow):
         
         # Store the popup instance to prevent it from being garbage collected
         self.popup = PopupClass(dialog)
-        # self.popup.setWindowFlags(Qt.WindowType.Tool)
 
         if event == 2:
             self.w.map_mng_frame.setVisible(True)
         else:
             self.w.map_mng_frame.setVisible(False)
         self.popup.activateWindow()
-        # self.popup.setWindowFlags(self.windowFlags() | Qt.WindowType.WindowTitleHint \
-        #                     | Qt.WindowType.WindowMaximizeButtonHint | \
-        #                         Qt.WindowType.WindowMinimizeButtonHint | \
-        #                             Qt.WindowType.WindowCloseButtonHint | Qt.WindowType.Window )
         self.popup.show()
         
 

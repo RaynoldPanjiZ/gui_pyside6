@@ -1,8 +1,7 @@
-from PySide6 import QtWidgets
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile, QIODevice, Qt, QRegularExpression
-from PySide6.QtNetwork import QHostAddress
-from PySide6.QtGui import QRegularExpressionValidator
+# from PySide6 import QtWidgets
+# from PySide6.QtCore import QFile, QIODevice, Qt, QRegularExpression
+# from PySide6.QtGui import QRegularExpressionValidator
+import PySide6
 import re
 import sys, os
 import socket
@@ -18,7 +17,7 @@ with open("ui/style/style_form.qss", "r") as file:
     style = file.read()
 
 
-class NetSetting(QtWidgets.QMainWindow):
+class NetSetting(PySide6.QtWidgets.QMainWindow):
     def __init__(self, w):
         super().__init__()
         self.w = w
@@ -33,7 +32,7 @@ class NetSetting(QtWidgets.QMainWindow):
         if UtilsVariables.keyboard_active and UtilsVariables.key_widget is not None:
             self.input_handler1 = InputHandler(UtilsVariables.key_widget)
             UtilsVariables.key_widget.key_pressed.connect(self.input_handler1.on_key_pressed)
-            input_widgets = self.findChildren(QtWidgets.QLineEdit) + self.findChildren(QtWidgets.QTextEdit)
+            input_widgets = self.findChildren(PySide6.QtWidgets.QLineEdit) + self.findChildren(PySide6.QtWidgets.QTextEdit)
             for widget in input_widgets:
                 widget.installEventFilter(self.input_handler1)
 
@@ -56,8 +55,8 @@ class NetSetting(QtWidgets.QMainWindow):
             self.set_manual_fields_enabled(True)
             # ipRange = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"   # Part of the regular expression
             # # Regulare expression
-            # ipRegex = QRegularExpression("^" + ipRange + "\\." + ipRange + "\\." + ipRange + "\\." + ipRange + "$")
-            # ipValidator = QRegularExpressionValidator(ipRegex, self)
+            # ipRegex = PySide6.QtGui.QRegularExpression("^" + ipRange + "\\." + ipRange + "\\." + ipRange + "\\." + ipRange + "$")
+            # ipValidator = PySide6.QtGui.QRegularExpressionValidator(ipRegex, self)
             # print(ipValidator)
             # self.w.ipAddr_edit.setValidator(ipValidator)  # https://evileg.com/en/post/57/
 
@@ -83,11 +82,11 @@ class NetSetting(QtWidgets.QMainWindow):
             # Ping IP address to check if it is in use
             output = subprocess.run(["ping", "-c", "1", ip], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             if output.returncode == 0:
-                QtWidgets.QMessageBox.warning(self, "IP Conflict", "The IP address is already in use by another device.")
+                PySide6.QtWidgets.QMessageBox.warning(self, "IP Conflict", "The IP address is already in use by another device.")
                 return False
             return True
         except Exception as e:
-            QtWidgets.QMessageBox.critical(self, "Error", f"An error occurred while checking IP address: {e}")
+            PySide6.QtWidgets.QMessageBox.critical(self, "Error", f"An error occurred while checking IP address: {e}")
             return False
 
 
@@ -137,74 +136,74 @@ class NetSetting(QtWidgets.QMainWindow):
     def validate_input(self, ip_address, netmask, gateway, dns1, dns2):
         ip_pattern = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
         if not ip_pattern.match(ip_address):
-            QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The IP address {ip_address} is not valid")
+            PySide6.QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The IP address {ip_address} is not valid")
             return False
         else:
             bytes = ip_address.split(".")  
             for i, ip_byte in enumerate(bytes):  
                 if int(ip_byte) < 1 or int(ip_byte) > 254:  
-                    QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The IP address {ip_address} is not valid")
+                    PySide6.QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The IP address {ip_address} is not valid")
                     return False  
                 
                 if i == 3:
                     if int(ip_byte) < 181 or int(ip_byte) > 189:  
-                        QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The IP address {ip_address} is not valid \n make sure that the Host ID is not under .181")
+                        PySide6.QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The IP address {ip_address} is not valid \n make sure that the Host ID is not under .181")
                         return False  
             print(f"The IP address {ip_address} is valid") 
         
         mask_pattern = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
         if not mask_pattern.match(netmask):
-            QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The Net Mask {netmask} is not valid")
+            PySide6.QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The Net Mask {netmask} is not valid")
             return False
         else:
             bytes = netmask.split(".")  
             for ip_byte in bytes:  
                 if int(ip_byte) < 0 or int(ip_byte) > 255:  
-                    QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The Net Mask {netmask} is not valid")
+                    PySide6.QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The Net Mask {netmask} is not valid")
                     return False  
             print(f"The NetMask {netmask} is valid")
 
         gateway_pattern = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
         if not gateway_pattern.match(gateway):
-            QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The Gateway {gateway} is not valid")
+            PySide6.QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The Gateway {gateway} is not valid")
             return False
         else:
             bytes = gateway.split(".")  
             for ip_byte in bytes:  
                 if int(ip_byte) < 1 or int(ip_byte) > 254:  
-                    QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The Gateway {gateway} is not valid")
+                    PySide6.QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The Gateway {gateway} is not valid")
                     return False  
             print(f"The Gateway {gateway} is valid")
 
         # dns1_pattern = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
         # if not dns1_pattern.match(dns1):
-        #     QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The DNS 1 {dns1} is not valid")
+        #     PySide6.QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The DNS 1 {dns1} is not valid")
         #     return False
         # else:
         #     bytes = dns1.split(".")  
         #     for ip_byte in bytes:  
         #         if int(ip_byte) < 1 or int(ip_byte) > 254:   
-        #             QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The DNS 1 {dns1} is not valid")
+        #             PySide6.QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The DNS 1 {dns1} is not valid")
         #             return False  
         #     print(f"The DNS-1 {dns1} is valid")
 
         # dns2_pattern = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
         # if not dns2_pattern.match(dns2):
-        #     QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The DNS 2 {dns2} is not valid")
+        #     PySide6.QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The DNS 2 {dns2} is not valid")
         #     return False
         # else:
         #     bytes = dns2.split(".")  
         #     for ip_byte in bytes:  
         #         if int(ip_byte) < 1 or int(ip_byte) > 254: 
-        #             QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The DNS 2 {dns2} is not valid")
+        #             PySide6.QtWidgets.QMessageBox.critical(self, "Invalid Input", f"The DNS 2 {dns2} is not valid")
         #             return False  
         #     print(f"The DNS-2 {dns2} is valid") 
         
         if self.check_ipaddr(ip_address):
-            # QtWidgets.QMessageBox.about(self, "Valid Input", f"Network configuration is valid")
+            # PySide6.QtWidgets.QMessageBox.about(self, "Valid Input", f"Network configuration is valid")
             return True
         
-        QtWidgets.QMessageBox.critical(self, "Error", f"Failed to configure")
+        PySide6.QtWidgets.QMessageBox.critical(self, "Error", f"Failed to configure")
         return False
 
 
@@ -219,7 +218,7 @@ class NetSetting(QtWidgets.QMainWindow):
             dns1 = self.w.dns1_edit.text()
             dns2 = self.w.dns2_edit.text()  
             if not ipaddr or not netmask or not gateway : # or not dns1 or not dns2:
-                QtWidgets.QMessageBox.critical(self, "Empty Fields", "All fields must be filled out.")
+                PySide6.QtWidgets.QMessageBox.critical(self, "Empty Fields", "All fields must be filled out.")
             
             elif self.validate_input(ipaddr, netmask, gateway, dns1, dns2):
                 self.setManualConfig(ipaddr, netmask, gateway, dns1, dns2)
@@ -231,9 +230,9 @@ class NetSetting(QtWidgets.QMainWindow):
         try:
             subprocess.run(["sudo", "dhclient", "-r", interface], check=True)
             subprocess.run(["sudo", "dhclient", interface], check=True)
-            QtWidgets.QMessageBox.information(self, "Success", "Network configured to use DHCP.")
+            PySide6.QtWidgets.QMessageBox.information(self, "Success", "Network configured to use DHCP.")
         except subprocess.CalledProcessError as e:
-            QtWidgets.QMessageBox.critical(self, "Error", f"Failed to set DHCP: {e}")
+            PySide6.QtWidgets.QMessageBox.critical(self, "Error", f"Failed to set DHCP: {e}")
     
     def setManualConfig(self, ip, netmask, gateway, dns, dns2):
         interface = self.w.ifList_cb.currentText()
@@ -251,7 +250,7 @@ class NetSetting(QtWidgets.QMainWindow):
             #     f.write(f"nameserver {dns}\n")
             #     f.write(f"nameserver {dns2}\n")
                 
-            QtWidgets.QMessageBox.information(self, "Success", "Network configured manually.")
+            PySide6.QtWidgets.QMessageBox.information(self, "Success", "Network configured manually.")
         except subprocess.CalledProcessError as e:
-            QtWidgets.QMessageBox.critical(self, "Error", f"Failed to set manual configuration: {e}")
+            PySide6.QtWidgets.QMessageBox.critical(self, "Error", f"Failed to set manual configuration: {e}")
 

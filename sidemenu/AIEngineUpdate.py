@@ -1,6 +1,8 @@
-from PySide6 import QtWidgets
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile, QIODevice, Qt
+# from PySide6 import QtWidgets
+# from PySide6.QtUiTools import QUiLoader
+# from PySide6.QtCore import QFile, QIODevice, Qt
+
+import PySide6
 import sys, os
 import socket
 import psutil
@@ -16,7 +18,7 @@ with open("ui/style/style_form.qss", "r") as file:
     
 
 
-class AIEngineUpdate(QtWidgets.QMainWindow):
+class AIEngineUpdate(PySide6.QtWidgets.QMainWindow):
     def __init__(self, w):
         super().__init__()
         self.w = w
@@ -29,16 +31,16 @@ class AIEngineUpdate(QtWidgets.QMainWindow):
         if UtilsVariables.keyboard_active and UtilsVariables.key_widget is not None:
             self.input_handler1 = InputHandler(UtilsVariables.key_widget)
             UtilsVariables.key_widget.key_pressed.connect(self.input_handler1.on_key_pressed)
-            input_widgets = self.findChildren(QtWidgets.QLineEdit)
+            input_widgets = self.findChildren(PySide6.QtWidgets.QLineEdit)
             for widget in input_widgets:
                 widget.installEventFilter(self.input_handler1)
 
 
     def upgrade(self):
         print("Success!")
-        loader = QUiLoader()
-        ui_file = QFile("ui/admgui/all_ui/aiengine_update/aiengine_upgrade_dialog.ui")
-        if not ui_file.open(QIODevice.ReadOnly):
+        loader = PySide6.QtUiTools.QUiLoader()
+        ui_file = PySide6.QtCore.QFile("ui/admgui/all_ui/aiengine_update/aiengine_upgrade_dialog.ui")
+        if not ui_file.open(PySide6.QtCore.QIODevice.ReadOnly):
             print(f"Cannot open UI file: {ui_file.errorString()}")
             return
         dialog = loader.load(ui_file, self)

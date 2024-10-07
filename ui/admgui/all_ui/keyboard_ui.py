@@ -24,6 +24,7 @@ class Ui_Form(object):
         if not Form.objectName():
             Form.setObjectName(u"Form")
         Form.resize(649, 246)
+        Form.setContextMenuPolicy(Qt.DefaultContextMenu)
         self.verticalLayout = QVBoxLayout(Form)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.field_layout = QHBoxLayout()

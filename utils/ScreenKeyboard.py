@@ -1,35 +1,38 @@
-from PySide6 import QtWidgets
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile, QIODevice, Qt, Signal, QObject, QPoint
-from utils import UtilsVariables
-from PySide6.QtGui import QScreen
+# from PySide6 import QtWidgets
+# from PySide6.QtUiTools import QUiLoader
+# from PySide6.QtCore import QFile, QIODevice, Qt, Signal, QObject, QPoint
+# from utils import UtilsVariables
+# from PySide6.QtGui import QScreen
+
+import PySide6
+import PySide6.QtWidgets
 
 style = None
 with open("ui/style/style_form.qss", "r") as file:
     style = file.read()
 
-class ScreenKeyboard(QtWidgets.QMainWindow):
-    key_pressed = Signal(str)
+class ScreenKeyboard(PySide6.QtWidgets.QMainWindow):
+    key_pressed = PySide6.QtCore.Signal(str)
     def __init__(self, w, mainwindow):
         super().__init__()
-        # self.setParent(mainwindow.w)
-
-        # # QtWidgets.QWidget.__init__(self, parent, Qt.WindowType.WindowStaysOnTopHint)
-        # self.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint)
-        # self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
-        # # self.setWindowFlags(self.windowFlags() | Qt.WindowType.WindowTitleHint \
-        # #                     | Qt.WindowType.WindowMaximizeButtonHint | \
-        # #                         Qt.WindowType.WindowMinimizeButtonHint | \
-        # #                             Qt.WindowType.WindowCloseButtonHint | Qt.WindowType.Window)
-        self.w = w
         self.setCentralWidget(w)
+        self.setParent(mainwindow.w)
+
+        # # PySide6.QtWidgets.QWidget.__init__(self, parent, PySide6.QtCore.Qt.WindowType.WindowStaysOnTopHint)
+        # self.setWindowFlags(PySide6.QtCore.Qt.WindowType.WindowStaysOnTopHint)
+        # self.setAttribute(PySide6.QtCore.Qt.WidgetAttribute.WA_TransparentForMouseEvents)
+        # # self.setWindowFlags(self.windowFlags() | PySide6.QtCore.Qt.WindowType.WindowTitleHint \
+        # #                     | PySide6.QtCore.Qt.WindowType.WindowMaximizeButtonHint | \
+        # #                         PySide6.QtCore.Qt.WindowType.WindowMinimizeButtonHint | \
+        # #                             PySide6.QtCore.Qt.WindowType.WindowCloseButtonHint | PySide6.QtCore.Qt.WindowType.Window)
+        self.w = w
         # self.setGeometry(100, 60, 60, 60) 
         self.setWindowTitle("Screen Keyboard")
         self.setStyleSheet(style)
         self.w.btn_upper.clicked.connect(self.btn_upper_clicked)
         # self.move_to_center()
         
-        self.btn_groups = QtWidgets.QButtonGroup()
+        self.btn_groups = PySide6.QtWidgets.QButtonGroup()
         self.num_buttons = []
         self.alpha_buttons = []
         self.key_buttons = []
@@ -84,7 +87,7 @@ class ScreenKeyboard(QtWidgets.QMainWindow):
             self.key_pressed.emit(button_text)
     
     def move_to_center(self):
-        # screen_geometry = QtWidgets.QApplication.primaryScreen().geometry()
+        # screen_geometry = PySide6.QtWidgets.QApplication.primaryScreen().geometry()
         screen_geometry = self.screen().availableGeometry()
         screen_width = screen_geometry.width()
         screen_height = screen_geometry.height()
@@ -100,7 +103,7 @@ class ScreenKeyboard(QtWidgets.QMainWindow):
 
 
 
-class InputHandler(QObject):
+class InputHandler(PySide6.QtCore.QObject):
     virtual_key = ""
     def __init__(self, keyboard, parent=None):
         super().__init__()
@@ -118,19 +121,19 @@ class InputHandler(QObject):
             self.current_input_widget = source  # Update focused line edit
             self.keyboard.activateWindow()  
             self.keyboard.raise_()  
-            if isinstance(source, QtWidgets.QLineEdit):
+            if isinstance(source, PySide6.QtWidgets.QLineEdit):
                 self.virtual_key = self.current_input_widget.text()
-            elif isinstance(source, QtWidgets.QSpinBox):
+            elif isinstance(source, PySide6.QtWidgets.QSpinBox):
                 self.virtual_key = str(self.current_input_widget.value())
-            elif isinstance(source, QtWidgets.QTextEdit):
+            elif isinstance(source, PySide6.QtWidgets.QTextEdit):
                 self.virtual_key = self.current_input_widget.toPlainText()
-            elif isinstance(source, QtWidgets.QDateEdit):
+            elif isinstance(source, PySide6.QtWidgets.QDateEdit):
                 self.cursor_position = self.current_input_widget.lineEdit().cursorPosition()
                 self.virtual_key = self.current_input_widget.text()
                 # print(self.virtual_key)
                 print(self.cursor_position)
                 # self.virtual_key = self.current_input_widget.date().toString("yyyy-MM-dd")
-            elif isinstance(source, QtWidgets.QTimeEdit):
+            elif isinstance(source, PySide6.QtWidgets.QTimeEdit):
                 self.cursor_position = self.current_input_widget.lineEdit().cursorPosition()
                 self.virtual_key = self.current_input_widget.text()
                 # print(self.virtual_key)
@@ -140,22 +143,30 @@ class InputHandler(QObject):
         if self.current_input_widget is not None and event.type() == event.Type.MouseButtonPress:
         # event.Type.FocusIn and self.current_input_widget is not None and self.cursor_inwg is False :
             if self.cursor_inwg is False: 
-                self.keyboard.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Tool)
+                # PySide6.QtCore.Qt.WindowType.SubWindow |
+                self.keyboard.setWindowFlags( PySide6.QtCore.Qt.WindowType.WindowStaysOnTopHint | PySide6.QtCore.Qt.WindowType.Tool)
                 
                 print("keyboard on top")
 
                 keyboard_width = 560
                 keyboard_height = 220
-                keyboard_posx = (QScreen.availableGeometry(QtWidgets.QApplication.primaryScreen()).width()  // 2 ) - (keyboard_width // 2)
-                keyboard_posy = (QScreen.availableGeometry(QtWidgets.QApplication.primaryScreen()).height()) - (keyboard_height + 15)
+                keyboard_posx = (PySide6.QtGui.QScreen.availableGeometry(PySide6.QtWidgets.QApplication.primaryScreen()).width()  // 2 ) - (keyboard_width // 2)
+                keyboard_posy = (PySide6.QtGui.QScreen.availableGeometry(PySide6.QtWidgets.QApplication.primaryScreen()).height()) - (keyboard_height + 15)
                 self.keyboard.setGeometry(keyboard_posx, keyboard_posy, keyboard_width, keyboard_height) 
                 self.keyboard.move(keyboard_posx, keyboard_posy)
+                
+                # pos = self.keyboard.pos()
+                # pos.setX(keyboard_posx)
+                # pos.setY(keyboard_posy)
+                # self.keyboard.move(pos)
+
+                
                 self.keyboard.show()
         return False
 
     def on_key_pressed(self, key):
         if self.current_input_widget is not None:
-            if isinstance(self.current_input_widget, QtWidgets.QLineEdit):
+            if isinstance(self.current_input_widget, PySide6.QtWidgets.QLineEdit):
                 if key == '': 
                     self.virtual_key += ' '
                 elif key == '←': 
@@ -167,7 +178,7 @@ class InputHandler(QObject):
                 # print(self.virtual_key)
                 self.keyboard.w.edit_text.setText(self.virtual_key)
                 self.current_input_widget.setText(self.virtual_key)
-            elif isinstance(self.current_input_widget, QtWidgets.QSpinBox):
+            elif isinstance(self.current_input_widget, PySide6.QtWidgets.QSpinBox):
                 if key.isdigit():
                     new_key = self.virtual_key + key if self.virtual_key != "0" else key
                     # new_key = str(self.virtual_key) + str(key)
@@ -184,7 +195,7 @@ class InputHandler(QObject):
                 # print(self.virtual_key)
                 self.keyboard.w.edit_text.setText(self.virtual_key)
                 self.current_input_widget.setValue(int(self.virtual_key))
-            elif isinstance(self.current_input_widget, QtWidgets.QTextEdit):
+            elif isinstance(self.current_input_widget, PySide6.QtWidgets.QTextEdit):
                 if key == '': 
                     self.virtual_key += ' '
                 elif key == "←": # Backspace
@@ -195,7 +206,7 @@ class InputHandler(QObject):
                     self.virtual_key += key
                 self.keyboard.w.edit_text.setText(self.virtual_key)
                 self.current_input_widget.setPlainText(self.virtual_key)
-            elif isinstance(self.current_input_widget, QtWidgets.QDateEdit):
+            elif isinstance(self.current_input_widget, PySide6.QtWidgets.QDateEdit):
                 # Handle numeric input for QDateEdit
                 datepart = self.virtual_key.split('-')
                 print(datepart)
@@ -243,7 +254,7 @@ class InputHandler(QObject):
                     pass
                 self.keyboard.w.edit_text.setText(self.virtual_key)
                 self.current_input_widget.setDate(self.current_input_widget.date().fromString(self.virtual_key, "yyyy-MM-dd"))
-            elif isinstance(self.current_input_widget, QtWidgets.QTimeEdit):
+            elif isinstance(self.current_input_widget, PySide6.QtWidgets.QTimeEdit):
                 # Handle numeric input for QTimeEdit
                 timepart = self.virtual_key.split(':')
                 new_hour, new_minute, new_second = timepart

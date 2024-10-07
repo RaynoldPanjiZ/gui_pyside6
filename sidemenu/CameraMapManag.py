@@ -1,6 +1,8 @@
-from PySide6 import QtWidgets
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile, QIODevice, Qt
+# from PySide6 import QtWidgets
+# from PySide6.QtUiTools import QUiLoader
+# from PySide6.QtCore import QFile, QIODevice, Qt
+
+import PySide6
 import sys, os
 import json
 from utils.ScreenKeyboard import InputHandler
@@ -11,7 +13,7 @@ with open("ui/style/style_form.qss", "r") as file:
     style = file.read()
 
 
-class CameraMapMng(QtWidgets.QMainWindow):
+class CameraMapMng(PySide6.QtWidgets.QMainWindow):
     def __init__(self, w):
         super().__init__()
         self.w = w
@@ -26,7 +28,7 @@ class CameraMapMng(QtWidgets.QMainWindow):
         if UtilsVariables.keyboard_active and UtilsVariables.key_widget is not None:
             self.input_handler1 = InputHandler(UtilsVariables.key_widget)
             UtilsVariables.key_widget.key_pressed.connect(self.input_handler1.on_key_pressed)
-            input_widgets = self.findChildren(QtWidgets.QLineEdit) + self.findChildren(QtWidgets.QTextEdit)
+            input_widgets = self.findChildren(PySide6.QtWidgets.QLineEdit) + self.findChildren(PySide6.QtWidgets.QTextEdit)
             for widget in input_widgets:
                 widget.installEventFilter(self.input_handler1)
 
@@ -46,29 +48,29 @@ class CameraMapMng(QtWidgets.QMainWindow):
         header = tb_show.horizontalHeader()
         tb_show.setColumnWidth(0, 20)
         tb_show.setColumnWidth(1, 150)
-        header.setSectionResizeMode(4, QtWidgets.QHeaderView.Stretch)
-        header.setSectionResizeMode(5, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(4, PySide6.QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(5, PySide6.QtWidgets.QHeaderView.Stretch)
         
         if self.datas:
             for idx, data_num in enumerate(range(len(self.datas))):
-                it = QtWidgets.QTableWidgetItem(str(data_num+1))
-                it.setTextAlignment(Qt.AlignCenter)
+                it = PySide6.QtWidgets.QTableWidgetItem(str(data_num+1))
+                it.setTextAlignment(PySide6.QtCore.Qt.AlignCenter)
                 tb_show.setItem(int(idx), 0, it)
                 i=0
                 for (key, value) in (self.datas[data_num].items()):
                     if key == "regist_date":
-                        it = QtWidgets.QTableWidgetItem(str(value))
-                        it.setTextAlignment(Qt.AlignCenter)
+                        it = PySide6.QtWidgets.QTableWidgetItem(str(value))
+                        it.setTextAlignment(PySide6.QtCore.Qt.AlignCenter)
                         tb_show.setItem(int(idx), i+2, it)
                     if i == 2:
-                        btn_preview = QtWidgets.QPushButton()
+                        btn_preview = PySide6.QtWidgets.QPushButton()
                         btn_preview.setText("Preview")
                         tb_show.setCellWidget(idx, i+1, btn_preview)
                         btn_preview.clicked.connect(lambda _, x=idx:self.prev_window(x))
                         i+=1
                     else:
-                        it = QtWidgets.QTableWidgetItem(str(value))
-                        it.setTextAlignment(Qt.AlignCenter)
+                        it = PySide6.QtWidgets.QTableWidgetItem(str(value))
+                        it.setTextAlignment(PySide6.QtCore.Qt.AlignCenter)
                         tb_show.setItem(int(idx), i+1, it)
                     i+=1
                 tb_show.cellClicked.connect(self.selected_row)
@@ -79,15 +81,15 @@ class CameraMapMng(QtWidgets.QMainWindow):
 
     def open_file_dialog(self):
         """Membuka file explorer dan menampilkan path file yang dipilih"""
-        options = QtWidgets.QFileDialog.Options()
-        file_name, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Open File", "", "All Files (*);;Text Files (*.txt)", options=options)
+        options = PySide6.QtWidgets.QFileDialog.Options()
+        file_name, _ = PySide6.QtWidgets.QFileDialog.getOpenFileName(self, "Open File", "", "All Files (*);;Text Files (*.txt)", options=options)
         if file_name:
             self.w.mapRegist_edit.setText(str(file_name))
 
     def delete_map_dialog(self):
-        loader = QUiLoader()
-        ui_file = QFile("ui/admgui/all_ui/cameramap_mng/delete_map_dialog.ui")
-        if not ui_file.open(QIODevice.ReadOnly):
+        loader = PySide6.QtUiTools.QUiLoader()
+        ui_file = PySide6.QtCore.QFile("ui/admgui/all_ui/cameramap_mng/delete_map_dialog.ui")
+        if not ui_file.open(PySide6.QtCore.QIODevice.ReadOnly):
             print(f"Cannot open UI file: {ui_file.errorString()}")
             return
         dialog = loader.load(ui_file, self)
@@ -103,9 +105,9 @@ class CameraMapMng(QtWidgets.QMainWindow):
         
     def add_map_dialog(self):
         print("Success!")
-        loader = QUiLoader()
-        ui_file = QFile("ui/admgui/all_ui/cameramap_mng/popup_addnewmap_dialog.ui")
-        if not ui_file.open(QIODevice.ReadOnly):
+        loader = PySide6.QtUiTools.QUiLoader()
+        ui_file = PySide6.QtCore.QFile("ui/admgui/all_ui/cameramap_mng/popup_addnewmap_dialog.ui")
+        if not ui_file.open(PySide6.QtCore.QIODevice.ReadOnly):
             print(f"Cannot open UI file: {ui_file.errorString()}")
             return
         dialog = loader.load(ui_file, self)

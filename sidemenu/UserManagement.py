@@ -1,6 +1,8 @@
-from PySide6 import QtWidgets
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile, QIODevice, Qt, QTimer
+# from PySide6 import QtWidgets
+# from PySide6.QtUiTools import QUiLoader
+# from PySide6.QtCore import QFile, QIODevice, Qt, QTimer
+
+import PySide6
 import sys, os
 import json
 from utils.ScreenKeyboard import InputHandler
@@ -12,7 +14,7 @@ with open("ui/style/style_form.qss", "r") as file:
     style = file.read()
 
 
-class UserManagement(QtWidgets.QMainWindow):
+class UserManagement(PySide6.QtWidgets.QMainWindow):
     def __init__(self, w):
         super().__init__()
         self.w = w
@@ -30,7 +32,7 @@ class UserManagement(QtWidgets.QMainWindow):
         if UtilsVariables.keyboard_active and UtilsVariables.key_widget is not None:
             self.input_handler1 = InputHandler(UtilsVariables.key_widget)
             UtilsVariables.key_widget.key_pressed.connect(self.input_handler1.on_key_pressed)
-            input_widgets = self.findChildren(QtWidgets.QLineEdit) + self.findChildren(QtWidgets.QTextEdit)
+            input_widgets = self.findChildren(PySide6.QtWidgets.QLineEdit) + self.findChildren(PySide6.QtWidgets.QTextEdit)
             for widget in input_widgets:
                 widget.installEventFilter(self.input_handler1)
 
@@ -44,7 +46,7 @@ class UserManagement(QtWidgets.QMainWindow):
             f = open('./datas/userManagement.json')
             self.datas = json.load(f)
 
-        self.timer_fetch = QTimer()
+        self.timer_fetch = PySide6.QtCore.QTimer()
         self.timer_fetch.timeout.connect(self.update_table)
         self.timer_fetch.start(700)
     
@@ -54,35 +56,35 @@ class UserManagement(QtWidgets.QMainWindow):
         
         header = tb_show.horizontalHeader()
         for i in range(tb_show.columnCount()):  # Stretch the tables by column horizontally
-            header.setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
+            header.setSectionResizeMode(i, PySide6.QtWidgets.QHeaderView.Stretch)
         
         if self.datas:
             for idx, data_num in enumerate(range(len(self.datas))):
-                it = QtWidgets.QTableWidgetItem(str(data_num+1))
-                it.setTextAlignment(Qt.AlignCenter)
+                it = PySide6.QtWidgets.QTableWidgetItem(str(data_num+1))
+                it.setTextAlignment(PySide6.QtCore.Qt.AlignCenter)
                 tb_show.setItem(int(idx), 0, it)
                 i=0
                 for (key, value) in (self.datas[data_num].items()):
                     if key == "password": continue
                     elif key == "msg" or key == "img":
-                        chbox_frame = QtWidgets.QFrame()
-                        chbox_layout = QtWidgets.QHBoxLayout(chbox_frame)
+                        chbox_frame = PySide6.QtWidgets.QFrame()
+                        chbox_layout = PySide6.QtWidgets.QHBoxLayout(chbox_frame)
                         # chbox_frame.setMaximumWidth(19)
                         # chbox_frame.setStyleSheet("QFrame{border: None; background-color: rgba(0,0,0,0;}")
-                        checkbox = QtWidgets.QCheckBox('', self)
+                        checkbox = PySide6.QtWidgets.QCheckBox('', self)
                         checkbox.setChecked(value == 1)
                         checkbox.setEnabled(False)
                         chbox_layout.addWidget(checkbox)
-                        chbox_layout.setAlignment(checkbox, Qt.AlignCenter)
+                        chbox_layout.setAlignment(checkbox, PySide6.QtCore.Qt.AlignCenter)
                         chbox_layout.setContentsMargins(0,0,0,0)
                         chbox_frame.setLayout(chbox_layout)
                         tb_show.setCellWidget(idx, i+1, chbox_frame)
                     else:
-                        it = QtWidgets.QTableWidgetItem(str(value))
-                        it.setTextAlignment(Qt.AlignCenter)
+                        it = PySide6.QtWidgets.QTableWidgetItem(str(value))
+                        it.setTextAlignment(PySide6.QtCore.Qt.AlignCenter)
                         tb_show.setItem(int(idx), i+1, it)
                     i+=1
-                btn_delete = QtWidgets.QPushButton()
+                btn_delete = PySide6.QtWidgets.QPushButton()
                 btn_delete.setText("Delete")
                 # btn_delete.setStyleSheet(btn_style)
                 tb_show.setCellWidget(idx, i+1, btn_delete)
@@ -114,7 +116,7 @@ class UserManagement(QtWidgets.QMainWindow):
         img = self.w.img_checkBox.isChecked()
 
         if id in [i["id"] for i in self.datas]:
-            QtWidgets.QMessageBox.critical(self, "Error", f"ID '{id}' already exists")
+            PySide6.QtWidgets.QMessageBox.critical(self, "Error", f"ID '{id}' already exists")
             return
         
         update_data = {
@@ -147,7 +149,7 @@ class UserManagement(QtWidgets.QMainWindow):
                 idx = i
                 break
         else:
-            QtWidgets.QMessageBox.critical(self, "Error", f"ID '{id}' not found")
+            PySide6.QtWidgets.QMessageBox.critical(self, "Error", f"ID '{id}' not found")
             return
         print(idx,":", id)
         update_data = {
@@ -166,9 +168,9 @@ class UserManagement(QtWidgets.QMainWindow):
 
     def ch_passwd(self):
         print("Success!")
-        loader = QUiLoader()
-        ui_file = QFile("ui/admgui/all_ui/user_management/change_pw_dialog.ui")
-        if not ui_file.open(QIODevice.ReadOnly):
+        loader = PySide6.QtUiTools.QUiLoader()
+        ui_file = PySide6.QtCore.QFile("ui/admgui/all_ui/user_management/change_pw_dialog.ui")
+        if not ui_file.open(PySide6.QtCore.QIODevice.ReadOnly):
             print(f"Cannot open UI file: {ui_file.errorString()}")
             return
         dialog = loader.load(ui_file, self)
@@ -176,10 +178,10 @@ class UserManagement(QtWidgets.QMainWindow):
         self.popup = dialog
         self.popup.setWindowTitle("Change Password")
         if UtilsVariables.keyboard_active and UtilsVariables.key_widget is not None:
-            UtilsVariables.key_widget.setWindowFlags(self.windowFlags() | Qt.WindowType.WindowStaysOnTopHint)
+            UtilsVariables.key_widget.setWindowFlags(self.windowFlags() | PySide6.QtCore.Qt.WindowType.WindowStaysOnTopHint)
             self.input_handler2 = InputHandler(UtilsVariables.key_widget)
             UtilsVariables.key_widget.key_pressed.connect(self.input_handler2.on_key_pressed)
-            input_widgets = self.popup.findChildren(QtWidgets.QLineEdit) + self.popup.findChildren(QtWidgets.QTextEdit)
+            input_widgets = self.popup.findChildren(PySide6.QtWidgets.QLineEdit) + self.popup.findChildren(PySide6.QtWidgets.QTextEdit)
             for widget in input_widgets:
                 widget.installEventFilter(self.input_handler2)
 
@@ -192,9 +194,9 @@ class UserManagement(QtWidgets.QMainWindow):
 
     def del_row(self, row_id):
         self.selected_row(row_id, None)
-        loader = QUiLoader()
-        ui_file = QFile("ui/admgui/all_ui/user_management/delete_user_dialog.ui")
-        if not ui_file.open(QIODevice.ReadOnly):
+        loader = PySide6.QtUiTools.QUiLoader()
+        ui_file = PySide6.QtCore.QFile("ui/admgui/all_ui/user_management/delete_user_dialog.ui")
+        if not ui_file.open(PySide6.QtCore.QIODevice.ReadOnly):
             print(f"Cannot open UI file: {ui_file.errorString()}")
             return
         dialog = loader.load(ui_file, self)
